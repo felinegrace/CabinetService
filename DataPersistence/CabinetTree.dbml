@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PsDbA201302" Class="CabinetTreeDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=localhost;Initial Catalog=PsDbA201302;Persist Security Info=True;User ID=sa" SettingsObjectName="DataPersistence.Properties.Settings" SettingsPropertyName="PsDbA201302ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.CabTree_Region" Member="CabTree_Regions">
+    <Type Name="CabTree_Region">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="shortName" Type="System.String" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
+      <Association Name="CabTree_Region_CabTree_VolClass" Member="CabTree_VolClasses" ThisKey="id" OtherKey="parentRegionId" Type="CabTree_VolClass" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CabTree_VolClass" Member="CabTree_VolClasses">
+    <Type Name="CabTree_VolClass">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="parentRegionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CabTree_VolClass_CabTree_Eqptroom" Member="CabTree_Eqptrooms" ThisKey="id" OtherKey="parentVolClassId" Type="CabTree_Eqptroom" />
+      <Association Name="CabTree_Region_CabTree_VolClass" Member="CabTree_Region" ThisKey="parentRegionId" OtherKey="id" Type="CabTree_Region" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CabTree_Eqptroom" Member="CabTree_Eqptrooms">
+    <Type Name="CabTree_Eqptroom">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="parentVolClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CabTree_VolClass_CabTree_Eqptroom" Member="CabTree_VolClass" ThisKey="parentVolClassId" OtherKey="id" Type="CabTree_VolClass" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+</Database>
