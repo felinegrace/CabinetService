@@ -35,7 +35,7 @@ namespace Cabinet.Bridge.IPC.EndPoint
         public IPCClientAsync()
         {
             ipcContext = (IPCContext)Activator.GetObject(
-                typeof(IPCContext), IPCCommonContext.fullDescriptor);
+                typeof(IPCContext), IPCConfig.fullDescriptor);
             threadPostResponsePoll = new Thread(invokePostResponsePollEvent);
             terminalPostResponsePollEvent = new AutoResetEvent(false);
             IPCPostResponsePollEvent = new IPCPostResponsePollEventHandler(this.onMessageResponse);

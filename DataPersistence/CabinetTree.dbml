@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PsDbA201302" Class="CabinetTreeDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=localhost;Initial Catalog=PsDbA201302;Persist Security Info=True;User ID=sa" SettingsObjectName="DataPersistence.Properties.Settings" SettingsPropertyName="PsDbA201302ConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=localhost;Initial Catalog=PsDbA201302;Persist Security Info=True;User ID=sa" SettingsObjectName="Cabinet.DataPersistence.Properties.Settings" SettingsPropertyName="PsDbA201302ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.CabTree_Region" Member="CabTree_Regions">
     <Type Name="CabTree_Region">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

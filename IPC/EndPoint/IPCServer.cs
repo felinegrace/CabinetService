@@ -35,7 +35,7 @@ namespace Cabinet.Bridge.IPC.EndPoint
         public IPCServer()
         {
             Logger.debug("IPCServer: Constructing...");
-            channel = new IpcServerChannel(IPCCommonContext.channelDescriptor);
+            channel = new IpcServerChannel(IPCConfig.channelDescriptor);
             terminalEvent = new AutoResetEvent(false);
             IPCEvent = new IPCEventHandler(this.dispatchMessage);
         }
@@ -81,7 +81,7 @@ namespace Cabinet.Bridge.IPC.EndPoint
                 ChannelServices.RegisterChannel(channel, false);
                 RemotingConfiguration.RegisterWellKnownServiceType(
                     typeof(IPCContext),
-                    IPCCommonContext.objectDescriptor,
+                    IPCConfig.objectDescriptor,
                     WellKnownObjectMode.Singleton);
             }
             catch (System.Exception ex)

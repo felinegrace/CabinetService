@@ -22,7 +22,7 @@ namespace Cabinet.Bridge.IPC.EndPoint
         public IPCClientSync()
         {
             ipcContext = (IPCContext)Activator.GetObject(
-                typeof(IPCContext), IPCCommonContext.fullDescriptor);
+                typeof(IPCContext), IPCConfig.fullDescriptor);
         }
         #endregion
 

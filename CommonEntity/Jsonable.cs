@@ -9,14 +9,14 @@ namespace Cabinet.Bridge.CommonEntity
 {
     public class Jsonable
     {
-        public string toJson()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
+        //public string toJson()
+        //{
+        //    return JsonConvert.SerializeObject(this);
+        //}
 
-        public static Jsonable fromJson<T>(string json)
-        {
-            return JsonConvert.DeserializeObject<T> (json);
-        }
+        //public static Jsonable fromJson<T>(string json)
+        //{
+        //    return JsonConvert.DeserializeObject<T> (json);
+        //}
     }
 }

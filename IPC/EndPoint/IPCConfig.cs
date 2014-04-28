@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cabinet.Bridge.IPC.EndPoint
 {
-    class IPCCommonContext
+    class IPCConfig
     {
         public static string channelDescriptor = "Manager2WebServiceBridge";
         public static string objectDescriptor = "RemoteObject";
