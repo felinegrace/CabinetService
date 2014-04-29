@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataPersistence", "DataPers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest_DataPersistence", "UnitTest_DataPersistence\UnitTest_DataPersistence.csproj", "{7B50D4F2-E9B6-4FEE-B236-6148FA991D47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest_CommonEntity", "UnitTest_CommonEntity\UnitTest_CommonEntity.csproj", "{46AE8EAB-A361-4E55-8D96-38B066F6C45A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{7B50D4F2-E9B6-4FEE-B236-6148FA991D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B50D4F2-E9B6-4FEE-B236-6148FA991D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B50D4F2-E9B6-4FEE-B236-6148FA991D47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46AE8EAB-A361-4E55-8D96-38B066F6C45A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46AE8EAB-A361-4E55-8D96-38B066F6C45A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46AE8EAB-A361-4E55-8D96-38B066F6C45A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46AE8EAB-A361-4E55-8D96-38B066F6C45A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +87,6 @@ Global
 		{96BB495D-A835-43AA-AF72-770A09DEB93C} = {87E38840-7939-48E6-9CED-9BC311265A78}
 		{29328319-19BD-4679-B8E2-4D59399D0BC4} = {87E38840-7939-48E6-9CED-9BC311265A78}
 		{7B50D4F2-E9B6-4FEE-B236-6148FA991D47} = {87E38840-7939-48E6-9CED-9BC311265A78}
+		{46AE8EAB-A361-4E55-8D96-38B066F6C45A} = {87E38840-7939-48E6-9CED-9BC311265A78}
 	EndGlobalSection
 EndGlobal

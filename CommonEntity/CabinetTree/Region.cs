@@ -5,16 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Cabinet.Bridge.CommonEntity.CabinetTree
+namespace Cabinet.CommonEntity
 {
     public class Region : Jsonable
     {
         public int id {get; set;}
         public string name {get; set;}
         public string shortName {get; set;}
-        public Region()
-        {
-
-        }
     }
 }
