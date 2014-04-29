@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="CabinetTree">
+  <DataContextMoniker Name="/CabinetTreeDataContext" />
+  <nestedChildShapes>
+    <classShape Id="950a8a36-7dbf-4be2-92d5-3154f1ec8ef9" absoluteBounds="1, 1.125, 2, 1.3525109863281251">
+      <DataClassMoniker Name="/CabinetTreeDataContext/CabTree_Region" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8bf09fc7-7f49-4be9-a5cf-a73e786b5b0a" absoluteBounds="1.0150000000000001, 1.585, 1.9700000000000002, 0.792510986328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="317e6b8e-1941-4ed1-ab73-32d0d1d51044" absoluteBounds="1, 3.125, 2, 1.3525109863281251">
+      <DataClassMoniker Name="/CabinetTreeDataContext/CabTree_VolClass" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7f47431c-abfe-4b3c-afc9-bfe194619aef" absoluteBounds="1.0150000000000001, 3.585, 1.9700000000000002, 0.792510986328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2 : 2.47751098632813); (2 : 3.125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CabinetTreeDataContext/CabTree_Region/CabTree_Region_CabTree_VolClass" />
+      <nodes>
+        <classShapeMoniker Id="950a8a36-7dbf-4be2-92d5-3154f1ec8ef9" />
+        <classShapeMoniker Id="317e6b8e-1941-4ed1-ab73-32d0d1d51044" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="80873aa2-4520-465f-b0aa-846b00dcf143" absoluteBounds="1, 5.125, 2, 1.3525109863281251">
+      <DataClassMoniker Name="/CabinetTreeDataContext/CabTree_Eqptroom" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c04612be-2a09-49d5-8302-9a4b5389d10d" absoluteBounds="1.0149999999999997, 5.585, 1.9700000000000002, 0.792510986328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2 : 4.47751098632813); (2 : 5.125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CabinetTreeDataContext/CabTree_VolClass/CabTree_VolClass_CabTree_Eqptroom" />
+      <nodes>
+        <classShapeMoniker Id="317e6b8e-1941-4ed1-ab73-32d0d1d51044" />
+        <classShapeMoniker Id="80873aa2-4520-465f-b0aa-846b00dcf143" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

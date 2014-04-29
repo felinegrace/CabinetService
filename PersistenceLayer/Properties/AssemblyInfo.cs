@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DataPersistence")]
+[assembly: AssemblyTitle("PersistenceLayer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DataPersistence")]
+[assembly: AssemblyProduct("PersistenceLayer")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("fb7b6c57-a2cd-46d7-867a-8a0bd12d2528")]
+[assembly: Guid("f5f3c3d7-f7be-4b1a-8668-860f942173ac")]
 
 // Version information for an assembly consists of the following four values:
 //

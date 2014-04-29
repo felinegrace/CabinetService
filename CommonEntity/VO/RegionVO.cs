@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Cabinet.Data.CommonEntity.CabinetTree
+namespace Cabinet.Framework.CommonEntity
 {
-    public class Region : Jsonable
+    public class RegionVO : Jsonable
     {
         public int id {get; set;}
         public string name {get; set;}

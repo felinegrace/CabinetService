@@ -7,8 +7,8 @@
     <ProjectGuid>{C4F6B129-A8F4-4178-A270-21CA79C4636C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.Data.CommonEntity</RootNamespace>
-    <AssemblyName>Cabinet.Data.CommonEntity</AssemblyName>
+    <RootNamespace>Cabinet.Framework.CommonEntity</RootNamespace>
+    <AssemblyName>Cabinet.Framework.CommonEntity</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CabinetTree\Region.cs" />
+    <Compile Include="VO\RegionVO.cs" />
     <Compile Include="Jsonable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawRequest.cs" />

@@ -3,10 +3,10 @@ using System.Text;
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cabinet.Data.Persistence;
-using Cabinet.Data.Persistence.DAO;
 using System.Data.Linq.SqlClient;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Cabinet.Framework.CommonEntity;
+using Cabinet.Framework.PersistenceLayer;
 
 namespace UnitTest_DataPersistence
 {
@@ -87,21 +87,25 @@ namespace UnitTest_DataPersistence
             string name = "测试用公司";
             string shortName = "ts";
             RegionDAO dao = new RegionDAO();
+            //test c
             int r0 = dao.c(name, shortName);
             Assert.IsTrue(r0 > 0);
+            //test r
             var q = from o in dao.r() where o.id == r0 select o;
             Assert.AreEqual(1, q.Count());
+            //test u
             assertRegion(q.Single(), r0, name, shortName);
-            dao.u(r0, "测试用公司2", "tts");
+            dao.u(new RegionVO{id=r0, name="测试用公司2", shortName="tts"});
             var qq = from oo in dao.r() where oo.id == r0 select oo;
             Assert.AreEqual(1, q.Count());
+            //test d
             assertRegion(qq.Single(), r0, "测试用公司2", "tts");
             dao.d(r0);
             var qqq = from ooo in dao.r() where ooo.id == r0 select ooo;
             Assert.AreEqual(0, qqq.Count());
         }
 
-        private void assertRegion(CabTree_Region obj , int id , string name, string shortName)
+        private void assertRegion(RegionVO obj , int id , string name, string shortName)
         {
             Assert.AreEqual(id, obj.id);
             Assert.AreEqual(name, obj.name);

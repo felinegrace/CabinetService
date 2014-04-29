@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cabinet.Data.CommonEntity
+namespace Cabinet.Framework.CommonEntity
 {
     public class RawRequest : Jsonable
     {

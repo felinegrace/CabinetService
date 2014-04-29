@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using Cabinet.Utility;
 
-namespace Cabinet.Data.Persistence.DAO
+namespace Cabinet.Framework.PersistenceLayer
 {
-    public class CabinetTreeDAOBase
+    public class DAOBase
     {
         private CabinetTreeDataContext context { get; set; }
-        protected CabinetTreeDAOBase()
+        protected DAOBase()
         {
             context = new CabinetTreeDataContext();
             context.Log = new Logger4LINQ();

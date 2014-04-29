@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cabinet.Data.CommonEntity;
+using Cabinet.Framework.CommonEntity;
 
 namespace UnitTest_CommonEntity
 {
