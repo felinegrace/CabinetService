@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cabinet.DataPersistence;
-using Cabinet.DataPersistence.DAO;
+using Cabinet.Data.Persistence;
+using Cabinet.Data.Persistence.DAO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 

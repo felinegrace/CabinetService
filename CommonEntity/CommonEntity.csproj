@@ -7,8 +7,8 @@
     <ProjectGuid>{C4F6B129-A8F4-4178-A270-21CA79C4636C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.CommonEntity</RootNamespace>
-    <AssemblyName>Cabinet.CommonEntity</AssemblyName>
+    <RootNamespace>Cabinet.Data.CommonEntity</RootNamespace>
+    <AssemblyName>Cabinet.Data.CommonEntity</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

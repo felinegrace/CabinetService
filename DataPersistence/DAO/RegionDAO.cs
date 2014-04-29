@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cabinet.DataPersistence.DAO
+namespace Cabinet.Data.Persistence.DAO
 {
     public class RegionDAO : CabinetTreeDAOBase
     {

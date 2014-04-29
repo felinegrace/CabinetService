@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cabinet.DataPersistence;
-using Cabinet.DataPersistence.DAO;
+using Cabinet.Data.Persistence;
+using Cabinet.Data.Persistence.DAO;
 using System.Data.Linq.SqlClient;
 
 namespace UnitTest_DataPersistence

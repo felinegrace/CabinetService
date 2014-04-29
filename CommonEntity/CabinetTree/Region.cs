@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Cabinet.CommonEntity
+namespace Cabinet.Data.CommonEntity.CabinetTree
 {
     public class Region : Jsonable
     {

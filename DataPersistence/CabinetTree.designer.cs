@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cabinet.DataPersistence
+namespace Cabinet.Data.Persistence
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -42,7 +42,7 @@ namespace Cabinet.DataPersistence
     #endregion
 		
 		public CabinetTreeDataContext() : 
-				base(global::Cabinet.DataPersistence.Properties.Settings.Default.PsDbA201302ConnectionString, mappingSource)
+				base(global::Cabinet.Data.Persistence.Properties.Settings.Default.PsDbA201302ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

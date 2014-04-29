@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cabinet.CommonEntity;
+using Cabinet.Data.CommonEntity;
 
 namespace UnitTest_CommonEntity
 {
@@ -26,7 +26,7 @@ namespace UnitTest_CommonEntity
             Assert.AreEqual(3,r.param.Count);
             Assert.AreEqual("test1", r.param[0]);
             Assert.AreEqual("test2", r.param[1]);
-            Assert.AreEqual(3l, r.param[2]);
+            Assert.AreEqual(3L, r.param[2]);
 
         }
     }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Cabinet.CommonEntity
+namespace Cabinet.Data.CommonEntity
 {
     public class Jsonable
     {

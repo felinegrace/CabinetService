@@ -59,9 +59,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataPersistence\DataPersistence.csproj">
+    <ProjectReference Include="..\DataPersistence\Persistence.csproj">
       <Project>{a32073f8-91b2-4a57-914f-d721c4d7ab76}</Project>
-      <Name>DataPersistence</Name>
+      <Name>Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

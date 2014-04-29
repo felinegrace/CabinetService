@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cabinet.DataPersistence.Properties {
+namespace Cabinet.Data.Persistence.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
