@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Cabinet.DataPersistence;
 using Cabinet.DataPersistence.DAO;
+using System.Data.Linq.SqlClient;
 
 namespace UnitTest_DataPersistence
 {
@@ -58,16 +61,51 @@ namespace UnitTest_DataPersistence
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+
+        [ClassInitialize()]
+        public static void ClassInit(TestContext tc)
+        {
+            
+        }
+
+        [ClassCleanup()]
+        public static void ClassCleanup()
+        {
+            CabinetTreeDataContext context = ContextGrabber.grab();
+            var q = from o in context.CabTree_Regions where SqlMethods.Like(o.name, "测试用公司%") select o;
+            foreach (var r in q)
+            {
+                context.CabTree_Regions.DeleteOnSubmit(r);
+            }
+            context.SubmitChanges();
+        }
         #endregion
 
         [TestMethod]
-        public void TestC()
+        public void performTest()
         {
-            //
-            // TODO: Add test logic here
-            //
+            string name = "测试用公司";
+            string shortName = "ts";
             RegionDAO dao = new RegionDAO();
-            dao.c("宁波电力公司","nb");
+            int r0 = dao.c(name, shortName);
+            Assert.IsTrue(r0 > 0);
+            var q = from o in dao.r() where o.id == r0 select o;
+            Assert.AreEqual(1, q.Count());
+            assertRegion(q.Single(), r0, name, shortName);
+            dao.u(r0, "测试用公司2", "tts");
+            var qq = from oo in dao.r() where oo.id == r0 select oo;
+            Assert.AreEqual(1, q.Count());
+            assertRegion(qq.Single(), r0, "测试用公司2", "tts");
+            dao.d(r0);
+            var qqq = from ooo in dao.r() where ooo.id == r0 select ooo;
+            Assert.AreEqual(0, qqq.Count());
+        }
+
+        private void assertRegion(CabTree_Region obj , int id , string name, string shortName)
+        {
+            Assert.AreEqual(id, obj.id);
+            Assert.AreEqual(name, obj.name);
+            Assert.AreEqual(shortName, obj.shortName);
         }
     }
 }
