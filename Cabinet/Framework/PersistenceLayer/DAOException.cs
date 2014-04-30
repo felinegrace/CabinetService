@@ -10,6 +10,6 @@ namespace Cabinet.Framework.PersistenceLayer
         public DAOException(string message) : base(message)
         { 
 
-}
+        }
     }
 }

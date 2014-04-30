@@ -7,6 +7,7 @@ using System.Data.Linq.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cabinet.Framework.CommonEntity;
 using Cabinet.Framework.PersistenceLayer;
+using Cabinet.UnitTest.Utility;
 
 namespace Cabinet.UnitTest.PersistenceLayer
 {

@@ -137,7 +137,6 @@ namespace Cabinet.Bridge.IPC.EndPoint
 
         void onMessageSynchronized(IPCContext.RemoteMessageSynchronized message)
         {
-
             Logger.debug("msg = {0} arg = {1}", message.descriptor, message.param);
             onMessageSynchronizedComplete(message);
         }

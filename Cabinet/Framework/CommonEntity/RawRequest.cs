@@ -7,6 +7,7 @@ namespace Cabinet.Framework.CommonEntity
 {
     public class RawRequest : Jsonable
     {
+        public string business { get; set; }
         public string method { get; set; }
         public List<object> param { get; private set; }
         public RawRequest()

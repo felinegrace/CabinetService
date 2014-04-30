@@ -16,7 +16,7 @@ namespace Cabinet.Bridge.IPC.RemoteObject
             public string descriptor { get; set; }
             public string param { get; set; }
 
-            public RemoteMessage(string message, string param)
+            protected RemoteMessage(string message, string param)
             {
                 this.type = MessageType.Unknown;
                 this.descriptor = message;

@@ -45,9 +45,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CabinetTree.dbml</DependentUpon>
     </Compile>
-    <Compile Include="DAO\DAOBase.cs" />
-    <Compile Include="DAO\DAOException.cs" />
-    <Compile Include="DAO\RegionDAO.cs" />
+    <Compile Include="DAOBase.cs" />
+    <Compile Include="DAOException.cs" />
+    <Compile Include="RegionDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

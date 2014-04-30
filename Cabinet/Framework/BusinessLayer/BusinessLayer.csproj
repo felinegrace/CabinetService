@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C4F6B129-A8F4-4178-A270-21CA79C4636C}</ProjectGuid>
+    <ProjectGuid>{5600499E-FBF1-409E-B01B-AFF8121D6769}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.Framework.CommonEntity</RootNamespace>
-    <AssemblyName>Cabinet.Framework.CommonEntity</AssemblyName>
+    <RootNamespace>Cabinet.Framework.BusinessLayer</RootNamespace>
+    <AssemblyName>Cabinet.Framework.BusinessLayer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\AwfulService\Lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,12 +39,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RawContext.cs" />
-    <Compile Include="RawResponse.cs" />
-    <Compile Include="RegionVO.cs" />
-    <Compile Include="Jsonable.cs" />
+    <Compile Include="BOBase.cs" />
+    <Compile Include="BOException.cs" />
+    <Compile Include="BusinessManager.cs" />
+    <Compile Include="RegionBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawRequest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utility\Utility.csproj">
+      <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonEntity\CommonEntity.csproj">
+      <Project>{c4f6b129-a8f4-4178-a270-21ca79c4636c}</Project>
+      <Name>CommonEntity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PersistenceLayer\PersistenceLayer.csproj">
+      <Project>{9f64d17b-4dc7-426a-8a96-b6d9b591fa17}</Project>
+      <Name>PersistenceLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

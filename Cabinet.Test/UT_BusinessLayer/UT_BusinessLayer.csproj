@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{152AC090-3952-4758-BEA9-9478F222CAF7}</ProjectGuid>
+    <ProjectGuid>{EBE6C2C9-80F4-461C-8D95-A19349942A6E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.UnitTest.PersistenceLayer</RootNamespace>
-    <AssemblyName>Cabinet.UnitTest.PersistenceLayer</AssemblyName>
+    <RootNamespace>Cabinet.UnitTest.BusinessLayer</RootNamespace>
+    <AssemblyName>Cabinet.UnitTest.BusinessLayer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -54,10 +54,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="UnitTest_RegionBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest_RegionDAO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Cabinet\Framework\BusinessLayer\BusinessLayer.csproj">
+      <Project>{5600499e-fbf1-409e-b01b-aff8121d6769}</Project>
+      <Name>BusinessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Cabinet\Framework\CommonEntity\CommonEntity.csproj">
       <Project>{c4f6b129-a8f4-4178-a270-21ca79c4636c}</Project>
       <Name>CommonEntity</Name>
