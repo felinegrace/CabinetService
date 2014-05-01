@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Cabinet.Framework.CommonEntity
 {
-    public class RawContext
+    public class BusinessContext
     {
         public RawRequest request { get; private set; }
         public RawResponse response { get; private set; }
-        public RawContext(RawRequest request, RawResponse response)
+        public BusinessContext(RawRequest request, RawResponse response)
         {
             this.request = request;
             this.response = response;

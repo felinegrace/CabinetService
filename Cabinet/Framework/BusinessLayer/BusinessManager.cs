@@ -2,51 +2,60 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections.Concurrent;
+using System.Threading;
+using Cabinet.Utility;
+using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Framework.BusinessLayer
 {
-    public class BusinessManager
+    public class BusinessManager : SingleListServer<BusinessContext>
     {
-        private Thread thread;
-        private AutoResetEvent terminalEvent;
-        private AutoResetEvent notifyEvent;
-
-        public BusinessManager()
+        public BusinessManager() : base()
         {
-            terminalEvent = new AutoResetEvent(false);
-            notifyEvent = new AutoResetEvent(false);
+
         }
 
-        public void start()
+        public override void start()
         {
-            Logger.debug("BusinessManager: Staring...");
-            thread = new Thread(invokeManger);
-            thread.Start(this);
+            Logger.debug("BusinessManager: Starting...");
+            base.start();
         }
 
-        public void stop()
+        public override void stop()
         {
             Logger.debug("BusinessManager: Stopping...");
-            terminalEvent.Set();
-            notifyEvent.Set();
+            base.stop();
         }
 
-        void run()
+        protected override void onStart()
         {
-            IPCOpen();
-            Logger.debug("IPCServer: Open.");
-            while (!terminalEvent.WaitOne(0))
+            Logger.debug("BusinessManager: Start.");
+        }
+
+        protected override void onStop()
+        {
+            Logger.debug("BusinessManager: Stop.");
+        }
+
+        protected override void handleRequest(BusinessContext context)
+        {
+            try
             {
-                IPCPeekMessage();
+                BOBase bo = BOFactory.getInstance(context);
+                bo.handleBusiness();
             }
-            IPCClose();
-            Logger.debug("IPCServer: Close.");
+            catch(Exception Exception)
+            {
+                Logger.error("skip this request for reason: {0}",Exception.Message);
+            }
+            finally
+            {
+                context.response.onResponsed();
+            }
         }
 
-        static void invokeManager(object manager)
-        {
-            BusinessManager transManager = manager as BusinessManager;
-            transManager.run();
-        }
+
+        
     }
 }

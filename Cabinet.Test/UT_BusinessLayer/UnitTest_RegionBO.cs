@@ -46,7 +46,7 @@ namespace Cabinet.UnitTest.BusinessLayer
             q.param.Add("测试用公司bo");
             q.param.Add("tssbo");
             RawResponse p = new RawResponseExt();
-            RawContext c = new RawContext(q,p);
+            BusinessContext c = new BusinessContext(q,p);
             BOBase b = new RegionBO(c);
             b.handleBusiness();
             Assert.AreEqual(1, p.result.Count);

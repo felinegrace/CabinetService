@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+
 namespace Cabinet.Bridge.IPC.RemoteObject
 {
-    class IPCContext : MarshalByRefObject
+    public class IPCContext : MarshalByRefObject
     {
         #region Messaging objects
         [Serializable]
@@ -50,25 +52,24 @@ namespace Cabinet.Bridge.IPC.RemoteObject
         #endregion
 
         #region Messaging Queues
-        public static Queue<RemoteMessage> requestQueue = new Queue<RemoteMessage>();
-        public static Queue<RemoteMessage> responseQueue = new Queue<RemoteMessage>();
+        public static ConcurrentQueue<RemoteMessage> requestQueue = new ConcurrentQueue<RemoteMessage>();
+        public static ConcurrentQueue<RemoteMessage> responseQueue = new ConcurrentQueue<RemoteMessage>();
 
         public static AutoResetEvent serverThreadEvent = new AutoResetEvent(false);
         public static AutoResetEvent clientThreadEvent = new AutoResetEvent(false);
 
-        public static object requestQueueMutex = new object();
-        public static object responseQueueMutex = new object();
+        //public static object requestQueueMutex = new object();
+        //public static object responseQueueMutex = new object();
         #endregion
 
         #region Synchronized Messaging
         public void sendMessage(string message, string param)
         {
             RemoteMessageSynchronized msg = new RemoteMessageSynchronized(message, param);
-            lock (IPCContext.requestQueueMutex)
-            {
-                requestQueue.Enqueue(msg);
-                serverThreadEvent.Set();
-            }
+
+            requestQueue.Enqueue(msg);
+            serverThreadEvent.Set();
+
             msg.notifyEvent.WaitOne(-1);
         }
         #endregion
@@ -77,11 +78,10 @@ namespace Cabinet.Bridge.IPC.RemoteObject
         public Guid postMessage(string message, string param)
         {
             RemoteMessageAsynchronized msg = new RemoteMessageAsynchronized(message, param);
-            lock (IPCContext.requestQueueMutex)
-            {
-                requestQueue.Enqueue(msg);
-                serverThreadEvent.Set();
-            }
+
+            requestQueue.Enqueue(msg);
+            serverThreadEvent.Set();
+            
             return msg.guid;
         }
 
@@ -90,6 +90,12 @@ namespace Cabinet.Bridge.IPC.RemoteObject
             return clientThreadEvent;
         }
 
+        public ConcurrentQueue<RemoteMessage> getResponseQueue()
+        {
+            return responseQueue;
+        }
+
+        /*
         public int getResponseQueueCount()
         {
             return responseQueue.Count;
@@ -97,14 +103,19 @@ namespace Cabinet.Bridge.IPC.RemoteObject
 
         public RemoteMessageAsynchronized getResponseQueueFront()
         {
-            RemoteMessageAsynchronized msg = null;
-            lock (IPCContext.requestQueueMutex)
+            if (!IPCContext.responseQueue.IsEmpty)
             {
-                msg = IPCContext.responseQueue.Dequeue() as RemoteMessageAsynchronized;
-            } 
-            return msg;
+                RemoteMessage msg = null;
+                if (IPCContext.responseQueue.TryDequeue(out msg) == true)
+                {
+                    return msg as RemoteMessageAsynchronized;
+                }
+            }
+            return null;
 
         }
+          
+         */
         #endregion
     }
 }

@@ -31,15 +31,23 @@ namespace Cabinet.Utility
         {
             terminalEvent.Set();
         }
-
-        protected virtual void polling()
+        private void polling()
         {
+            onStart();
             while (!terminalEvent.WaitOne(0))
             {
                 onPolling();
             }
+            onStop();
         }
-
         protected abstract void onPolling();
+        protected virtual void onStart()
+        {
+
+        }
+        protected virtual void onStop()
+        {
+
+        }
     }
 }

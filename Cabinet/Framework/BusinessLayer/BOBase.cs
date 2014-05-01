@@ -8,9 +8,9 @@ namespace Cabinet.Framework.BusinessLayer
 {
     public abstract class BOBase
     {
-        protected RawContext context { get; private set; }
+        protected BusinessContext context { get; private set; }
 
-        protected BOBase(RawContext context)
+        protected BOBase(BusinessContext context)
         {
             this.context = context;
         }

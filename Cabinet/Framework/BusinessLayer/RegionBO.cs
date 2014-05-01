@@ -10,7 +10,7 @@ namespace Cabinet.Framework.BusinessLayer
     public class RegionBO : BOBase
     {
         private RegionDAO regionDao { get; set; }
-        public RegionBO(RawContext context) : base(context)
+        public RegionBO(BusinessContext context) : base(context)
         {
             regionDao = new RegionDAO();
         }

@@ -20,7 +20,12 @@ namespace Cabinet.Utility
             notifyEvent.Set();
         }
 
-        public sealed override void onPolling()
+        protected void notify()
+        {
+            notifyEvent.Set();
+        }
+
+        protected sealed override void onPolling()
         {
             notifyEvent.WaitOne(-1);
             onEventablePoll();

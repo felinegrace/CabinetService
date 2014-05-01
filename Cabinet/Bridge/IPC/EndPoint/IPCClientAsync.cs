@@ -12,92 +12,47 @@ using Cabinet.Bridge.IPC.RemoteObject;
 
 namespace Cabinet.Bridge.IPC.EndPoint
 {
-    public class IPCClientAsync
+    //warning: async mode is not under test
+    public class IPCClientAsync : SingleListServer<IPCContext.RemoteMessage>
     {
         #region Private fields
-        private IPCContext ipcContext = null;
-        private Thread threadPostResponsePoll = null;
-        private AutoResetEvent terminalPostResponsePollEvent = null;
-        private class IPCPostResponsePollEventArgs : EventArgs
-        {
-            public IPCContext.RemoteMessage message { get; set; }
-            public IPCPostResponsePollEventArgs(IPCContext.RemoteMessage aMessage)
-                : base()
-            {
-                this.message = aMessage;
-            }
-        }
-        private delegate void IPCPostResponsePollEventHandler(object sender, IPCPostResponsePollEventArgs args);
-        private event IPCPostResponsePollEventHandler IPCPostResponsePollEvent;
+        private IPCContext ipcContext { get; set; }
         #endregion
 
         #region Constructor
         public IPCClientAsync()
+            : base(getContext().getResponseQueue(), getContext().getClientThreadEvent())
         {
-            ipcContext = (IPCContext)Activator.GetObject(
-                typeof(IPCContext), IPCConfig.fullDescriptor);
-            threadPostResponsePoll = new Thread(invokePostResponsePollEvent);
-            terminalPostResponsePollEvent = new AutoResetEvent(false);
-            IPCPostResponsePollEvent = new IPCPostResponsePollEventHandler(this.onMessageResponse);
+            this.ipcContext = getContext();
+        }
+
+        public static IPCContext getContext()
+        {
+            return (IPCContext)Activator.GetObject(
+                 typeof(IPCContext), IPCConfig.fullDescriptor);
         }
         #endregion
 
         #region Threading
-        static void invokePostResponsePollEvent(object client)
+        public override void start()
         {
-            IPCClientAsync transClient = client as IPCClientAsync;
-            transClient.run();
+            Logger.debug("IPCClientAsync: Staring...");
+            base.start();
         }
 
-        void run()
+        public override void stop()
         {
-            Logger.debug("IPCServer: Post Response polling open.");
-            while (!terminalPostResponsePollEvent.WaitOne(0))
-            {
-                peekPostResponse();
-            }
-            Logger.debug("IPCClient: Post Response polling Close.");
-        }
-
-        public void start()
-        {
-            threadPostResponsePoll.Start(this);
-        }
-
-        public void stop()
-        {
-            terminalPostResponsePollEvent.Set();
-            ipcContext.getClientThreadEvent().Set();
+            Logger.debug("IPCClientAsync: Stopping...");
+            base.stop();
         }
         #endregion
 
         #region Logical functions
-        void peekPostResponse()
+        protected override void handleRequest(IPCContext.RemoteMessage request)
         {
-            Logger.debug("IPCClient: Waiting for further response.");
-            ipcContext.getClientThreadEvent().WaitOne(-1);
-            while (ipcContext.getResponseQueueCount() > 0)
-            {
-                IPCContext.RemoteMessage msg = ipcContext.getResponseQueueFront();
-                if (msg != null)
-                {
-                    IPCPostResponsePollEventArgs arg = new IPCPostResponsePollEventArgs(msg);
-                    IPCPostResponsePollEvent(this, arg);
-                }
-                else
-                {
-                    Logger.error("IPCClient recv a null msg.");
-                }
-            }
-            Logger.debug("IPCClient: responseQueue cleared.");
+            Logger.debug("onMessageResponse. msg = {0} ,param = {1}", request.descriptor, request.param);
         }
-
-        void onMessageResponse(object sender, IPCPostResponsePollEventArgs args)
-        {
-            Logger.debug("onMessageResponse. msg = {0} ,param = {1}",args.message.descriptor , args.message.param);
-        }
-
-
+        
 
         public void postMessage(string message, string param)
         {
@@ -110,6 +65,11 @@ namespace Cabinet.Bridge.IPC.EndPoint
                 Logger.error("IPCClient: post with error: {0}.", ex.Message);
             }
         }
+
+
+
+
+
         #endregion
     }
 }

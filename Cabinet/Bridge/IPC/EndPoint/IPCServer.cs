@@ -13,65 +13,43 @@ using Cabinet.Bridge.IPC.RemoteObject;
 
 namespace Cabinet.Bridge.IPC.EndPoint
 {
-    public class IPCServer
+    public class IPCServer : SingleListServer<IPCContext.RemoteMessage>
     {
         #region Private fields
-        private Thread thread;
-        private AutoResetEvent terminalEvent;
         private IpcServerChannel channel;
-        private class IPCEventArgs : EventArgs
-        {
-            public IPCContext.RemoteMessage message {get;set;}
-            public IPCEventArgs( IPCContext.RemoteMessage msg ) : base()
-            {
-                this.message = msg;
-            }
-        }
-        private delegate void IPCEventHandler( object sender, IPCEventArgs args );
-        private event IPCEventHandler IPCEvent;
         #endregion
 
         #region Constructor
-        public IPCServer()
+        public IPCServer() : base(IPCContext.requestQueue, IPCContext.serverThreadEvent)
         {
             Logger.debug("IPCServer: Constructing...");
             channel = new IpcServerChannel(IPCConfig.channelDescriptor);
-            terminalEvent = new AutoResetEvent(false);
-            IPCEvent = new IPCEventHandler(this.dispatchMessage);
         }
         #endregion
 
         #region Threading
-        public void start()
+        public override void start()
         {
-            Logger.debug("IPCServer: Staring...");
-            thread = new Thread(invokeServer);
-            thread.Start(this);
+            Logger.debug("IPCServer: Starting...");
+            base.start();
         }
 
-        public void stop()
+        public override void stop()
         {
             Logger.debug("IPCServer: Stopping...");
-            terminalEvent.Set();
-            IPCContext.serverThreadEvent.Set();
+            base.stop();
         }
 
-        void run()
+        protected override void onStart()
         {
             IPCOpen();
             Logger.debug("IPCServer: Open.");
-            while (!terminalEvent.WaitOne(0))
-            {
-                IPCPeekMessage();
-            }
-            IPCClose();
-            Logger.debug("IPCServer: Close.");
         }
 
-        static void invokeServer(object server)
+        protected override void onStop()
         {
-            IPCServer transServer = server as IPCServer;
-            transServer.run();
+            IPCClose();
+            Logger.debug("IPCServer: Close.");
         }
 
         void IPCOpen()
@@ -98,36 +76,16 @@ namespace Cabinet.Bridge.IPC.EndPoint
         #endregion
 
         #region Logical functions
-        void IPCPeekMessage()
+        protected override void handleRequest(IPCContext.RemoteMessage request)
         {
-            Logger.debug("IPCServer: Waiting for further message.");
-            IPCContext.serverThreadEvent.WaitOne(-1);
-            while (IPCContext.requestQueue.Count > 0)
-            {
-                IPCContext.RemoteMessage msg = null;
-                lock (IPCContext.requestQueueMutex)
-                {
-                    msg = IPCContext.requestQueue.Dequeue();
-                }
-                IPCEventArgs arg = new IPCEventArgs(msg);
-                IPCEvent(this, arg);
-            }
-            Logger.debug("IPCServer: requestQueue cleared.");
-            //RemoteObject.messageEvent.Reset();
-        }
-
-
-
-        void dispatchMessage(object sender, IPCEventArgs args)
-        {
-            IPCContext.RemoteMessage msg = args.message;
-            switch (msg.type)
+            Logger.debug("IPCServer: handle request.");
+            switch (request.type)
             {
                 case IPCContext.RemoteMessage.MessageType.Synchronized:
-                    onMessageSynchronized(msg as IPCContext.RemoteMessageSynchronized);
+                    onMessageSynchronized(request as IPCContext.RemoteMessageSynchronized);
                     break;
                 case IPCContext.RemoteMessage.MessageType.Asynchronized:
-                    onMessageAsynchronized(msg as IPCContext.RemoteMessageAsynchronized);
+                    onMessageAsynchronized(request as IPCContext.RemoteMessageAsynchronized);
                     break;
                 default:
                     Logger.error("IPCServer: invalid request type.");
@@ -154,12 +112,14 @@ namespace Cabinet.Bridge.IPC.EndPoint
 
         void onMessageAsynchronizedComplete(IPCContext.RemoteMessageAsynchronized message)
         {
-            lock (IPCContext.responseQueueMutex)
-            {
-                IPCContext.responseQueue.Enqueue(message);
-            }
+            IPCContext.responseQueue.Enqueue(message);
             IPCContext.clientThreadEvent.Set();
         }
+
+
+
+
+
         #endregion
     }
 }
