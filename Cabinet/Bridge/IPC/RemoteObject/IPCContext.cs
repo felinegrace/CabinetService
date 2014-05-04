@@ -11,44 +11,35 @@ namespace Cabinet.Bridge.IPC.RemoteObject
     {
         #region Messaging objects
         [Serializable]
-        public class RemoteMessage
-        {
-            public enum MessageType { Unknown, Synchronized, Asynchronized };
-            public MessageType type { get; set; }
-            public string descriptor { get; set; }
-            public string param { get; set; }
-
-            protected RemoteMessage(string message, string param)
-            {
-                this.type = MessageType.Unknown;
-                this.descriptor = message;
-                this.param = param;
-            }
-        }
-
-        [Serializable]
-        public class RemoteMessageSynchronized : RemoteMessage
-        {
-            public AutoResetEvent notifyEvent = null;
-            public RemoteMessageSynchronized(string message, string param)
-                : base(message, param)
-            {
-                this.type = MessageType.Synchronized;
-                this.notifyEvent = new AutoResetEvent(false);
-            }
-        }
-
-        [Serializable]
-        public class RemoteMessageAsynchronized : RemoteMessage
+        public class RemoteMessage : EventArgs
         {
             public Guid guid { get; set; }
-            public RemoteMessageAsynchronized(string message, string param)
-                : base(message, param)
+            public string business { get; set; }
+            public string method { get; set; }
+            public string param { get; set; }
+            public string result { get; set; }
+
+            //used for send method
+            public AutoResetEvent notifyEvent { get; private set; }
+
+            private RemoteMessage(bool needEvent, string business, string method, string param)
             {
-                this.type = MessageType.Asynchronized;
+                if(needEvent)
+                {
+                    this.notifyEvent = new AutoResetEvent(false);
+                }
+                else
+                {
+                    this.notifyEvent = null;
+                }
                 this.guid = Guid.NewGuid();
+                this.business = business;
+                this.method = method;
+                this.param = param;
             }
+
         }
+
         #endregion
 
         #region Messaging Queues
@@ -62,60 +53,32 @@ namespace Cabinet.Bridge.IPC.RemoteObject
         //public static object responseQueueMutex = new object();
         #endregion
 
-        #region Synchronized Messaging
-        public void sendMessage(string message, string param)
+        public void postRequest(RemoteMessage message)
         {
-            RemoteMessageSynchronized msg = new RemoteMessageSynchronized(message, param);
-
-            requestQueue.Enqueue(msg);
+            requestQueue.Enqueue(message);
             serverThreadEvent.Set();
-
-            msg.notifyEvent.WaitOne(-1);
         }
-        #endregion
 
-        #region Asynchronized Messaging
-        public Guid postMessage(string message, string param)
-        {
-            RemoteMessageAsynchronized msg = new RemoteMessageAsynchronized(message, param);
-
-            requestQueue.Enqueue(msg);
-            serverThreadEvent.Set();
-            
-            return msg.guid;
-        }
+        //public AutoResetEvent getServerThreadEvent()
+        //{
+        //    return serverThreadEvent;
+        //}
 
         public AutoResetEvent getClientThreadEvent()
         {
             return clientThreadEvent;
         }
 
+        
+        //public ConcurrentQueue<RemoteMessage> getRequestQueue()
+        //{
+        //    return requestQueue;
+        //}
+
         public ConcurrentQueue<RemoteMessage> getResponseQueue()
         {
             return responseQueue;
         }
 
-        /*
-        public int getResponseQueueCount()
-        {
-            return responseQueue.Count;
-        }
-
-        public RemoteMessageAsynchronized getResponseQueueFront()
-        {
-            if (!IPCContext.responseQueue.IsEmpty)
-            {
-                RemoteMessage msg = null;
-                if (IPCContext.responseQueue.TryDequeue(out msg) == true)
-                {
-                    return msg as RemoteMessageAsynchronized;
-                }
-            }
-            return null;
-
-        }
-          
-         */
-        #endregion
     }
 }

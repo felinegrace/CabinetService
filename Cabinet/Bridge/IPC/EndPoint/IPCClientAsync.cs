@@ -17,6 +17,9 @@ namespace Cabinet.Bridge.IPC.EndPoint
     {
         #region Private fields
         private IPCContext ipcContext { get; set; }
+
+        private delegate void IPCClientEventHandler(object sender, IPCContext.RemoteMessage args);
+        private event IPCClientEventHandler IPCClientEvent;
         #endregion
 
         #region Constructor
@@ -54,11 +57,15 @@ namespace Cabinet.Bridge.IPC.EndPoint
         }
         
 
-        public void postMessage(string message, string param)
+        public Guid postMessage(string message, string param)
         {
             try
             {
-                ipcContext.postMessage(message, param);
+                RRemoteMessage msg = new RemoteMessage(false, business, method, param);
+
+                ipcContext.postRequest(msg);
+
+                return msg.guid;
             }
             catch (System.Exception ex)
             {
@@ -66,7 +73,10 @@ namespace Cabinet.Bridge.IPC.EndPoint
             }
         }
 
-
+        public void registerIPCServerEventHandler(IPCServerEventHandler handler)
+        {
+            this.IPCServerEvent = handler;
+        }
 
 
 

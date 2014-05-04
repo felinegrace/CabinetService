@@ -27,12 +27,20 @@ namespace Cabinet.Bridge.IPC.EndPoint
         #endregion
 
         #region Logical functions
-        public void sendMessage(string message, string param)
+        public string sendMessage(string business, string method, string param)
         {
             try
             {
-                ipcContext.sendMessage(message, param);
-                Logger.debug("IPCClient: send complete. msg = {0} , param = {1}",message , param);
+                RemoteMessage msg = new RemoteMessage(true, business, method, param);
+
+                ipcContext.postRequest(msg);
+
+                Logger.debug("IPCClient: send complete. waiting for response. msg = {0}/{1} , param = {2}", business, method, param);
+
+                msg.notifyEvent.WaitOne(-1);
+
+                return msg.result;
+
             }
             catch (System.Exception ex)
             {

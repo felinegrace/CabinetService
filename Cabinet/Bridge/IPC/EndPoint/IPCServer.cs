@@ -17,6 +17,10 @@ namespace Cabinet.Bridge.IPC.EndPoint
     {
         #region Private fields
         private IpcServerChannel channel;
+ 
+        private delegate void IPCServerEventHandler(object sender, IPCContext.RemoteMessage args);
+        private event IPCServerEventHandler IPCServerEvent;
+
         #endregion
 
         #region Constructor
@@ -75,47 +79,24 @@ namespace Cabinet.Bridge.IPC.EndPoint
         }
         #endregion
 
+        public void registerIPCServerEventHandler(IPCServerEventHandler handler)
+        {
+            this.IPCServerEvent = handler;
+        }
+
         #region Logical functions
         protected override void handleRequest(IPCContext.RemoteMessage request)
         {
             Logger.debug("IPCServer: handle request.");
-            switch (request.type)
-            {
-                case IPCContext.RemoteMessage.MessageType.Synchronized:
-                    onMessageSynchronized(request as IPCContext.RemoteMessageSynchronized);
-                    break;
-                case IPCContext.RemoteMessage.MessageType.Asynchronized:
-                    onMessageAsynchronized(request as IPCContext.RemoteMessageAsynchronized);
-                    break;
-                default:
-                    Logger.error("IPCServer: invalid request type.");
-                    break;
-            }
+            Logger.debug("IPCServer: msg = {0}/{1} arg = {2}", message.business, message.method, message.param);
+            IPCServerEvent(request);
         }
 
-        void onMessageSynchronized(IPCContext.RemoteMessageSynchronized message)
+        public void postResponse(IPCContext.RemoteMessage response)
         {
-            Logger.debug("msg = {0} arg = {1}", message.descriptor, message.param);
-            onMessageSynchronizedComplete(message);
-        }
-
-        void onMessageSynchronizedComplete(IPCContext.RemoteMessageSynchronized message)
-        {
-            message.notifyEvent.Set();
-        }
-
-        void onMessageAsynchronized(IPCContext.RemoteMessageAsynchronized message)
-        {
-            Logger.debug("msg = {0} arg = {1}", message.descriptor, message.param);
-            onMessageAsynchronizedComplete(message);
-        }
-
-        void onMessageAsynchronizedComplete(IPCContext.RemoteMessageAsynchronized message)
-        {
-            IPCContext.responseQueue.Enqueue(message);
+            IPCContext.responseQueue.Enqueue(response);
             IPCContext.clientThreadEvent.Set();
         }
-
 
 
 
