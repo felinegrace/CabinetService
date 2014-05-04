@@ -31,13 +31,11 @@ namespace Cabinet.Bridge.IPC.EndPoint
         {
             try
             {
-                RemoteMessage msg = new RemoteMessage(true, business, method, param);
-
+                IPCMessage msg = new IPCMessage(true, business, method, param);
                 ipcContext.postRequest(msg);
-
                 Logger.debug("IPCClient: send complete. waiting for response. msg = {0}/{1} , param = {2}", business, method, param);
 
-                msg.notifyEvent.WaitOne(-1);
+                msg.wait();
 
                 return msg.result;
 
@@ -45,6 +43,7 @@ namespace Cabinet.Bridge.IPC.EndPoint
             catch (System.Exception ex)
             {
                 Logger.error("IPCClient: send with error: {0}.", ex.Message);
+                return null;
             }
         }
         #endregion

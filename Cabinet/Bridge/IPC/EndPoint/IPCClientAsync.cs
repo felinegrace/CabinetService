@@ -13,12 +13,12 @@ using Cabinet.Bridge.IPC.RemoteObject;
 namespace Cabinet.Bridge.IPC.EndPoint
 {
     //warning: async mode is not under test
-    public class IPCClientAsync : SingleListServer<IPCContext.RemoteMessage>
+    public class IPCClientAsync : SingleListServer<IPCMessage>
     {
         #region Private fields
         private IPCContext ipcContext { get; set; }
 
-        private delegate void IPCClientEventHandler(object sender, IPCContext.RemoteMessage args);
+        public delegate void IPCClientEventHandler(object sender, IPCMessage args);
         private event IPCClientEventHandler IPCClientEvent;
         #endregion
 
@@ -51,31 +51,32 @@ namespace Cabinet.Bridge.IPC.EndPoint
         #endregion
 
         #region Logical functions
-        protected override void handleRequest(IPCContext.RemoteMessage request)
-        {
-            Logger.debug("onMessageResponse. msg = {0} ,param = {1}", request.descriptor, request.param);
-        }
-        
 
-        public Guid postMessage(string message, string param)
+        public Guid postMessage(string business, string method, string param)
         {
             try
             {
-                RRemoteMessage msg = new RemoteMessage(false, business, method, param);
-
+                IPCMessage msg = new IPCMessage(false, business, method, param);
                 ipcContext.postRequest(msg);
-
                 return msg.guid;
             }
             catch (System.Exception ex)
             {
                 Logger.error("IPCClient: post with error: {0}.", ex.Message);
+                return Guid.Empty;
             }
         }
 
-        public void registerIPCServerEventHandler(IPCServerEventHandler handler)
+        protected override void handleRequest(IPCMessage request)
         {
-            this.IPCServerEvent = handler;
+            Logger.debug("onMessageResponse. msg = {0}/{1} ,param = {2}",
+                request.business, request.method, request.param);
+            IPCClientEvent(this, request);
+        }
+
+        public void registerIPCClientEventHandler(IPCClientEventHandler handler)
+        {
+            this.IPCClientEvent = handler;
         }
 
 

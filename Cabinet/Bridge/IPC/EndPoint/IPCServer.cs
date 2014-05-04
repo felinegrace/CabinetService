@@ -13,12 +13,12 @@ using Cabinet.Bridge.IPC.RemoteObject;
 
 namespace Cabinet.Bridge.IPC.EndPoint
 {
-    public class IPCServer : SingleListServer<IPCContext.RemoteMessage>
+    public class IPCServer : SingleListServer<IPCMessage>
     {
         #region Private fields
         private IpcServerChannel channel;
- 
-        private delegate void IPCServerEventHandler(object sender, IPCContext.RemoteMessage args);
+
+        public delegate void IPCServerEventHandler(object sender, IPCMessage args);
         private event IPCServerEventHandler IPCServerEvent;
 
         #endregion
@@ -85,21 +85,18 @@ namespace Cabinet.Bridge.IPC.EndPoint
         }
 
         #region Logical functions
-        protected override void handleRequest(IPCContext.RemoteMessage request)
+        protected override void handleRequest(IPCMessage request)
         {
             Logger.debug("IPCServer: handle request.");
-            Logger.debug("IPCServer: msg = {0}/{1} arg = {2}", message.business, message.method, message.param);
-            IPCServerEvent(request);
+            Logger.debug("IPCServer: msg = {0}/{1} arg = {2}", request.business, request.method, request.param);
+            IPCServerEvent(this, request);
         }
 
-        public void postResponse(IPCContext.RemoteMessage response)
+        public void postResponse(IPCMessage response)
         {
             IPCContext.responseQueue.Enqueue(response);
             IPCContext.clientThreadEvent.Set();
         }
-
-
-
 
         #endregion
     }

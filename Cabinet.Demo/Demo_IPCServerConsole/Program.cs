@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Cabinet.Bridge.IPC.EndPoint;
 using Cabinet.Utility;
+using Cabinet.Bridge.IPC.RemoteObject;
 
 namespace Cabinet.Demo.IPCServerConsole
 {
@@ -13,6 +14,7 @@ namespace Cabinet.Demo.IPCServerConsole
         {
             Logger.enable();
             IPCServer s = new IPCServer();
+            s.registerIPCServerEventHandler(new IPCServer.IPCServerEventHandler(onMessage));
             s.start();
             ConsoleKeyInfo ch;
             do
@@ -20,6 +22,11 @@ namespace Cabinet.Demo.IPCServerConsole
                 ch = Console.ReadKey();
             } while (ch.Key != ConsoleKey.Q);
             s.stop();
+        }
+
+        static void onMessage(object sender, IPCMessage args)
+        {
+            args.notify();
         }
     }
 }

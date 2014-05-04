@@ -54,9 +54,10 @@ namespace Cabinet.Demo.IPCClientConsole
             WorkerParam p = param as WorkerParam;
             for (int i = 0; i < testScalar_WorkCount; i++)
             {
-                string msg = String.Format("thread : {0}",p.workerId);
+                string business = "test client";
+                string method = String.Format("method : {0}",p.workerId);
                 string prm = String.Format("work : {0}", i);
-                p.client.sendMessage(msg, prm);
+                p.client.sendMessage(business, method, prm);
             }
             handleArray[p.workerId].Set();
         }

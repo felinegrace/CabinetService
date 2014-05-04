@@ -10,41 +10,13 @@ namespace Cabinet.Bridge.IPC.RemoteObject
     public class IPCContext : MarshalByRefObject
     {
         #region Messaging objects
-        [Serializable]
-        public class RemoteMessage : EventArgs
-        {
-            public Guid guid { get; set; }
-            public string business { get; set; }
-            public string method { get; set; }
-            public string param { get; set; }
-            public string result { get; set; }
 
-            //used for send method
-            public AutoResetEvent notifyEvent { get; private set; }
-
-            private RemoteMessage(bool needEvent, string business, string method, string param)
-            {
-                if(needEvent)
-                {
-                    this.notifyEvent = new AutoResetEvent(false);
-                }
-                else
-                {
-                    this.notifyEvent = null;
-                }
-                this.guid = Guid.NewGuid();
-                this.business = business;
-                this.method = method;
-                this.param = param;
-            }
-
-        }
 
         #endregion
 
         #region Messaging Queues
-        public static ConcurrentQueue<RemoteMessage> requestQueue = new ConcurrentQueue<RemoteMessage>();
-        public static ConcurrentQueue<RemoteMessage> responseQueue = new ConcurrentQueue<RemoteMessage>();
+        public static ConcurrentQueue<IPCMessage> requestQueue = new ConcurrentQueue<IPCMessage>();
+        public static ConcurrentQueue<IPCMessage> responseQueue = new ConcurrentQueue<IPCMessage>();
 
         public static AutoResetEvent serverThreadEvent = new AutoResetEvent(false);
         public static AutoResetEvent clientThreadEvent = new AutoResetEvent(false);
@@ -53,7 +25,7 @@ namespace Cabinet.Bridge.IPC.RemoteObject
         //public static object responseQueueMutex = new object();
         #endregion
 
-        public void postRequest(RemoteMessage message)
+        public void postRequest(IPCMessage message)
         {
             requestQueue.Enqueue(message);
             serverThreadEvent.Set();
@@ -75,7 +47,7 @@ namespace Cabinet.Bridge.IPC.RemoteObject
         //    return requestQueue;
         //}
 
-        public ConcurrentQueue<RemoteMessage> getResponseQueue()
+        public ConcurrentQueue<IPCMessage> getResponseQueue()
         {
             return responseQueue;
         }
