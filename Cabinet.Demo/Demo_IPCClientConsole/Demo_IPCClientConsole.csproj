@@ -7,8 +7,8 @@
     <ProjectGuid>{FA790107-5955-4DE4-8F83-8885F3BEA546}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.Demo.BusinessManager</RootNamespace>
-    <AssemblyName>Cabinet.Demo.BusinessManager</AssemblyName>
+    <RootNamespace>Cabinet.Demo.IPCClientConsole</RootNamespace>
+    <AssemblyName>Cabinet.Demo.IPCClientConsole</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

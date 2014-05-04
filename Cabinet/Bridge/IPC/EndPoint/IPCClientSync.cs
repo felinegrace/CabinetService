@@ -6,9 +6,9 @@ using System.Threading;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
-
 using Cabinet.Utility;
 using Cabinet.Bridge.IPC.RemoteObject;
+using Cabinet.Bridge.IPC.CommonEntity;
 
 namespace Cabinet.Bridge.IPC.EndPoint
 {
@@ -27,17 +27,20 @@ namespace Cabinet.Bridge.IPC.EndPoint
         #endregion
 
         #region Logical functions
-        public string sendMessage(string business, string method, string param)
+        public string sendMessage(string request)
         {
+            Logger.info("IPCClient: IPCClient - - -> IPCBridge.");
+            Logger.debug("IPCClient: msg = {0}", request);
             try
             {
-                IPCMessage msg = new IPCMessage(true, business, method, param);
+
+                IPCMessage msg = new IPCMessage(true, request);
                 ipcContext.postRequest(msg);
-                Logger.debug("IPCClient: send complete. waiting for response. msg = {0}/{1} , param = {2}", business, method, param);
-
+                
+                Logger.debug("IPCClient: waiting for response.", request);
                 msg.wait();
-
-                return msg.result;
+                Logger.info("IPCClient: IPCClient =====> IPCBridge.");
+                return msg.response;
 
             }
             catch (System.Exception ex)

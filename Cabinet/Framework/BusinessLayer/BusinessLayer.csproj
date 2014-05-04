@@ -42,7 +42,7 @@
     <Compile Include="BOBase.cs" />
     <Compile Include="BOException.cs" />
     <Compile Include="BOFactory.cs" />
-    <Compile Include="BusinessManager.cs" />
+    <Compile Include="BusinessServer.cs" />
     <Compile Include="RegionBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

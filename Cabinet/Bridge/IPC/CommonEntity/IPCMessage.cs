@@ -5,27 +5,25 @@ using System.Text;
 using System.Threading;
 using Cabinet.Utility;
 
-namespace Cabinet.Bridge.IPC.RemoteObject
+namespace Cabinet.Bridge.IPC.CommonEntity
 {
     [Serializable]
     public class IPCMessage
     {
         public Guid guid { get; private set; }
-        public string business { get; set; }
-        public string method { get; set; }
-        public string param { get; set; }
-        public string result { get; set; }
+        //public string business { get; set; }
+        //public string method { get; set; }
+        public string request { get; set; }
+        public string response { get; set; }
 
         [NonSerialized]
         internal EventWaitHandle syncHandle;
-        
 
-        internal IPCMessage(bool isSync, string business, string method, string param)
+
+        internal IPCMessage(bool isSync, string request)
         {
             this.guid = Guid.NewGuid();
-            this.business = business;
-            this.method = method;
-            this.param = param;
+            this.request = request;
             if (isSync)
             {
                 syncHandle = new EventWaitHandle(false, EventResetMode.AutoReset, this.guid.ToString());
@@ -53,8 +51,10 @@ namespace Cabinet.Bridge.IPC.RemoteObject
         {
             try
             {
+                Logger.info("IPCServer: IPCServer - - -> IPCBridge.");
                 EventWaitHandle handle = EventWaitHandle.OpenExisting(this.guid.ToString());
                 handle.Set();
+                Logger.info("IPCServer: IPCServer =====> IPCBridge.");
             }catch (WaitHandleCannotBeOpenedException)
             {
                 Logger.debug("IPCMessage: async message should not notify.");

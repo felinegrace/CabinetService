@@ -9,11 +9,11 @@ using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Framework.BusinessLayer
 {
-    public class BusinessManager : SingleListServer<BusinessContext>
+    public class BusinessServer : SingleListServer<BusinessContext>
     {
-        public BusinessManager() : base()
+        public BusinessServer() : base()
         {
-
+            Logger.debug("BusinessManager: Constructed...");
         }
 
         public override void start()

@@ -9,6 +9,7 @@ using System.Runtime.Remoting.Channels.Ipc;
 
 using Cabinet.Utility;
 using Cabinet.Bridge.IPC.RemoteObject;
+using Cabinet.Bridge.IPC.CommonEntity;
 
 namespace Cabinet.Bridge.IPC.EndPoint
 {
@@ -52,11 +53,11 @@ namespace Cabinet.Bridge.IPC.EndPoint
 
         #region Logical functions
 
-        public Guid postMessage(string business, string method, string param)
+        public Guid postMessage(string request)
         {
             try
             {
-                IPCMessage msg = new IPCMessage(false, business, method, param);
+                IPCMessage msg = new IPCMessage(false, request);
                 ipcContext.postRequest(msg);
                 return msg.guid;
             }
@@ -67,11 +68,11 @@ namespace Cabinet.Bridge.IPC.EndPoint
             }
         }
 
-        protected override void handleRequest(IPCMessage request)
+        protected override void handleRequest(IPCMessage message)
         {
-            Logger.debug("onMessageResponse. msg = {0}/{1} ,param = {2}",
-                request.business, request.method, request.param);
-            IPCClientEvent(this, request);
+            Logger.debug("onMessageResponse. msg = {0}",
+                message.request);
+            IPCClientEvent(this, message);
         }
 
         public void registerIPCClientEventHandler(IPCClientEventHandler handler)

@@ -6,9 +6,9 @@ using Cabinet.Utility;
 using Cabinet.Framework.BusinessLayer;
 using Cabinet.Framework.CommonEntity;
 
-namespace Demo_BusinessManager
+namespace Cabinet.Demo.BusinessManagerConsole
 {
-    class RawResponseExt : RawResponse
+    class RawResponseExt : BusinessResponse
     {
         public override void onResponsed()
         {
@@ -18,16 +18,16 @@ namespace Demo_BusinessManager
 
     class Program
     {
-        static void addMaterial(BusinessManager m)
+        static void addMaterial(BusinessServer m)
         {
             for (int i = 0; i < 100; i++)
             {
-                RawRequest q = new RawRequest();
+                BusinessRequest q = new BusinessRequest();
                 q.business = "region";
                 q.method = "create";
                 q.param.Add("测试用公司bo" + i);
                 q.param.Add("tssbo" + i);
-                RawResponse p = new RawResponseExt();
+                BusinessResponse p = new RawResponseExt();
                 BusinessContext c = new BusinessContext(q, p);
 
                 m.postRequest(c);
@@ -36,7 +36,7 @@ namespace Demo_BusinessManager
         static void Main(string[] args)
         {
             Logger.enable();
-            BusinessManager m = new BusinessManager();
+            BusinessServer m = new BusinessServer();
             addMaterial(m);
 
             ConsoleKeyInfo ch;

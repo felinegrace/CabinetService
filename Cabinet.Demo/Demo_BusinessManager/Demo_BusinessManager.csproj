@@ -7,8 +7,8 @@
     <ProjectGuid>{DDE29FCB-D71B-4804-9B70-6F1D5B11FDFE}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Demo_BusinessManager</RootNamespace>
-    <AssemblyName>Demo_BusinessManager</AssemblyName>
+    <RootNamespace>Cabinet.Demo.BusinessManagerConsole</RootNamespace>
+    <AssemblyName>Cabinet.Demo.BusinessManagerConsole</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

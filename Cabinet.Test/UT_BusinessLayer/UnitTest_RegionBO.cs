@@ -9,7 +9,7 @@ using Cabinet.UnitTest.Utility;
 
 namespace Cabinet.UnitTest.BusinessLayer
 {
-    class RawResponseExt : RawResponse
+    class RawResponseExt : BusinessResponse
     {
         public override void onResponsed()
         {
@@ -40,12 +40,12 @@ namespace Cabinet.UnitTest.BusinessLayer
         [TestMethod]
         public void testRegionCreate()
         {
-            RawRequest q = new RawRequest();
+            BusinessRequest q = new BusinessRequest();
             q.business = "region";
             q.method = "create";
             q.param.Add("测试用公司bo");
             q.param.Add("tssbo");
-            RawResponse p = new RawResponseExt();
+            BusinessResponse p = new RawResponseExt();
             BusinessContext c = new BusinessContext(q,p);
             BOBase b = new RegionBO(c);
             b.handleBusiness();

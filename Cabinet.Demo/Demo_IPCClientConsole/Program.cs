@@ -10,8 +10,8 @@ namespace Cabinet.Demo.IPCClientConsole
 {
     class Program
     {
-        static private int testScalar_ThreadCount = 10000;
-        static private int testScalar_WorkCount = 10000;
+        static private int testScalar_ThreadCount = 1;
+        static private int testScalar_WorkCount = 1;
         static AutoResetEvent[] handleArray = new AutoResetEvent[testScalar_ThreadCount];
         class WorkerParam
         {
@@ -40,7 +40,7 @@ namespace Cabinet.Demo.IPCClientConsole
            
                 
             }
-            //WaitHandle.WaitAll(handleArray);
+            WaitHandle.WaitAll(handleArray);
             Logger.info("send complete.");
             ConsoleKeyInfo ch;
             do
@@ -54,10 +54,18 @@ namespace Cabinet.Demo.IPCClientConsole
             WorkerParam p = param as WorkerParam;
             for (int i = 0; i < testScalar_WorkCount; i++)
             {
-                string business = "test client";
-                string method = String.Format("method : {0}",p.workerId);
-                string prm = String.Format("work : {0}", i);
-                p.client.sendMessage(business, method, prm);
+                string request = String.Format(@"
+                    {{
+                        ""business"" : ""region"",
+                        ""method"" : ""create"",
+                        ""param"" : 
+                        [
+                            ""测试用公司{0}.{1}"",
+                            ""tss""
+                        ]
+                    }}", p.workerId, i 
+                );
+                p.client.sendMessage(request.Replace("\r\n",""));
             }
             handleArray[p.workerId].Set();
         }

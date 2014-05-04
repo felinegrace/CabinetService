@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Cabinet.Framework.CommonEntity
 {
-    public class RawRequest : Jsonable
+    public class BusinessRequest : Jsonable
     {
         public string business { get; set; }
         public string method { get; set; }
         public List<object> param { get; private set; }
-        public RawRequest()
+        public BusinessRequest()
         {
             param = new List<object>();
         }

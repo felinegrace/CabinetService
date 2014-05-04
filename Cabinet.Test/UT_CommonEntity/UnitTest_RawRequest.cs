@@ -21,7 +21,7 @@ namespace Cabinet.UnitTest.CommonEntity
                 ]
             }
             ";
-            RawRequest r = RawRequest.fromJson<RawRequest>(test);
+            BusinessRequest r = BusinessRequest.fromJson<BusinessRequest>(test);
             Assert.AreEqual("test", r.method);
             Assert.AreEqual(3,r.param.Count);
             Assert.AreEqual("test1", r.param[0]);

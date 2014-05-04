@@ -9,6 +9,7 @@ using System.Runtime.Remoting.Channels.Ipc;
 
 using Cabinet.Utility;
 using Cabinet.Bridge.IPC.RemoteObject;
+using Cabinet.Bridge.IPC.CommonEntity;
 
 
 namespace Cabinet.Bridge.IPC.EndPoint
@@ -26,8 +27,8 @@ namespace Cabinet.Bridge.IPC.EndPoint
         #region Constructor
         public IPCServer() : base(IPCContext.requestQueue, IPCContext.serverThreadEvent)
         {
-            Logger.debug("IPCServer: Constructing...");
             channel = new IpcServerChannel(IPCConfig.channelDescriptor);
+            Logger.debug("IPCServer: Constructed...");
         }
         #endregion
 
@@ -47,13 +48,13 @@ namespace Cabinet.Bridge.IPC.EndPoint
         protected override void onStart()
         {
             IPCOpen();
-            Logger.debug("IPCServer: Open.");
+            Logger.debug("IPCServer: Start.");
         }
 
         protected override void onStop()
         {
             IPCClose();
-            Logger.debug("IPCServer: Close.");
+            Logger.debug("IPCServer: Stop.");
         }
 
         void IPCOpen()
@@ -85,17 +86,19 @@ namespace Cabinet.Bridge.IPC.EndPoint
         }
 
         #region Logical functions
-        protected override void handleRequest(IPCMessage request)
+        protected override void handleRequest(IPCMessage message)
         {
-            Logger.debug("IPCServer: handle request.");
-            Logger.debug("IPCServer: msg = {0}/{1} arg = {2}", request.business, request.method, request.param);
-            IPCServerEvent(this, request);
+            Logger.info("IPCServer: IPCBridge =====> IPCServer.");
+            Logger.debug("IPCServer: msg = {0}", message.request);
+            IPCServerEvent(this, message);
         }
 
         public void postResponse(IPCMessage response)
         {
+            Logger.info("IPCServer: IPCServer - - -> IPCBridge.");
             IPCContext.responseQueue.Enqueue(response);
             IPCContext.clientThreadEvent.Set();
+            Logger.info("IPCServer: IPCServer =====> IPCBridge.");
         }
 
         #endregion

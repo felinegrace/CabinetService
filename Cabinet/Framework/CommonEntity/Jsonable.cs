@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Cabinet.Utility;
 
 namespace Cabinet.Framework.CommonEntity
 {
@@ -21,7 +22,16 @@ namespace Cabinet.Framework.CommonEntity
 
         public static T fromJson<T>(string json)
         {
-            return JsonConvert.DeserializeObject<T>(json);
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.error("Jsonable: error: {0} | json: {1}", ex.Message, json);
+                return default(T);
+            }
+            
         }
     }
 }

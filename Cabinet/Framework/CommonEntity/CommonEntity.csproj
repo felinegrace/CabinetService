@@ -44,11 +44,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessContext.cs" />
-    <Compile Include="RawResponse.cs" />
+    <Compile Include="BusinessResponse.cs" />
     <Compile Include="RegionVO.cs" />
     <Compile Include="Jsonable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawRequest.cs" />
+    <Compile Include="BusinessRequest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utility\Utility.csproj">
+      <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

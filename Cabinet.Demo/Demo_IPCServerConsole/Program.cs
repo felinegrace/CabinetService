@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Cabinet.Bridge.IPC.EndPoint;
 using Cabinet.Utility;
-using Cabinet.Bridge.IPC.RemoteObject;
+using Cabinet.Bridge.IPC.CommonEntity;
 
 namespace Cabinet.Demo.IPCServerConsole
 {

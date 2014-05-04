@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Cabinet.Framework.CommonEntity
 {
-    public abstract class RawResponse : Jsonable
+    public abstract class BusinessResponse : Jsonable
     {
         public List<object> result { get; private set; }
-        public RawResponse()
+        public BusinessResponse()
         {
             result = new List<object>();
             
