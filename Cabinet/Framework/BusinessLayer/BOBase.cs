@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cabinet.Framework.CommonEntity;
+using Cabinet.Utility;
 
 namespace Cabinet.Framework.BusinessLayer
 {
@@ -15,13 +16,7 @@ namespace Cabinet.Framework.BusinessLayer
             this.context = context;
         }
 
-        public void handleBusiness()
-        {
-            processRequest();
-            context.response.onResponsed();
-        }
-
-        protected abstract void processRequest();
+        public abstract void handleBusiness();
 
         protected void validateParamCount(int count)
         {
@@ -39,6 +34,20 @@ namespace Cabinet.Framework.BusinessLayer
             }
         }
 
+        protected void logOnValidatingParams()
+        {
+            Logger.debug("BusinessServer: validating params...");
+        }
+
+        protected void logOnLauchingDAO()
+        {
+            Logger.debug("BusinessServer: lauching DAO...");
+        }
+
+        protected void logOnFillingResult()
+        {
+            Logger.debug("BusinessServer: filling result...");
+        }
         
     }
 }

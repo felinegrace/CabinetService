@@ -14,7 +14,6 @@ namespace Cabinet.Demo.AxisConsole
             Logger.enable();
             WcfAdaptor m = new WcfAdaptor();
 
-            System.Console.Write("press s\n");
             ConsoleKeyInfo ch;
             do
             {

@@ -32,26 +32,28 @@ namespace Cabinet.Bridge.WcfService.CommonEntity
         {
             try
             {
+                Logger.info("WcfServer: pausing WcfServer thread...");
                 EventWaitHandle handle = EventWaitHandle.OpenExisting(this.guid.ToString());
                 handle.WaitOne(-1);
             }
             catch (WaitHandleCannotBeOpenedException)
             {
-                Logger.debug("WCFMessage: async message should not wait.");
+                Logger.debug("WcfServer: async message should not wait.");
             }
         }
 
         public void notify()
         {
+            Logger.info("WcfServer: BusinessServer =====> WcfServer.");
+            Logger.info("WcfServer: WcfServer - - -> WebService.");
+            Logger.info("WcfServer: resuming WcfServer thread...");
             try
             {
-                Logger.info("IPCServer: WCFServer - - -> WebService.");
                 EventWaitHandle handle = EventWaitHandle.OpenExisting(this.guid.ToString());
                 handle.Set();
-                Logger.info("IPCServer: WCFServer =====> WebService.");
             }catch (WaitHandleCannotBeOpenedException)
             {
-                Logger.debug("IPCServer: async message should not notify.");
+                Logger.debug("WcfServer: async message should not notify.");
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using Cabinet.Utility;
 
 namespace Cabinet.Bridge.WcfService
 {
@@ -15,12 +16,31 @@ namespace Cabinet.Bridge.WcfService
         }
         public void start()
         {
-            serviceHost.Open();
+            Logger.debug("WcfServer: starting...");
+            try
+            {
+                serviceHost.Open();
+            }
+            catch (System.Exception ex)
+            {
+                Logger.debug("WcfServer: error on start. {0}.", ex.Message);
+            }
+            Logger.debug("WcfServer: start.");
         }
 
         public void stop()
         {
-
+            Logger.debug("WcfServer: stopping...");
+            try
+            {
+                serviceHost.Close();
+            }
+            catch (System.Exception ex)
+            {
+                Logger.debug("WcfServer: error on start. {0}.", ex.Message);
+            }
+            Logger.debug("WcfServer: stop.");
+            
         }
 
     }

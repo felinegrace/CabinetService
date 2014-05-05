@@ -16,7 +16,7 @@ namespace Cabinet.Bridge.WcfService.CommonEntity
         }
         public override void onResponsed()
         {
-            Logger.info("WCFServer: BusinessServer =====> WCFServer.");
+            Logger.info("WcfServer: BusinessServer - - -> WcfServer.");
             wcfMessageRef.notify();
         }
     }

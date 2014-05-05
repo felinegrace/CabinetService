@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Cabinet.Utility;
 
 namespace Cabinet.Bridge.WcfService
 {
@@ -18,7 +19,10 @@ namespace Cabinet.Bridge.WcfService
                 lock (locker)
                 {
                     if (instance == null)
+                    {
+                        Logger.debug("WcfServer: constructing WcfServer gateway...");
                         instance = new WcfServerGateway();
+                    }
                 }
             }
             return instance;
@@ -34,6 +38,7 @@ namespace Cabinet.Bridge.WcfService
         
         public void postEvent(BusinessContext context)
         {
+            Logger.debug("WcfServer: WcfServer - - -> AxisServer");
             WcfServiceGatewayEvent(this, new WcfServerGatewayEventArgs(context));
         }
     }

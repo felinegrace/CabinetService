@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Cabinet.Framework.CommonEntity;
 using Cabinet.Framework.PersistenceLayer;
+using Cabinet.Utility;
 
 namespace Cabinet.Framework.BusinessLayer
 {
@@ -15,7 +16,7 @@ namespace Cabinet.Framework.BusinessLayer
             regionDao = new RegionDAO();
         }
 
-        protected override void processRequest()
+        public override void handleBusiness()
         {
             switch(context.request.method)
             {
@@ -29,12 +30,15 @@ namespace Cabinet.Framework.BusinessLayer
 
         private void doCreate()
         {
+            logOnValidatingParams();
             validateParamCount(2);
             validateParamAsSpecificType(0,typeof(string));
             string name = context.request.param.ElementAt<object>(0) as string;
             validateParamAsSpecificType(1,typeof(string));
             string shortName = context.request.param.ElementAt<object>(1) as string;
+            logOnLauchingDAO();
             int id = regionDao.c(name, shortName);
+            logOnFillingResult();
             context.response.result.Add(id);
         }
     }

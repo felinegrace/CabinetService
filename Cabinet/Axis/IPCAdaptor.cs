@@ -25,21 +25,22 @@ namespace Cabinet.Axis
         }
         public void start()
         {
-            Logger.debug("AxisServer: Launching servers...");
+            Logger.debug("AxisServer: staring...");
             businessServer.start();
             ipcServer.start();
         }
 
         public void stop()
         {
-            Logger.debug("AxisServer: Closing servers...");
+            Logger.debug("AxisServer: stopping...");
             businessServer.stop();
             ipcServer.stop();
         }
 
         private void onIPCMessage(object sender, IPCMessage message)
         {
-            Logger.info("AxisServer: IPCServer - - -> BusinessServer.");
+            Logger.info("AxisServer: IPCServer =====> AxisServer.");
+            Logger.info("AxisServer: AxisServer - - -> BusinessServer.");
             Logger.debug("AxisServer: request = {0}.", message.request);
             BusinessRequest request = BusinessRequest.fromJson<BusinessRequest>(message.request);
             if(request == null)
@@ -50,7 +51,7 @@ namespace Cabinet.Axis
             IPCBusinessResponse response = new IPCBusinessResponse(message);
             BusinessContext businessContext = new BusinessContext(request, response);
             businessServer.postRequest(businessContext);
-            Logger.debug("AxisServer: IPCServer =====> BusinessServer.");
+            Logger.info("AxisServer: AxisServer =====> BusinessServer.");
         }
     }
 }

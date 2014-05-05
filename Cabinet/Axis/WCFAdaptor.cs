@@ -16,6 +16,7 @@ namespace Cabinet.Axis
 
         public WcfAdaptor()
         {
+            Logger.debug("AxisServer: constructing servers...");
             WcfServerGateway.getInstance().registerHanlder(
                 new WcfServerGateway.WcfServiceGatewayEventHandler(
                 this.onWCFMessage));
@@ -25,24 +26,26 @@ namespace Cabinet.Axis
         }
         public void start()
         {
-            Logger.debug("AxisServer: Launching servers...");
+            Logger.debug("AxisServer: launching servers...");
             businessServer.start();
             wcfServer.start();
         }
         public void stop()
         {
-            Logger.debug("AxisServer: Closing servers...");
+            Logger.debug("AxisServer: closing servers...");
             businessServer.stop();
             wcfServer.stop();
         }
 
         private void onWCFMessage(object sender, WcfServerGatewayEventArgs args)
         {
-            
-            Logger.info("AxisServer: WCFServer - - -> BusinessServer.");
-            Logger.debug("AxisServer: request = {0}/{1}.", args.context.request.business, args.context.request.method);
+            Logger.debug("AxisServer: WcfServer =====> AxisServer");
+            Logger.info("AxisServer: AxisServer - - -> BusinessServer.");
+            Logger.debug("AxisServer: request = {0}/{1}. param = {2}", 
+                args.context.request.business, args.context.request.method, 
+                Logger.logObjectList(args.context.request.param));
             businessServer.postRequest(args.context);
-            Logger.debug("AxisServer: WCFServer =====> BusinessServer.");
+            Logger.info("AxisServer: AxisServer =====> BusinessServer.");
         }
 
     }

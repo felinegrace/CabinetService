@@ -28,33 +28,33 @@ namespace Cabinet.Bridge.IPC.EndPoint
         public IPCServer() : base(IPCContext.requestQueue, IPCContext.serverThreadEvent)
         {
             channel = new IpcServerChannel(IPCConfig.channelDescriptor);
-            Logger.debug("IPCServer: Constructed...");
+            Logger.debug("IPCServer: constructed.");
         }
         #endregion
 
         #region Threading
         public override void start()
         {
-            Logger.debug("IPCServer: Starting...");
+            Logger.debug("IPCServer: starting...");
             base.start();
         }
 
         public override void stop()
         {
-            Logger.debug("IPCServer: Stopping...");
+            Logger.debug("IPCServer: stopping...");
             base.stop();
         }
 
         protected override void onStart()
         {
             IPCOpen();
-            Logger.debug("IPCServer: Start.");
+            Logger.debug("IPCServer: start.");
         }
 
         protected override void onStop()
         {
             IPCClose();
-            Logger.debug("IPCServer: Stop.");
+            Logger.debug("IPCServer: stop.");
         }
 
         void IPCOpen()

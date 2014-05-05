@@ -13,33 +13,36 @@ namespace Cabinet.Framework.BusinessLayer
     {
         public BusinessServer() : base()
         {
-            Logger.debug("BusinessManager: Constructed...");
+            Logger.debug("BusinessServer: constructed.");
         }
 
         public override void start()
         {
-            Logger.debug("BusinessManager: Starting...");
+            Logger.debug("BusinessServer: starting...");
             base.start();
         }
 
         public override void stop()
         {
-            Logger.debug("BusinessManager: Stopping...");
+            Logger.debug("BusinessServer: stopping...");
             base.stop();
         }
 
         protected override void onStart()
         {
-            Logger.debug("BusinessManager: Start.");
+            Logger.debug("BusinessServer: start.");
         }
 
         protected override void onStop()
         {
-            Logger.debug("BusinessManager: Stop.");
+            Logger.debug("BusinessServer: stop.");
         }
 
         protected override void handleRequest(BusinessContext context)
         {
+            Logger.debug("BusinessServer: handle request = {0}/{1} param = {2}",
+                context.request.business, context.request.method,
+                Logger.logObjectList(context.request.param));
             try
             {
                 BOBase bo = BOFactory.getInstance(context);
@@ -47,7 +50,7 @@ namespace Cabinet.Framework.BusinessLayer
             }
             catch(Exception Exception)
             {
-                Logger.error("skip this request for reason: {0}",Exception.Message);
+                Logger.error("BusinessServer: skip this request for reason: {0}", Exception.Message);
             }
             finally
             {
