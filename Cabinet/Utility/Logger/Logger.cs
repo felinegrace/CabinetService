@@ -15,7 +15,7 @@ namespace Cabinet.Utility
         static public void enable()
         {
             if (enabled == -1)
-                log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));
+                log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(@"Config\log4net.config"));
             enabled = 1;
         }
 

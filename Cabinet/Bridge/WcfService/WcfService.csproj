@@ -56,14 +56,14 @@
     <Compile Include="WcfServer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="services.config">
+    <None Include="Config\services.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="bindings.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Config\bindings.config">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="behaviors.config">
+    <None Include="Config\behaviors.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
