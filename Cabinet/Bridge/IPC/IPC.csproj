@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonEntity\IPCBusinessResponse.cs" />
     <Compile Include="EndPoint\IPCClientAsync.cs" />
     <Compile Include="EndPoint\IPCClientSync.cs" />
     <Compile Include="EndPoint\IPCConfig.cs" />
@@ -49,6 +50,10 @@
     <Compile Include="CommonEntity\IPCMessage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\CommonEntity\CommonEntity.csproj">
+      <Project>{c4f6b129-a8f4-4178-a270-21ca79c4636c}</Project>
+      <Name>CommonEntity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Utility\Utility.csproj">
       <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
       <Name>Utility</Name>

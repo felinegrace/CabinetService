@@ -39,14 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Axis.cs" />
-    <Compile Include="IPCBusinessResponse.cs" />
+    <Compile Include="WcfAdaptor.cs" />
+    <Compile Include="IPCAdaptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bridge\IPC\IPC.csproj">
       <Project>{fb802af3-1319-4748-a385-dfbcf8387af1}</Project>
       <Name>IPC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bridge\WcfService\WcfService.csproj">
+      <Project>{b967ecc6-5d34-4f0a-94b6-aa77d59e5028}</Project>
+      <Name>WcfService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Framework\BusinessLayer\BusinessLayer.csproj">
       <Project>{5600499e-fbf1-409e-b01b-aff8121d6769}</Project>

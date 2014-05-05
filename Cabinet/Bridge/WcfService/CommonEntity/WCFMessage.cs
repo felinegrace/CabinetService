@@ -5,25 +5,19 @@ using System.Text;
 using System.Threading;
 using Cabinet.Utility;
 
-namespace Cabinet.Bridge.IPC.CommonEntity
+namespace Cabinet.Bridge.WcfService.CommonEntity
 {
     [Serializable]
-    public class IPCMessage
+    public class WcfMessage
     {
         public Guid guid { get; private set; }
-        //public string business { get; set; }
-        //public string method { get; set; }
-        public string request { get; set; }
-        public string response { get; set; }
 
         [NonSerialized]
         internal EventWaitHandle syncHandle;
 
-
-        internal IPCMessage(bool isSync, string request)
+        internal WcfMessage(bool isSync)
         {
             this.guid = Guid.NewGuid();
-            this.request = request;
             if (isSync)
             {
                 syncHandle = new EventWaitHandle(false, EventResetMode.AutoReset, this.guid.ToString());
@@ -43,7 +37,7 @@ namespace Cabinet.Bridge.IPC.CommonEntity
             }
             catch (WaitHandleCannotBeOpenedException)
             {
-                Logger.debug("IPCMessage: async message should not wait.");
+                Logger.debug("WCFMessage: async message should not wait.");
             }
         }
 
@@ -51,13 +45,13 @@ namespace Cabinet.Bridge.IPC.CommonEntity
         {
             try
             {
-                Logger.info("IPCServer: IPCServer - - -> IPCBridge.");
+                Logger.info("IPCServer: WCFServer - - -> WebService.");
                 EventWaitHandle handle = EventWaitHandle.OpenExisting(this.guid.ToString());
                 handle.Set();
-                Logger.info("IPCServer: IPCServer =====> IPCBridge.");
+                Logger.info("IPCServer: WCFServer =====> WebService.");
             }catch (WaitHandleCannotBeOpenedException)
             {
-                Logger.debug("IPCMessage: async message should not notify.");
+                Logger.debug("IPCServer: async message should not notify.");
             }
         }
     }

@@ -6,7 +6,7 @@ using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Framework.BusinessLayer
 {
-    class BOFactory
+    public class BOFactory
     {
         public static BOBase getInstance(BusinessContext context)
         {
@@ -19,5 +19,6 @@ namespace Cabinet.Framework.BusinessLayer
                     throw new BOException(err);
             }
         }
+
     }
 }

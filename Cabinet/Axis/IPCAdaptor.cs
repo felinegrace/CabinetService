@@ -10,12 +10,13 @@ using Cabinet.Utility;
 
 namespace Cabinet.Axis
 {
-    public class AxisServer
+    public class IPCAdaptor
     {
+        
         private BusinessServer businessServer { get; set; }
         private IPCServer ipcServer { get; set; }
 
-        public AxisServer()
+        public IPCAdaptor()
         {
             businessServer = new BusinessServer();
             ipcServer = new IPCServer();

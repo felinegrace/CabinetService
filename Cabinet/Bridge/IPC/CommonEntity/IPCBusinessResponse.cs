@@ -6,9 +6,9 @@ using Cabinet.Framework.CommonEntity;
 using Cabinet.Bridge.IPC.CommonEntity;
 using Cabinet.Utility;
 
-namespace Cabinet.Axis
+namespace Cabinet.Bridge.IPC.CommonEntity
 {
-    class IPCBusinessResponse : BusinessResponse
+    public class IPCBusinessResponse : BusinessResponse
     {
         private IPCMessage ipcMessageRef;
         public IPCBusinessResponse(IPCMessage ipcMessageRef)

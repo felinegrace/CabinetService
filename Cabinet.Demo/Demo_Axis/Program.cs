@@ -7,12 +7,12 @@ using Cabinet.Axis;
 
 namespace Cabinet.Demo.AxisConsole
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
             Logger.enable();
-            AxisServer m = new AxisServer();
+            WcfAdaptor m = new WcfAdaptor();
 
             System.Console.Write("press s\n");
             ConsoleKeyInfo ch;
