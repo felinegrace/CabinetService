@@ -7,8 +7,8 @@
     <ProjectGuid>{FA790107-5955-4DE4-8F83-8885F3BEA546}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.Demo.IPCClientConsole</RootNamespace>
-    <AssemblyName>Cabinet.Demo.IPCClientConsole</AssemblyName>
+    <RootNamespace>Cabinet.Demo.IpcClientConsole</RootNamespace>
+    <AssemblyName>Cabinet.Demo.IpcClientConsole</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,9 +45,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Cabinet\Bridge\IPC\IPC.csproj">
+    <ProjectReference Include="..\..\Cabinet\Bridge\Ipc\Ipc.csproj">
       <Project>{fb802af3-1319-4748-a385-dfbcf8387af1}</Project>
-      <Name>IPC</Name>
+      <Name>Ipc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Cabinet\Utility\Utility.csproj">
       <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>

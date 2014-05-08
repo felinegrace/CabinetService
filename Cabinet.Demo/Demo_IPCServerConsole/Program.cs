@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cabinet.Bridge.IPC.EndPoint;
+using Cabinet.Bridge.Ipc.EndPoint;
 using Cabinet.Utility;
-using Cabinet.Bridge.IPC.CommonEntity;
+using Cabinet.Bridge.Ipc.CommonEntity;
 
-namespace Cabinet.Demo.IPCServerConsole
+namespace Cabinet.Demo.IpcServerConsole
 {
     class Program
     {
         static void Main(string[] args)
         {
             Logger.enable();
-            IPCServer s = new IPCServer();
-            s.registerIPCServerEventHandler(new IPCServer.IPCServerEventHandler(onMessage));
+            IpcServer s = new IpcServer();
+            s.registerIpcServerEventHandler(new IpcServer.IpcServerEventHandler(onMessage));
             s.start();
             ConsoleKeyInfo ch;
             do
@@ -24,7 +24,7 @@ namespace Cabinet.Demo.IPCServerConsole
             s.stop();
         }
 
-        static void onMessage(object sender, IPCMessage args)
+        static void onMessage(object sender, IpcMessage args)
         {
             args.notify();
         }

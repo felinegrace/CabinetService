@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 using Cabinet.Framework.BusinessLayer;
 using Cabinet.Framework.CommonEntity;
-using Cabinet.Bridge.IPC.EndPoint;
-using Cabinet.Bridge.IPC.CommonEntity;
+using Cabinet.Bridge.Ipc.EndPoint;
+using Cabinet.Bridge.Ipc.CommonEntity;
 using Cabinet.Utility;
 
 namespace Cabinet.Axis
 {
-    public class IPCAdaptor
+    public class IpcAdaptor
     {
         
         private BusinessServer businessServer { get; set; }
-        private IPCServer ipcServer { get; set; }
+        private IpcServer ipcServer { get; set; }
 
-        public IPCAdaptor()
+        public IpcAdaptor()
         {
             businessServer = new BusinessServer();
-            ipcServer = new IPCServer();
-            IPCServer.IPCServerEventHandler handler = new IPCServer.IPCServerEventHandler(this.onIPCMessage);
-            ipcServer.registerIPCServerEventHandler(handler);
+            ipcServer = new IpcServer();
+            IpcServer.IpcServerEventHandler handler = new IpcServer.IpcServerEventHandler(this.onIpcMessage);
+            ipcServer.registerIpcServerEventHandler(handler);
         }
         public void start()
         {
@@ -37,9 +37,9 @@ namespace Cabinet.Axis
             ipcServer.stop();
         }
 
-        private void onIPCMessage(object sender, IPCMessage message)
+        private void onIpcMessage(object sender, IpcMessage message)
         {
-            Logger.info("AxisServer: IPCServer =====> AxisServer.");
+            Logger.info("AxisServer: IpcServer =====> AxisServer.");
             Logger.info("AxisServer: AxisServer - - -> BusinessServer.");
             Logger.debug("AxisServer: request = {0}.", message.request);
             BusinessRequest request = BusinessRequest.fromJson<BusinessRequest>(message.request);
@@ -48,7 +48,7 @@ namespace Cabinet.Axis
                 Logger.error("AxisServer: corrupt message. skip.");
                 return;
             }
-            IPCBusinessResponse response = new IPCBusinessResponse(message);
+            IpcBusinessResponse response = new IpcBusinessResponse(message);
             BusinessContext businessContext = new BusinessContext(request, response);
             businessServer.postRequest(businessContext);
             Logger.info("AxisServer: AxisServer =====> BusinessServer.");

@@ -8,97 +8,97 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 
 using Cabinet.Utility;
-using Cabinet.Bridge.IPC.RemoteObject;
-using Cabinet.Bridge.IPC.CommonEntity;
+using Cabinet.Bridge.Ipc.RemoteObject;
+using Cabinet.Bridge.Ipc.CommonEntity;
 
 
-namespace Cabinet.Bridge.IPC.EndPoint
+namespace Cabinet.Bridge.Ipc.EndPoint
 {
-    public class IPCServer : SingleListServer<IPCMessage>
+    public class IpcServer : SingleListServer<IpcMessage>
     {
         #region Private fields
         private IpcServerChannel channel;
 
-        public delegate void IPCServerEventHandler(object sender, IPCMessage args);
-        private event IPCServerEventHandler IPCServerEvent;
+        public delegate void IpcServerEventHandler(object sender, IpcMessage args);
+        private event IpcServerEventHandler IpcServerEvent;
 
         #endregion
 
         #region Constructor
-        public IPCServer() : base(IPCContext.requestQueue, IPCContext.serverThreadEvent)
+        public IpcServer() : base(IpcContext.requestQueue, IpcContext.serverThreadEvent)
         {
-            channel = new IpcServerChannel(IPCConfig.channelDescriptor);
-            Logger.debug("IPCServer: constructed.");
+            channel = new IpcServerChannel(IpcConfig.channelDescriptor);
+            Logger.debug("IpcServer: constructed.");
         }
         #endregion
 
         #region Threading
         public override void start()
         {
-            Logger.debug("IPCServer: starting...");
+            Logger.debug("IpcServer: starting...");
             base.start();
         }
 
         public override void stop()
         {
-            Logger.debug("IPCServer: stopping...");
+            Logger.debug("IpcServer: stopping...");
             base.stop();
         }
 
         protected override void onStart()
         {
-            IPCOpen();
-            Logger.debug("IPCServer: start.");
+            IpcOpen();
+            Logger.debug("IpcServer: start.");
         }
 
         protected override void onStop()
         {
-            IPCClose();
-            Logger.debug("IPCServer: stop.");
+            IpcClose();
+            Logger.debug("IpcServer: stop.");
         }
 
-        void IPCOpen()
+        void IpcOpen()
         {
             try
             {
                 ChannelServices.RegisterChannel(channel, false);
                 RemotingConfiguration.RegisterWellKnownServiceType(
-                    typeof(IPCContext),
-                    IPCConfig.objectDescriptor,
+                    typeof(IpcContext),
+                    IpcConfig.objectDescriptor,
                     WellKnownObjectMode.Singleton);
             }
             catch (System.Exception ex)
             {
-                Logger.error("IPCServer: open with error: {0}.", ex.Message);
+                Logger.error("IpcServer: open with error: {0}.", ex.Message);
             }
         }
 
-        void IPCClose()
+        void IpcClose()
         {
             channel.StopListening(null);
             ChannelServices.UnregisterChannel(channel);
         }
         #endregion
 
-        public void registerIPCServerEventHandler(IPCServerEventHandler handler)
+        public void registerIpcServerEventHandler(IpcServerEventHandler handler)
         {
-            this.IPCServerEvent = handler;
+            this.IpcServerEvent = handler;
         }
 
         #region Logical functions
-        protected override void handleRequest(IPCMessage message)
+        protected override void handleRequest(IpcMessage message)
         {
-            Logger.info("IPCServer: IPCBridge =====> IPCServer.");
-            Logger.debug("IPCServer: msg = {0}", message.request);
-            IPCServerEvent(this, message);
+            Logger.info("IpcServer: IpcBridge =====> IpcServer.");
+            Logger.debug("IpcServer: msg = {0}", message.request);
+            IpcServerEvent(this, message);
         }
 
-        public void postResponse(IPCMessage response)
+        public void postResponse(IpcMessage response)
         {
-            Logger.info("IPCServer: IPCServer - - -> IPCBridge.");
-            IPCContext.responseQueue.Enqueue(response);
-            IPCContext.clientThreadEvent.Set();
-            Logger.info("IPCServer: IPCServer =====> IPCBridge.");
+            Logger.info("IpcServer: IpcServer - - -> IpcBridge.");
+            IpcContext.responseQueue.Enqueue(response);
+            IpcContext.clientThreadEvent.Set();
+            Logger.info("IpcServer: IpcServer =====> IpcBridge.");
         }
 
         #endregion

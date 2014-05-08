@@ -44,9 +44,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bridge\IPC\IPC.csproj">
+    <ProjectReference Include="..\Bridge\Ipc\Ipc.csproj">
       <Project>{fb802af3-1319-4748-a385-dfbcf8387af1}</Project>
-      <Name>IPC</Name>
+      <Name>Ipc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bridge\WcfService\WcfService.csproj">
       <Project>{b967ecc6-5d34-4f0a-94b6-aa77d59e5028}</Project>

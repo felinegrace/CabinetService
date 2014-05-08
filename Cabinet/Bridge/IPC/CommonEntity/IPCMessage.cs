@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading;
 using Cabinet.Utility;
 
-namespace Cabinet.Bridge.IPC.CommonEntity
+namespace Cabinet.Bridge.Ipc.CommonEntity
 {
     [Serializable]
-    public class IPCMessage
+    public class IpcMessage
     {
         public Guid guid { get; private set; }
         //public string business { get; set; }
@@ -20,7 +20,7 @@ namespace Cabinet.Bridge.IPC.CommonEntity
         internal EventWaitHandle syncHandle;
 
 
-        internal IPCMessage(bool isSync, string request)
+        internal IpcMessage(bool isSync, string request)
         {
             this.guid = Guid.NewGuid();
             this.request = request;
@@ -43,7 +43,7 @@ namespace Cabinet.Bridge.IPC.CommonEntity
             }
             catch (WaitHandleCannotBeOpenedException)
             {
-                Logger.debug("IPCMessage: async message should not wait.");
+                Logger.debug("IpcMessage: async message should not wait.");
             }
         }
 
@@ -51,13 +51,13 @@ namespace Cabinet.Bridge.IPC.CommonEntity
         {
             try
             {
-                Logger.info("IPCServer: IPCServer - - -> IPCBridge.");
+                Logger.info("IpcServer: IpcServer - - -> IpcBridge.");
                 EventWaitHandle handle = EventWaitHandle.OpenExisting(this.guid.ToString());
                 handle.Set();
-                Logger.info("IPCServer: IPCServer =====> IPCBridge.");
+                Logger.info("IpcServer: IpcServer =====> IpcBridge.");
             }catch (WaitHandleCannotBeOpenedException)
             {
-                Logger.debug("IPCMessage: async message should not notify.");
+                Logger.debug("IpcMessage: async message should not notify.");
             }
         }
     }

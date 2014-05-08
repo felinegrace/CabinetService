@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cabinet.Bridge.IPC.EndPoint
+namespace Cabinet.Bridge.Ipc.EndPoint
 {
-    class IPCConfig
+    class IpcConfig
     {
-        public static string channelDescriptor = "IPCBridge";
+        public static string channelDescriptor = "IpcBridge";
         public static string objectDescriptor = "RemoteObject";
         public static string fullDescriptor = "ipc://" + channelDescriptor + "/" + objectDescriptor;
 

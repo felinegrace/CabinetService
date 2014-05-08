@@ -7,45 +7,45 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using Cabinet.Utility;
-using Cabinet.Bridge.IPC.RemoteObject;
-using Cabinet.Bridge.IPC.CommonEntity;
+using Cabinet.Bridge.Ipc.RemoteObject;
+using Cabinet.Bridge.Ipc.CommonEntity;
 
-namespace Cabinet.Bridge.IPC.EndPoint
+namespace Cabinet.Bridge.Ipc.EndPoint
 {
-    public class IPCClientSync
+    public class IpcClientSync
     {
         #region Private fields
-        private IPCContext ipcContext = null;
+        private IpcContext ipcContext = null;
         #endregion
 
         #region Constructor
-        public IPCClientSync()
+        public IpcClientSync()
         {
-            ipcContext = (IPCContext)Activator.GetObject(
-                typeof(IPCContext), IPCConfig.fullDescriptor);
+            ipcContext = (IpcContext)Activator.GetObject(
+                typeof(IpcContext), IpcConfig.fullDescriptor);
         }
         #endregion
 
         #region Logical functions
         public string sendMessage(string request)
         {
-            Logger.info("IPCClient: IPCClient - - -> IPCBridge.");
-            Logger.debug("IPCClient: msg = {0}", request);
+            Logger.info("IpcClient: IpcClient - - -> IpcBridge.");
+            Logger.debug("IpcClient: msg = {0}", request);
             try
             {
 
-                IPCMessage msg = new IPCMessage(true, request);
+                IpcMessage msg = new IpcMessage(true, request);
                 ipcContext.postRequest(msg);
                 
-                Logger.debug("IPCClient: waiting for response.", request);
+                Logger.debug("IpcClient: waiting for response.", request);
                 msg.wait();
-                Logger.info("IPCClient: IPCClient =====> IPCBridge.");
+                Logger.info("IpcClient: IpcClient =====> IpcBridge.");
                 return msg.response;
 
             }
             catch (System.Exception ex)
             {
-                Logger.error("IPCClient: send with error: {0}.", ex.Message);
+                Logger.error("IpcClient: send with error: {0}.", ex.Message);
                 return null;
             }
         }

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Cabinet.Bridge.IPC.CommonEntity;
+using Cabinet.Bridge.Ipc.CommonEntity;
 
-namespace Cabinet.Bridge.IPC.RemoteObject
+namespace Cabinet.Bridge.Ipc.RemoteObject
 {
-    public class IPCContext : MarshalByRefObject
+    public class IpcContext : MarshalByRefObject
     {
         #region Messaging objects
 
@@ -16,8 +16,8 @@ namespace Cabinet.Bridge.IPC.RemoteObject
         #endregion
 
         #region Messaging Queues
-        public static ConcurrentQueue<IPCMessage> requestQueue = new ConcurrentQueue<IPCMessage>();
-        public static ConcurrentQueue<IPCMessage> responseQueue = new ConcurrentQueue<IPCMessage>();
+        public static ConcurrentQueue<IpcMessage> requestQueue = new ConcurrentQueue<IpcMessage>();
+        public static ConcurrentQueue<IpcMessage> responseQueue = new ConcurrentQueue<IpcMessage>();
 
         public static AutoResetEvent serverThreadEvent = new AutoResetEvent(false);
         public static AutoResetEvent clientThreadEvent = new AutoResetEvent(false);
@@ -26,7 +26,7 @@ namespace Cabinet.Bridge.IPC.RemoteObject
         //public static object responseQueueMutex = new object();
         #endregion
 
-        public void postRequest(IPCMessage message)
+        public void postRequest(IpcMessage message)
         {
             requestQueue.Enqueue(message);
             serverThreadEvent.Set();
@@ -48,7 +48,7 @@ namespace Cabinet.Bridge.IPC.RemoteObject
         //    return requestQueue;
         //}
 
-        public ConcurrentQueue<IPCMessage> getResponseQueue()
+        public ConcurrentQueue<IpcMessage> getResponseQueue()
         {
             return responseQueue;
         }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Cabinet.Bridge.IPC.EndPoint;
+using Cabinet.Bridge.Ipc.EndPoint;
 using Cabinet.Utility;
 
-namespace Cabinet.Demo.IPCClientConsole
+namespace Cabinet.Demo.IpcClientConsole
 {
     class Program
     {
@@ -15,9 +15,9 @@ namespace Cabinet.Demo.IPCClientConsole
         static AutoResetEvent[] handleArray = new AutoResetEvent[testScalar_ThreadCount];
         class WorkerParam
         {
-            public IPCClientSync client {get;set;}
+            public IpcClientSync client {get;set;}
             public int workerId {get;set;}
-            public WorkerParam(IPCClientSync cli,int id)
+            public WorkerParam(IpcClientSync cli,int id)
             {
                 client = cli;
                 workerId = id;
@@ -26,7 +26,7 @@ namespace Cabinet.Demo.IPCClientConsole
         static void Main(string[] args)
         {
             Logger.enable();
-            IPCClientSync c = new IPCClientSync();
+            IpcClientSync c = new IpcClientSync();
             
             ThreadPool.SetMinThreads(1, 1);
             ThreadPool.SetMaxThreads(10, 10);
