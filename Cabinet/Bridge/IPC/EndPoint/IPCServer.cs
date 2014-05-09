@@ -19,8 +19,7 @@ namespace Cabinet.Bridge.Ipc.EndPoint
         #region Private fields
         private IpcServerChannel channel;
 
-        public delegate void IpcServerEventHandler(object sender, IpcMessage args);
-        private event IpcServerEventHandler IpcServerEvent;
+        public event EventHandler<IpcMessage> IpcServerEvent;
 
         #endregion
 

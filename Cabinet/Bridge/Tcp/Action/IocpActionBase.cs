@@ -4,15 +4,15 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Cabinet.Bridge.Tcp.IocpContext.IocpAction
+namespace Cabinet.Bridge.Tcp.Action
 {
-    abstract class IocpContextBase
+    abstract class IocpActionBase
     {
         protected delegate bool IocpAsyncDelegate(SocketAsyncEventArgs args);
         protected IocpAsyncDelegate iocpAsyncDelegate;
         protected SocketAsyncEventArgs iocpEventArgs { get; private set; }
 
-        protected IocpContextBase()
+        protected IocpActionBase()
         {
             iocpEventArgs = new SocketAsyncEventArgs();
             iocpEventArgs.UserToken = this;

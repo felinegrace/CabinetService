@@ -4,15 +4,15 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Cabinet.Bridge.Tcp.IocpContext.IocpAction
+namespace Cabinet.Bridge.Tcp.Action
 {
-    class IocpAcceptContext : IocpContextBase
+    class IocpAcceptAction : IocpActionBase
     {
         private Socket listenSocket { get; set; }
 
         public event EventHandler<IocpAcceptEventArgs> AcceptedEvent;
 
-        public IocpAcceptContext(Socket listenSocket)
+        public IocpAcceptAction(Socket listenSocket)
         {
             this.listenSocket = listenSocket;
             this.iocpAsyncDelegate = listenSocket.AcceptAsync;

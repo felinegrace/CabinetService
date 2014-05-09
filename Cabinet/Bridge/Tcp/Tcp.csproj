@@ -40,11 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonEntity\IocpException.cs" />
-    <Compile Include="IocpContext\IocpAction\IocpAcceptContext.cs" />
-    <Compile Include="IocpContext\IocpAction\IocpReceiveContext.cs" />
-    <Compile Include="IocpContext\IocpAction\IocpSendContext.cs" />
-    <Compile Include="IocpContext\IocpSession\IocpSessionContext.cs" />
-    <Compile Include="IocpContext\IocpAction\IocpContextBase.cs" />
+    <Compile Include="EndPoint\TcpServer.cs" />
+    <Compile Include="Action\IocpAcceptAction.cs" />
+    <Compile Include="Action\IocpReceiveAction.cs" />
+    <Compile Include="Action\IocpSendAction.cs" />
+    <Compile Include="Session\IocpSession.cs" />
+    <Compile Include="Action\IocpActionBase.cs" />
+    <Compile Include="Session\IocpSessionPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +56,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="EndPoint\" />
+    <Folder Include="IocpContext\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

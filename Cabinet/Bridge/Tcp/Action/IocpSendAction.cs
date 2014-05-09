@@ -4,15 +4,31 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Cabinet.Bridge.Tcp.IocpContext.IocpAction
+namespace Cabinet.Bridge.Tcp.Action
 {
-    class IocpSendContext : IocpContextBase
+    class IocpSendAction : IocpActionBase
     {
         protected Socket socket { get; set; }
-        public IocpSendContext(Socket socket)
+        public IocpSendAction()
+        {
+            this.socket = null;
+            this.iocpAsyncDelegate = socket.SendAsync;
+        }
+
+        public void attachSocket(Socket socket)
         {
             this.socket = socket;
-            this.iocpAsyncDelegate = socket.SendAsync;
+        }
+
+        public void detachSocket()
+        {
+            try
+            {
+                socket.Shutdown(SocketShutdown.Send);
+                this.socket = null;
+            }
+            // throws if client process has already closed
+            catch (Exception) { }
         }
 
         protected sealed override void onIocpEvent(out bool continousAsyncCall)
@@ -37,12 +53,7 @@ namespace Cabinet.Bridge.Tcp.IocpContext.IocpAction
 
         public void shutdown()
         {
-            try
-            {
-                socket.Shutdown(SocketShutdown.Send);
-            }
-            // throws if client process has already closed
-            catch (Exception) { }
+            
         }
     }
 }

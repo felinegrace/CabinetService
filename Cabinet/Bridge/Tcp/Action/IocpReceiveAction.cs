@@ -5,19 +5,35 @@ using System.Net.Sockets;
 using System.Text;
 using Cabinet.Utility;
 
-namespace Cabinet.Bridge.Tcp.IocpContext.IocpAction
+namespace Cabinet.Bridge.Tcp.Action
 {
-    class IocpReceiveContext : IocpContextBase
+    class IocpReceiveAction : IocpActionBase
     {
         protected Socket socket { get; set; }
         public event EventHandler<IocpReceiveEventArgs> iocpReceiveEvent;
         private const int defaultReceiveBufferSize = 1024 * 4;
         private DescriptorBuffer buffer { get; set; }
-        public IocpReceiveContext(Socket socket)
+        public IocpReceiveAction()
         {
-            this.socket = socket;
+            this.socket = null;
             this.iocpAsyncDelegate = socket.ReceiveAsync;
             buffer = DescriptorBuffer.create(defaultReceiveBufferSize);
+        }
+
+        public void attachSocket(Socket socket)
+        {
+            this.socket = socket;
+        }
+
+        public void detachSocket()
+        {
+            try
+            {
+                socket.Shutdown(SocketShutdown.Receive);
+                this.socket = null;
+            }
+            // throws if client process has already closed
+            catch (Exception) { }
         }
 
         protected sealed override void onIocpEvent(out bool continousAsyncCall)

@@ -14,7 +14,8 @@ namespace Cabinet.Demo.IpcServerConsole
         {
             Logger.enable();
             IpcServer s = new IpcServer();
-            s.registerIpcServerEventHandler(new IpcServer.IpcServerEventHandler(onMessage));
+            s.IpcServerEvent += (
+                (sender, e) => Program.onMessage(sender, e));
             s.start();
             ConsoleKeyInfo ch;
             do

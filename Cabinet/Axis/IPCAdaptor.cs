@@ -20,8 +20,8 @@ namespace Cabinet.Axis
         {
             businessServer = new BusinessServer();
             ipcServer = new IpcServer();
-            IpcServer.IpcServerEventHandler handler = new IpcServer.IpcServerEventHandler(this.onIpcMessage);
-            ipcServer.registerIpcServerEventHandler(handler);
+            ipcServer.IpcServerEvent += (
+                (sender, e) => this.onIpcMessage(sender, e));
         }
         public void start()
         {
