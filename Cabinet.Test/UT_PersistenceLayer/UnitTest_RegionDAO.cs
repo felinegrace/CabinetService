@@ -89,26 +89,30 @@ namespace Cabinet.UnitTest.PersistenceLayer
             string shortName = "ts";
             RegionDAO dao = new RegionDAO();
             //test c
-            int r0 = dao.c(name, shortName);
-            Assert.IsTrue(r0 > 0);
+            Guid guid = Guid.NewGuid();
+            dao.c(guid, name, shortName);
+            //test s
+            RegionVO rv = dao.s(guid);
+            Assert.IsNotNull(rv);
+            Assert.AreEqual(guid , rv.guid);
             //test r
-            var q = from o in dao.r() where o.id == r0 select o;
+            var q = from o in dao.r() where o.guid == guid select o;
             Assert.AreEqual(1, q.Count());
             //test u
-            assertRegion(q.Single(), r0, name, shortName);
-            dao.u(new RegionVO{id=r0, name="测试用公司2", shortName="tts"});
-            var qq = from oo in dao.r() where oo.id == r0 select oo;
+            assertRegion(q.Single(), guid, name, shortName);
+            dao.u(new RegionVO{guid = guid, name="测试用公司2", shortName="tts"});
+            var qq = from oo in dao.r() where oo.guid == guid select oo;
             Assert.AreEqual(1, q.Count());
             //test d
-            assertRegion(qq.Single(), r0, "测试用公司2", "tts");
-            dao.d(r0);
-            var qqq = from ooo in dao.r() where ooo.id == r0 select ooo;
+            assertRegion(qq.Single(), guid, "测试用公司2", "tts");
+            dao.d(guid);
+            var qqq = from ooo in dao.r() where ooo.guid == guid select ooo;
             Assert.AreEqual(0, qqq.Count());
         }
 
-        private void assertRegion(RegionVO obj , int id , string name, string shortName)
+        private void assertRegion(RegionVO obj , Guid guid , string name, string shortName)
         {
-            Assert.AreEqual(id, obj.id);
+            Assert.AreEqual(guid, obj.guid);
             Assert.AreEqual(name, obj.name);
             Assert.AreEqual(shortName, obj.shortName);
         }

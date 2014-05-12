@@ -39,6 +39,15 @@ namespace Cabinet.Framework.PersistenceLayer
     partial void InsertCabTree_Eqptroom(CabTree_Eqptroom instance);
     partial void UpdateCabTree_Eqptroom(CabTree_Eqptroom instance);
     partial void DeleteCabTree_Eqptroom(CabTree_Eqptroom instance);
+    partial void InsertCabTree_Cabinet(CabTree_Cabinet instance);
+    partial void UpdateCabTree_Cabinet(CabTree_Cabinet instance);
+    partial void DeleteCabTree_Cabinet(CabTree_Cabinet instance);
+    partial void InsertCabTree_Device(CabTree_Device instance);
+    partial void UpdateCabTree_Device(CabTree_Device instance);
+    partial void DeleteCabTree_Device(CabTree_Device instance);
+    partial void InsertCabTree_DeviceAttribute(CabTree_DeviceAttribute instance);
+    partial void UpdateCabTree_DeviceAttribute(CabTree_DeviceAttribute instance);
+    partial void DeleteCabTree_DeviceAttribute(CabTree_DeviceAttribute instance);
     #endregion
 		
 		public CabinetTreeDataContext() : 
@@ -94,6 +103,30 @@ namespace Cabinet.Framework.PersistenceLayer
 				return this.GetTable<CabTree_Eqptroom>();
 			}
 		}
+		
+		public System.Data.Linq.Table<CabTree_Cabinet> CabTree_Cabinets
+		{
+			get
+			{
+				return this.GetTable<CabTree_Cabinet>();
+			}
+		}
+		
+		public System.Data.Linq.Table<CabTree_Device> CabTree_Devices
+		{
+			get
+			{
+				return this.GetTable<CabTree_Device>();
+			}
+		}
+		
+		public System.Data.Linq.Table<CabTree_DeviceAttribute> CabTree_DeviceAttributes
+		{
+			get
+			{
+				return this.GetTable<CabTree_DeviceAttribute>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CabTree_Region")]
@@ -103,6 +136,8 @@ namespace Cabinet.Framework.PersistenceLayer
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private int _id;
+		
+		private System.Guid _guid;
 		
 		private string _name;
 		
@@ -116,6 +151,8 @@ namespace Cabinet.Framework.PersistenceLayer
     partial void OnCreated();
     partial void OnidChanging(int value);
     partial void OnidChanged();
+    partial void OnguidChanging(System.Guid value);
+    partial void OnguidChanged();
     partial void OnnameChanging(string value);
     partial void OnnameChanged();
     partial void OnshortNameChanging(string value);
@@ -148,7 +185,27 @@ namespace Cabinet.Framework.PersistenceLayer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(64) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_guid", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid guid
+		{
+			get
+			{
+				return this._guid;
+			}
+			set
+			{
+				if ((this._guid != value))
+				{
+					this.OnguidChanging(value);
+					this.SendPropertyChanging();
+					this._guid = value;
+					this.SendPropertyChanged("guid");
+					this.OnguidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
 		public string name
 		{
 			get
@@ -168,7 +225,7 @@ namespace Cabinet.Framework.PersistenceLayer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_shortName", DbType="VarChar(32) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_shortName", DbType="NVarChar(32)")]
 		public string shortName
 		{
 			get
@@ -188,7 +245,7 @@ namespace Cabinet.Framework.PersistenceLayer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Region_CabTree_VolClass", Storage="_CabTree_VolClasses", ThisKey="id", OtherKey="parentRegionId")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Region_CabTree_VolClass", Storage="_CabTree_VolClasses", ThisKey="guid", OtherKey="parentRegion")]
 		public EntitySet<CabTree_VolClass> CabTree_VolClasses
 		{
 			get
@@ -242,9 +299,11 @@ namespace Cabinet.Framework.PersistenceLayer
 		
 		private int _id;
 		
-		private string _name;
+		private System.Guid _guid;
 		
-		private int _parentRegionId;
+		private System.Guid _parentRegion;
+		
+		private string _name;
 		
 		private EntitySet<CabTree_Eqptroom> _CabTree_Eqptrooms;
 		
@@ -256,10 +315,12 @@ namespace Cabinet.Framework.PersistenceLayer
     partial void OnCreated();
     partial void OnidChanging(int value);
     partial void OnidChanged();
+    partial void OnguidChanging(System.Guid value);
+    partial void OnguidChanged();
+    partial void OnparentRegionChanging(System.Guid value);
+    partial void OnparentRegionChanged();
     partial void OnnameChanging(string value);
     partial void OnnameChanged();
-    partial void OnparentRegionIdChanging(int value);
-    partial void OnparentRegionIdChanged();
     #endregion
 		
 		public CabTree_VolClass()
@@ -289,7 +350,51 @@ namespace Cabinet.Framework.PersistenceLayer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(64) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_guid", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid guid
+		{
+			get
+			{
+				return this._guid;
+			}
+			set
+			{
+				if ((this._guid != value))
+				{
+					this.OnguidChanging(value);
+					this.SendPropertyChanging();
+					this._guid = value;
+					this.SendPropertyChanged("guid");
+					this.OnguidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_parentRegion", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid parentRegion
+		{
+			get
+			{
+				return this._parentRegion;
+			}
+			set
+			{
+				if ((this._parentRegion != value))
+				{
+					if (this._CabTree_Region.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnparentRegionChanging(value);
+					this.SendPropertyChanging();
+					this._parentRegion = value;
+					this.SendPropertyChanged("parentRegion");
+					this.OnparentRegionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
 		public string name
 		{
 			get
@@ -309,31 +414,7 @@ namespace Cabinet.Framework.PersistenceLayer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_parentRegionId", DbType="Int NOT NULL")]
-		public int parentRegionId
-		{
-			get
-			{
-				return this._parentRegionId;
-			}
-			set
-			{
-				if ((this._parentRegionId != value))
-				{
-					if (this._CabTree_Region.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnparentRegionIdChanging(value);
-					this.SendPropertyChanging();
-					this._parentRegionId = value;
-					this.SendPropertyChanged("parentRegionId");
-					this.OnparentRegionIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_VolClass_CabTree_Eqptroom", Storage="_CabTree_Eqptrooms", ThisKey="id", OtherKey="parentVolClassId")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_VolClass_CabTree_Eqptroom", Storage="_CabTree_Eqptrooms", ThisKey="guid", OtherKey="parentVolClass")]
 		public EntitySet<CabTree_Eqptroom> CabTree_Eqptrooms
 		{
 			get
@@ -346,7 +427,7 @@ namespace Cabinet.Framework.PersistenceLayer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Region_CabTree_VolClass", Storage="_CabTree_Region", ThisKey="parentRegionId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Region_CabTree_VolClass", Storage="_CabTree_Region", ThisKey="parentRegion", OtherKey="guid", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public CabTree_Region CabTree_Region
 		{
 			get
@@ -369,11 +450,11 @@ namespace Cabinet.Framework.PersistenceLayer
 					if ((value != null))
 					{
 						value.CabTree_VolClasses.Add(this);
-						this._parentRegionId = value.id;
+						this._parentRegion = value.guid;
 					}
 					else
 					{
-						this._parentRegionId = default(int);
+						this._parentRegion = default(System.Guid);
 					}
 					this.SendPropertyChanged("CabTree_Region");
 				}
@@ -421,9 +502,13 @@ namespace Cabinet.Framework.PersistenceLayer
 		
 		private int _id;
 		
+		private System.Guid _guid;
+		
+		private System.Guid _parentVolClass;
+		
 		private string _name;
 		
-		private int _parentVolClassId;
+		private EntitySet<CabTree_Cabinet> _CabTree_Cabinets;
 		
 		private EntityRef<CabTree_VolClass> _CabTree_VolClass;
 		
@@ -433,14 +518,17 @@ namespace Cabinet.Framework.PersistenceLayer
     partial void OnCreated();
     partial void OnidChanging(int value);
     partial void OnidChanged();
+    partial void OnguidChanging(System.Guid value);
+    partial void OnguidChanged();
+    partial void OnparentVolClassChanging(System.Guid value);
+    partial void OnparentVolClassChanged();
     partial void OnnameChanging(string value);
     partial void OnnameChanged();
-    partial void OnparentVolClassIdChanging(int value);
-    partial void OnparentVolClassIdChanged();
     #endregion
 		
 		public CabTree_Eqptroom()
 		{
+			this._CabTree_Cabinets = new EntitySet<CabTree_Cabinet>(new Action<CabTree_Cabinet>(this.attach_CabTree_Cabinets), new Action<CabTree_Cabinet>(this.detach_CabTree_Cabinets));
 			this._CabTree_VolClass = default(EntityRef<CabTree_VolClass>);
 			OnCreated();
 		}
@@ -465,7 +553,51 @@ namespace Cabinet.Framework.PersistenceLayer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(64) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_guid", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid guid
+		{
+			get
+			{
+				return this._guid;
+			}
+			set
+			{
+				if ((this._guid != value))
+				{
+					this.OnguidChanging(value);
+					this.SendPropertyChanging();
+					this._guid = value;
+					this.SendPropertyChanged("guid");
+					this.OnguidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_parentVolClass", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid parentVolClass
+		{
+			get
+			{
+				return this._parentVolClass;
+			}
+			set
+			{
+				if ((this._parentVolClass != value))
+				{
+					if (this._CabTree_VolClass.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnparentVolClassChanging(value);
+					this.SendPropertyChanging();
+					this._parentVolClass = value;
+					this.SendPropertyChanged("parentVolClass");
+					this.OnparentVolClassChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
 		public string name
 		{
 			get
@@ -485,31 +617,20 @@ namespace Cabinet.Framework.PersistenceLayer
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_parentVolClassId", DbType="Int NOT NULL")]
-		public int parentVolClassId
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Eqptroom_CabTree_Cabinet", Storage="_CabTree_Cabinets", ThisKey="guid", OtherKey="parentEqptRoom")]
+		public EntitySet<CabTree_Cabinet> CabTree_Cabinets
 		{
 			get
 			{
-				return this._parentVolClassId;
+				return this._CabTree_Cabinets;
 			}
 			set
 			{
-				if ((this._parentVolClassId != value))
-				{
-					if (this._CabTree_VolClass.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnparentVolClassIdChanging(value);
-					this.SendPropertyChanging();
-					this._parentVolClassId = value;
-					this.SendPropertyChanged("parentVolClassId");
-					this.OnparentVolClassIdChanged();
-				}
+				this._CabTree_Cabinets.Assign(value);
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_VolClass_CabTree_Eqptroom", Storage="_CabTree_VolClass", ThisKey="parentVolClassId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_VolClass_CabTree_Eqptroom", Storage="_CabTree_VolClass", ThisKey="parentVolClass", OtherKey="guid", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public CabTree_VolClass CabTree_VolClass
 		{
 			get
@@ -532,13 +653,894 @@ namespace Cabinet.Framework.PersistenceLayer
 					if ((value != null))
 					{
 						value.CabTree_Eqptrooms.Add(this);
-						this._parentVolClassId = value.id;
+						this._parentVolClass = value.guid;
 					}
 					else
 					{
-						this._parentVolClassId = default(int);
+						this._parentVolClass = default(System.Guid);
 					}
 					this.SendPropertyChanged("CabTree_VolClass");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_CabTree_Cabinets(CabTree_Cabinet entity)
+		{
+			this.SendPropertyChanging();
+			entity.CabTree_Eqptroom = this;
+		}
+		
+		private void detach_CabTree_Cabinets(CabTree_Cabinet entity)
+		{
+			this.SendPropertyChanging();
+			entity.CabTree_Eqptroom = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CabTree_Cabinet")]
+	public partial class CabTree_Cabinet : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private System.Guid _guid;
+		
+		private System.Guid _parentEqptRoom;
+		
+		private string _name;
+		
+		private int _height;
+		
+		private int _width;
+		
+		private int _depth;
+		
+		private EntitySet<CabTree_Device> _CabTree_Devices;
+		
+		private EntityRef<CabTree_Eqptroom> _CabTree_Eqptroom;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnguidChanging(System.Guid value);
+    partial void OnguidChanged();
+    partial void OnparentEqptRoomChanging(System.Guid value);
+    partial void OnparentEqptRoomChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OnheightChanging(int value);
+    partial void OnheightChanged();
+    partial void OnwidthChanging(int value);
+    partial void OnwidthChanged();
+    partial void OndepthChanging(int value);
+    partial void OndepthChanged();
+    #endregion
+		
+		public CabTree_Cabinet()
+		{
+			this._CabTree_Devices = new EntitySet<CabTree_Device>(new Action<CabTree_Device>(this.attach_CabTree_Devices), new Action<CabTree_Device>(this.detach_CabTree_Devices));
+			this._CabTree_Eqptroom = default(EntityRef<CabTree_Eqptroom>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_guid", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid guid
+		{
+			get
+			{
+				return this._guid;
+			}
+			set
+			{
+				if ((this._guid != value))
+				{
+					this.OnguidChanging(value);
+					this.SendPropertyChanging();
+					this._guid = value;
+					this.SendPropertyChanged("guid");
+					this.OnguidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_parentEqptRoom", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid parentEqptRoom
+		{
+			get
+			{
+				return this._parentEqptRoom;
+			}
+			set
+			{
+				if ((this._parentEqptRoom != value))
+				{
+					if (this._CabTree_Eqptroom.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnparentEqptRoomChanging(value);
+					this.SendPropertyChanging();
+					this._parentEqptRoom = value;
+					this.SendPropertyChanged("parentEqptRoom");
+					this.OnparentEqptRoomChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_height", DbType="Int NOT NULL")]
+		public int height
+		{
+			get
+			{
+				return this._height;
+			}
+			set
+			{
+				if ((this._height != value))
+				{
+					this.OnheightChanging(value);
+					this.SendPropertyChanging();
+					this._height = value;
+					this.SendPropertyChanged("height");
+					this.OnheightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_width", DbType="Int NOT NULL")]
+		public int width
+		{
+			get
+			{
+				return this._width;
+			}
+			set
+			{
+				if ((this._width != value))
+				{
+					this.OnwidthChanging(value);
+					this.SendPropertyChanging();
+					this._width = value;
+					this.SendPropertyChanged("width");
+					this.OnwidthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_depth", DbType="Int NOT NULL")]
+		public int depth
+		{
+			get
+			{
+				return this._depth;
+			}
+			set
+			{
+				if ((this._depth != value))
+				{
+					this.OndepthChanging(value);
+					this.SendPropertyChanging();
+					this._depth = value;
+					this.SendPropertyChanged("depth");
+					this.OndepthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Cabinet_CabTree_Device", Storage="_CabTree_Devices", ThisKey="guid", OtherKey="parentCabinet")]
+		public EntitySet<CabTree_Device> CabTree_Devices
+		{
+			get
+			{
+				return this._CabTree_Devices;
+			}
+			set
+			{
+				this._CabTree_Devices.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Eqptroom_CabTree_Cabinet", Storage="_CabTree_Eqptroom", ThisKey="parentEqptRoom", OtherKey="guid", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public CabTree_Eqptroom CabTree_Eqptroom
+		{
+			get
+			{
+				return this._CabTree_Eqptroom.Entity;
+			}
+			set
+			{
+				CabTree_Eqptroom previousValue = this._CabTree_Eqptroom.Entity;
+				if (((previousValue != value) 
+							|| (this._CabTree_Eqptroom.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CabTree_Eqptroom.Entity = null;
+						previousValue.CabTree_Cabinets.Remove(this);
+					}
+					this._CabTree_Eqptroom.Entity = value;
+					if ((value != null))
+					{
+						value.CabTree_Cabinets.Add(this);
+						this._parentEqptRoom = value.guid;
+					}
+					else
+					{
+						this._parentEqptRoom = default(System.Guid);
+					}
+					this.SendPropertyChanged("CabTree_Eqptroom");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_CabTree_Devices(CabTree_Device entity)
+		{
+			this.SendPropertyChanging();
+			entity.CabTree_Cabinet = this;
+		}
+		
+		private void detach_CabTree_Devices(CabTree_Device entity)
+		{
+			this.SendPropertyChanging();
+			entity.CabTree_Cabinet = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CabTree_Device")]
+	public partial class CabTree_Device : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private System.Guid _guid;
+		
+		private System.Guid _parentCabinet;
+		
+		private string _name;
+		
+		private int _x;
+		
+		private int _y;
+		
+		private int _z;
+		
+		private int _width;
+		
+		private int _height;
+		
+		private int _depth;
+		
+		private int _side;
+		
+		private EntitySet<CabTree_DeviceAttribute> _CabTree_DeviceAttributes;
+		
+		private EntityRef<CabTree_Cabinet> _CabTree_Cabinet;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnguidChanging(System.Guid value);
+    partial void OnguidChanged();
+    partial void OnparentCabinetChanging(System.Guid value);
+    partial void OnparentCabinetChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OnxChanging(int value);
+    partial void OnxChanged();
+    partial void OnyChanging(int value);
+    partial void OnyChanged();
+    partial void OnzChanging(int value);
+    partial void OnzChanged();
+    partial void OnwidthChanging(int value);
+    partial void OnwidthChanged();
+    partial void OnheightChanging(int value);
+    partial void OnheightChanged();
+    partial void OndepthChanging(int value);
+    partial void OndepthChanged();
+    partial void OnsideChanging(int value);
+    partial void OnsideChanged();
+    #endregion
+		
+		public CabTree_Device()
+		{
+			this._CabTree_DeviceAttributes = new EntitySet<CabTree_DeviceAttribute>(new Action<CabTree_DeviceAttribute>(this.attach_CabTree_DeviceAttributes), new Action<CabTree_DeviceAttribute>(this.detach_CabTree_DeviceAttributes));
+			this._CabTree_Cabinet = default(EntityRef<CabTree_Cabinet>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_guid", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid guid
+		{
+			get
+			{
+				return this._guid;
+			}
+			set
+			{
+				if ((this._guid != value))
+				{
+					this.OnguidChanging(value);
+					this.SendPropertyChanging();
+					this._guid = value;
+					this.SendPropertyChanged("guid");
+					this.OnguidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_parentCabinet", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid parentCabinet
+		{
+			get
+			{
+				return this._parentCabinet;
+			}
+			set
+			{
+				if ((this._parentCabinet != value))
+				{
+					if (this._CabTree_Cabinet.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnparentCabinetChanging(value);
+					this.SendPropertyChanging();
+					this._parentCabinet = value;
+					this.SendPropertyChanged("parentCabinet");
+					this.OnparentCabinetChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_x", DbType="Int NOT NULL")]
+		public int x
+		{
+			get
+			{
+				return this._x;
+			}
+			set
+			{
+				if ((this._x != value))
+				{
+					this.OnxChanging(value);
+					this.SendPropertyChanging();
+					this._x = value;
+					this.SendPropertyChanged("x");
+					this.OnxChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_y", DbType="Int NOT NULL")]
+		public int y
+		{
+			get
+			{
+				return this._y;
+			}
+			set
+			{
+				if ((this._y != value))
+				{
+					this.OnyChanging(value);
+					this.SendPropertyChanging();
+					this._y = value;
+					this.SendPropertyChanged("y");
+					this.OnyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_z", DbType="Int NOT NULL")]
+		public int z
+		{
+			get
+			{
+				return this._z;
+			}
+			set
+			{
+				if ((this._z != value))
+				{
+					this.OnzChanging(value);
+					this.SendPropertyChanging();
+					this._z = value;
+					this.SendPropertyChanged("z");
+					this.OnzChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_width", DbType="Int NOT NULL")]
+		public int width
+		{
+			get
+			{
+				return this._width;
+			}
+			set
+			{
+				if ((this._width != value))
+				{
+					this.OnwidthChanging(value);
+					this.SendPropertyChanging();
+					this._width = value;
+					this.SendPropertyChanged("width");
+					this.OnwidthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_height", DbType="Int NOT NULL")]
+		public int height
+		{
+			get
+			{
+				return this._height;
+			}
+			set
+			{
+				if ((this._height != value))
+				{
+					this.OnheightChanging(value);
+					this.SendPropertyChanging();
+					this._height = value;
+					this.SendPropertyChanged("height");
+					this.OnheightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_depth", DbType="Int NOT NULL")]
+		public int depth
+		{
+			get
+			{
+				return this._depth;
+			}
+			set
+			{
+				if ((this._depth != value))
+				{
+					this.OndepthChanging(value);
+					this.SendPropertyChanging();
+					this._depth = value;
+					this.SendPropertyChanged("depth");
+					this.OndepthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_side", DbType="Int NOT NULL")]
+		public int side
+		{
+			get
+			{
+				return this._side;
+			}
+			set
+			{
+				if ((this._side != value))
+				{
+					this.OnsideChanging(value);
+					this.SendPropertyChanging();
+					this._side = value;
+					this.SendPropertyChanged("side");
+					this.OnsideChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Device_CabTree_DeviceAttribute", Storage="_CabTree_DeviceAttributes", ThisKey="guid", OtherKey="parentDevice")]
+		public EntitySet<CabTree_DeviceAttribute> CabTree_DeviceAttributes
+		{
+			get
+			{
+				return this._CabTree_DeviceAttributes;
+			}
+			set
+			{
+				this._CabTree_DeviceAttributes.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Cabinet_CabTree_Device", Storage="_CabTree_Cabinet", ThisKey="parentCabinet", OtherKey="guid", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public CabTree_Cabinet CabTree_Cabinet
+		{
+			get
+			{
+				return this._CabTree_Cabinet.Entity;
+			}
+			set
+			{
+				CabTree_Cabinet previousValue = this._CabTree_Cabinet.Entity;
+				if (((previousValue != value) 
+							|| (this._CabTree_Cabinet.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CabTree_Cabinet.Entity = null;
+						previousValue.CabTree_Devices.Remove(this);
+					}
+					this._CabTree_Cabinet.Entity = value;
+					if ((value != null))
+					{
+						value.CabTree_Devices.Add(this);
+						this._parentCabinet = value.guid;
+					}
+					else
+					{
+						this._parentCabinet = default(System.Guid);
+					}
+					this.SendPropertyChanged("CabTree_Cabinet");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_CabTree_DeviceAttributes(CabTree_DeviceAttribute entity)
+		{
+			this.SendPropertyChanging();
+			entity.CabTree_Device = this;
+		}
+		
+		private void detach_CabTree_DeviceAttributes(CabTree_DeviceAttribute entity)
+		{
+			this.SendPropertyChanging();
+			entity.CabTree_Device = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CabTree_DeviceAttribute")]
+	public partial class CabTree_DeviceAttribute : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private System.Guid _guid;
+		
+		private System.Guid _parentDevice;
+		
+		private string _name;
+		
+		private string _value;
+		
+		private string _type;
+		
+		private EntityRef<CabTree_Device> _CabTree_Device;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnguidChanging(System.Guid value);
+    partial void OnguidChanged();
+    partial void OnparentDeviceChanging(System.Guid value);
+    partial void OnparentDeviceChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OnvalueChanging(string value);
+    partial void OnvalueChanged();
+    partial void OntypeChanging(string value);
+    partial void OntypeChanged();
+    #endregion
+		
+		public CabTree_DeviceAttribute()
+		{
+			this._CabTree_Device = default(EntityRef<CabTree_Device>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_guid", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid guid
+		{
+			get
+			{
+				return this._guid;
+			}
+			set
+			{
+				if ((this._guid != value))
+				{
+					this.OnguidChanging(value);
+					this.SendPropertyChanging();
+					this._guid = value;
+					this.SendPropertyChanged("guid");
+					this.OnguidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_parentDevice", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid parentDevice
+		{
+			get
+			{
+				return this._parentDevice;
+			}
+			set
+			{
+				if ((this._parentDevice != value))
+				{
+					if (this._CabTree_Device.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnparentDeviceChanging(value);
+					this.SendPropertyChanging();
+					this._parentDevice = value;
+					this.SendPropertyChanged("parentDevice");
+					this.OnparentDeviceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_value", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string value
+		{
+			get
+			{
+				return this._value;
+			}
+			set
+			{
+				if ((this._value != value))
+				{
+					this.OnvalueChanging(value);
+					this.SendPropertyChanging();
+					this._value = value;
+					this.SendPropertyChanged("value");
+					this.OnvalueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string type
+		{
+			get
+			{
+				return this._type;
+			}
+			set
+			{
+				if ((this._type != value))
+				{
+					this.OntypeChanging(value);
+					this.SendPropertyChanging();
+					this._type = value;
+					this.SendPropertyChanged("type");
+					this.OntypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CabTree_Device_CabTree_DeviceAttribute", Storage="_CabTree_Device", ThisKey="parentDevice", OtherKey="guid", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public CabTree_Device CabTree_Device
+		{
+			get
+			{
+				return this._CabTree_Device.Entity;
+			}
+			set
+			{
+				CabTree_Device previousValue = this._CabTree_Device.Entity;
+				if (((previousValue != value) 
+							|| (this._CabTree_Device.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CabTree_Device.Entity = null;
+						previousValue.CabTree_DeviceAttributes.Remove(this);
+					}
+					this._CabTree_Device.Entity = value;
+					if ((value != null))
+					{
+						value.CabTree_DeviceAttributes.Add(this);
+						this._parentDevice = value.guid;
+					}
+					else
+					{
+						this._parentDevice = default(System.Guid);
+					}
+					this.SendPropertyChanged("CabTree_Device");
 				}
 			}
 		}

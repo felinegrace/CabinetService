@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cabinet.Utility;
+using Cabinet.Bridge.WcfService.CommonEntity;
 
 namespace Cabinet.Bridge.WcfService
 {
@@ -13,7 +14,7 @@ namespace Cabinet.Bridge.WcfService
             baseRequest.business = "region";
         }
 
-        public int create(string name, string shortName)
+        public string create(string name, string shortName)
         {
             Logger.debug("WcfServer: comming request = {0}/{1} name = {2}, shortName = {3}",
                 "region", "create", name, shortName);
@@ -25,13 +26,15 @@ namespace Cabinet.Bridge.WcfService
             {
                 commitAndWait();
                 logOnParsingResponse();
-                int result = (int)(baseResponse.result.First<object>());
-                return result;
+                Guid guid = (Guid)baseResponse.result.ElementAt<object>(0);
+                WSRegionCreateResponse response = new WSRegionCreateResponse();
+                response.regionGuid = guid.ToString();
+                return response.toJson();
             }
             catch(Exception exception)
             {
                 Logger.error("WcfServer: {0}.", exception.Message);
-                return default(int);
+                return new WSResponseErrorBase(exception.Message).toJson();
             }
 
 

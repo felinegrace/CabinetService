@@ -19,7 +19,8 @@ namespace Cabinet.Bridge.Ipc.EndPoint
         #region Private fields
         private IpcServerChannel channel;
 
-        public event EventHandler<IpcMessage> IpcServerEvent;
+        public delegate void IpcServerEventHandler(object sender, IpcMessage args);
+        public event IpcServerEventHandler IpcServerEvent;
 
         #endregion
 
@@ -78,11 +79,6 @@ namespace Cabinet.Bridge.Ipc.EndPoint
             ChannelServices.UnregisterChannel(channel);
         }
         #endregion
-
-        public void registerIpcServerEventHandler(IpcServerEventHandler handler)
-        {
-            this.IpcServerEvent = handler;
-        }
 
         #region Logical functions
         protected override void handleRequest(IpcMessage message)

@@ -10,6 +10,7 @@ namespace Cabinet.Framework.CommonEntity
     public class RegionVO : Jsonable
     {
         public int id {get; set;}
+        public Guid guid { get; set; }
         public string name {get; set;}
         public string shortName {get; set;}
     }

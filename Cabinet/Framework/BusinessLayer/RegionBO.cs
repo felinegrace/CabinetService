@@ -32,14 +32,15 @@ namespace Cabinet.Framework.BusinessLayer
         {
             logOnValidatingParams();
             validateParamCount(2);
-            validateParamAsSpecificType(0,typeof(string));
+            Guid guid = Guid.NewGuid();
+            validateParamAsSpecificType(0, typeof(string));
             string name = context.request.param.ElementAt<object>(0) as string;
-            validateParamAsSpecificType(1,typeof(string));
+            validateParamAsSpecificType(1, typeof(string));
             string shortName = context.request.param.ElementAt<object>(1) as string;
             logOnLauchingDAO();
-            int id = regionDao.c(name, shortName);
+            regionDao.c(guid, name, shortName);
             logOnFillingResult();
-            context.response.result.Add(id);
+            context.response.result.Add(guid);
         }
     }
 }

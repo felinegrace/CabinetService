@@ -3,26 +3,71 @@
   <Table Name="dbo.CabTree_Region" Member="CabTree_Regions">
     <Type Name="CabTree_Region">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
-      <Column Name="shortName" Type="System.String" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
-      <Association Name="CabTree_Region_CabTree_VolClass" Member="CabTree_VolClasses" ThisKey="id" OtherKey="parentRegionId" Type="CabTree_VolClass" />
+      <Column Name="guid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="shortName" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Association Name="CabTree_Region_CabTree_VolClass" Member="CabTree_VolClasses" ThisKey="guid" OtherKey="parentRegion" Type="CabTree_VolClass" />
     </Type>
   </Table>
   <Table Name="dbo.CabTree_VolClass" Member="CabTree_VolClasses">
     <Type Name="CabTree_VolClass">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
-      <Column Name="parentRegionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="CabTree_VolClass_CabTree_Eqptroom" Member="CabTree_Eqptrooms" ThisKey="id" OtherKey="parentVolClassId" Type="CabTree_Eqptroom" />
-      <Association Name="CabTree_Region_CabTree_VolClass" Member="CabTree_Region" ThisKey="parentRegionId" OtherKey="id" Type="CabTree_Region" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Column Name="guid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="parentRegion" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Association Name="CabTree_VolClass_CabTree_Eqptroom" Member="CabTree_Eqptrooms" ThisKey="guid" OtherKey="parentVolClass" Type="CabTree_Eqptroom" />
+      <Association Name="CabTree_Region_CabTree_VolClass" Member="CabTree_Region" ThisKey="parentRegion" OtherKey="guid" Type="CabTree_Region" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.CabTree_Eqptroom" Member="CabTree_Eqptrooms">
     <Type Name="CabTree_Eqptroom">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
-      <Column Name="parentVolClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="CabTree_VolClass_CabTree_Eqptroom" Member="CabTree_VolClass" ThisKey="parentVolClassId" OtherKey="id" Type="CabTree_VolClass" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Column Name="guid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="parentVolClass" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Association Name="CabTree_Eqptroom_CabTree_Cabinet" Member="CabTree_Cabinets" ThisKey="guid" OtherKey="parentEqptRoom" Type="CabTree_Cabinet" />
+      <Association Name="CabTree_VolClass_CabTree_Eqptroom" Member="CabTree_VolClass" ThisKey="parentVolClass" OtherKey="guid" Type="CabTree_VolClass" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CabTree_Cabinet" Member="CabTree_Cabinets">
+    <Type Name="CabTree_Cabinet">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="guid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="parentEqptRoom" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="height" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="width" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="depth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CabTree_Cabinet_CabTree_Device" Member="CabTree_Devices" ThisKey="guid" OtherKey="parentCabinet" Type="CabTree_Device" />
+      <Association Name="CabTree_Eqptroom_CabTree_Cabinet" Member="CabTree_Eqptroom" ThisKey="parentEqptRoom" OtherKey="guid" Type="CabTree_Eqptroom" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CabTree_Device" Member="CabTree_Devices">
+    <Type Name="CabTree_Device">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="guid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="parentCabinet" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="x" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="y" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="z" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="width" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="height" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="depth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="side" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CabTree_Device_CabTree_DeviceAttribute" Member="CabTree_DeviceAttributes" ThisKey="guid" OtherKey="parentDevice" Type="CabTree_DeviceAttribute" />
+      <Association Name="CabTree_Cabinet_CabTree_Device" Member="CabTree_Cabinet" ThisKey="parentCabinet" OtherKey="guid" Type="CabTree_Cabinet" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CabTree_DeviceAttribute" Member="CabTree_DeviceAttributes">
+    <Type Name="CabTree_DeviceAttribute">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="guid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="parentDevice" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="value" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Association Name="CabTree_Device_CabTree_DeviceAttribute" Member="CabTree_Device" ThisKey="parentDevice" OtherKey="guid" Type="CabTree_Device" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>
