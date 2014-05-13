@@ -38,7 +38,7 @@ namespace Cabinet.UnitTest.BusinessLayer
         }
 
         [TestMethod]
-        public void testRegionCreate()
+        public void testRegionBO()
         {
             BusinessRequest q = new BusinessRequest();
             q.business = "region";
@@ -50,7 +50,9 @@ namespace Cabinet.UnitTest.BusinessLayer
             BOBase b = new RegionBO(c);
             b.handleBusiness();
             Assert.AreEqual(1, p.result.Count);
-            Assert.IsTrue((int)p.result.ElementAt<object>(0) > 0);
+            Assert.IsTrue(((Guid)(p.result.ElementAt<object>(0))).Equals(Guid.Empty) == false);
+            
         }
+
     }
 }

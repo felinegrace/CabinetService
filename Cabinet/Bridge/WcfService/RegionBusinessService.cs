@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Cabinet.Utility;
 using Cabinet.Bridge.WcfService.CommonEntity;
+using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.WcfService
 {
@@ -14,21 +15,47 @@ namespace Cabinet.Bridge.WcfService
             baseRequest.business = "region";
         }
 
+        public string search(Guid guid)
+        {
+            baseRequest.method = "search";
+            Logger.debug("WcfServer: comming request = {0}/{1} guid = {2}",
+                baseRequest.business, baseRequest.method, guid);
+            logOnPreparingRequest();
+            baseRequest.param.Add(guid);
+            try
+            {
+                commitAndWait();
+                logOnParsingResponse();
+                RegionVO vo = baseResponse.result.ElementAt<object>(0) as RegionVO;
+                WSRegionSearchResponse response = new WSRegionSearchResponse();
+                response.regionGuid = vo.guid.ToString();
+                response.name = vo.name;
+                response.shortName = vo.shortName;
+                return response.toJson();
+            }
+            catch (Exception exception)
+            {
+                Logger.error("WcfServer: {0}.", exception.Message);
+                return new WSResponseErrorBase(exception.Message).toJson();
+            }
+
+
+        }
+
         public string create(string name, string shortName)
         {
-            Logger.debug("WcfServer: comming request = {0}/{1} name = {2}, shortName = {3}",
-                "region", "create", name, shortName);
-            logOnPreparingRequest();
             baseRequest.method = "create";
+            Logger.debug("WcfServer: comming request = {0}/{1} name = {2}, shortName = {3}",
+                baseRequest.business, baseRequest.method, name, shortName);
+            logOnPreparingRequest();
             baseRequest.param.Add(name);
             baseRequest.param.Add(shortName);
             try
             {
                 commitAndWait();
                 logOnParsingResponse();
-                Guid guid = (Guid)baseResponse.result.ElementAt<object>(0);
                 WSRegionCreateResponse response = new WSRegionCreateResponse();
-                response.regionGuid = guid.ToString();
+                response.regionGuid = ((Guid)baseResponse.result.ElementAt<object>(0)).ToString();
                 return response.toJson();
             }
             catch(Exception exception)
@@ -36,8 +63,71 @@ namespace Cabinet.Bridge.WcfService
                 Logger.error("WcfServer: {0}.", exception.Message);
                 return new WSResponseErrorBase(exception.Message).toJson();
             }
+        }
 
+        public string read()
+        {
+            baseRequest.method = "read";
+            Logger.debug("WcfServer: comming request = {0}/{1}",
+                baseRequest.business, baseRequest.method);
+            logOnPreparingRequest();
+            try
+            {
+                commitAndWait();
+                logOnParsingResponse();
+                WSRegionReadResponse response = new WSRegionReadResponse();
+                response.regionGuidList = baseResponse.result.ElementAt<object>(0) as List<string>;
+                return response.toJson();
+            }
+            catch (Exception exception)
+            {
+                Logger.error("WcfServer: {0}.", exception.Message);
+                return new WSResponseErrorBase(exception.Message).toJson();
+            }
+        }
 
+        public string update(Guid guid, string name, string shortName)
+        {
+            baseRequest.method = "update";
+            Logger.debug("WcfServer: comming request = {0}/{1} guid = {2}, name = {3}, shortName = {4}",
+                baseRequest.business, baseRequest.method, guid, name, shortName);
+            logOnPreparingRequest();
+            baseRequest.param.Add(guid.ToString());
+            baseRequest.param.Add(name);
+            baseRequest.param.Add(shortName);
+            try
+            {
+                commitAndWait();
+                logOnParsingResponse();
+                WSRegionUpdateResponse response = new WSRegionUpdateResponse();
+                return response.toJson();
+            }
+            catch (Exception exception)
+            {
+                Logger.error("WcfServer: {0}.", exception.Message);
+                return new WSResponseErrorBase(exception.Message).toJson();
+            }
+        }
+
+        public string delete(Guid guid)
+        {
+            baseRequest.method = "delete";
+            Logger.debug("WcfServer: comming request = {0}/{1} guid = {2}",
+                baseRequest.business, baseRequest.method, guid);
+            logOnPreparingRequest();
+            baseRequest.param.Add(guid.ToString());
+            try
+            {
+                commitAndWait();
+                logOnParsingResponse();
+                WSRegionDeleteResponse response = new WSRegionDeleteResponse();
+                return response.toJson();
+            }
+            catch (Exception exception)
+            {
+                Logger.error("WcfServer: {0}.", exception.Message);
+                return new WSResponseErrorBase(exception.Message).toJson();
+            }
         }
     }
 }

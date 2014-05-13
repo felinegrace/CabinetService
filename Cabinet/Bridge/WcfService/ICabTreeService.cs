@@ -12,13 +12,30 @@ namespace Cabinet.Bridge.WcfService
     [ServiceContract]
     public interface ICabTreeService
     {
-        /// <summary>regionSearch is a method in the TestClass class.
+        /// <summary>
+        /// regionSearch is a method in the TestClass class.
         /// </summary>
         [OperationContract]
         string regionSearch(Guid regionGuid);
+        /// <summary>
+        /// regionSearch is a method in the TestClass class.
+        /// </summary>
+        [OperationContract]
         string regionCreate(string name, string shortName);
+        /// <summary>
+        /// regionSearch is a method in the TestClass class.
+        /// </summary>
+        [OperationContract]
         string regionRead();
+        /// <summary>
+        /// regionSearch is a method in the TestClass class.
+        /// </summary>
+        [OperationContract]
         string regionUpdate(Guid regionGuid, string name, string shortName);
+        /// <summary>
+        /// regionSearch is a method in the TestClass class.
+        /// </summary>
+        [OperationContract]
         string regionDelete(Guid regionGuid);
 
         string volClassSearch(Guid volClassGuid);

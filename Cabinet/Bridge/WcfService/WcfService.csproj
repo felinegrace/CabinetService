@@ -47,16 +47,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttrTypeService.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\Cabinet\WSCabinetCreateResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\Cabinet\WSCabinetDeleteResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\Cabinet\WSCabinetReadResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\Cabinet\WSCabinetSearchResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\Cabinet\WSCabinetUpdateResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\EqptRoom\WSEqptRoomCreateResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\EqptRoom\WSEqptRoomDeleteResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\EqptRoom\WSEqptRoomReadResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\EqptRoom\WSEqptRoomSearchResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\EqptRoom\WSEqptRoomUpdateResponse.cs" />
     <Compile Include="CommonEntity\WebserviceResponse\CabTree\Region\WSRegionDeleteResponse.cs" />
     <Compile Include="CommonEntity\WebserviceResponse\CabTree\Region\WSRegionUpdateResponse.cs" />
     <Compile Include="CommonEntity\WebserviceResponse\CabTree\Region\WSRegionSearchResponse.cs" />
     <Compile Include="CommonEntity\WebserviceResponse\CabTree\Region\WSRegionReadResponse.cs" />
     <Compile Include="CommonEntity\WebserviceResponse\CabTree\Region\WSRegionCreateResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\VolClass\WSVolClassCreateResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\VolClass\WSVolClassDeleteResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\VolClass\WSVolClassReadResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\VolClass\WSVolClassSearchResponse.cs" />
+    <Compile Include="CommonEntity\WebserviceResponse\CabTree\VolClass\WSVolClassUpdateResponse.cs" />
     <Compile Include="CommonEntity\WebserviceResponse\WSResponseBase.cs" />
     <Compile Include="CommonEntity\WebserviceResponse\WSResponseErrorBase.cs" />
     <Compile Include="CommonEntity\WebserviceResponse\WSResponseSuccessBase.cs" />
     <Compile Include="IAttrTypeService.cs" />
     <Compile Include="IWorkInstruction.cs" />
+    <Compile Include="ServiceImplBase.cs" />
     <Compile Include="WcfServerGateway.cs" />
     <Compile Include="BusinessServiceBase.cs" />
     <Compile Include="CabTreeService.cs" />

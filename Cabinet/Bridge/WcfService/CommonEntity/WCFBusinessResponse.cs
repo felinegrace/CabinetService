@@ -7,7 +7,7 @@ using Cabinet.Utility;
 
 namespace Cabinet.Bridge.WcfService.CommonEntity
 {
-    public class WcfBusinessResponse : BusinessResponse
+    class WcfBusinessResponse : BusinessResponse
     {
         private WcfMessage wcfMessageRef;
         public WcfBusinessResponse(WcfMessage wcfMessageRef)

@@ -8,7 +8,7 @@ using Cabinet.Utility;
 namespace Cabinet.Bridge.WcfService.CommonEntity
 {
     [Serializable]
-    public class WcfMessage
+    class WcfMessage
     {
         public Guid guid { get; private set; }
 

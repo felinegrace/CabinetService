@@ -10,46 +10,31 @@ using Cabinet.Utility;
 namespace Cabinet.Bridge.WcfService
 {
     
-    public class CabTreeService : ICabTreeService
+    class CabTreeService : ServiceImplBase, ICabTreeService
     {
-        private void logOnRequest()
-        {
-            Logger.info("WcfServer: Webservice =====> WcfServer.");
-        }
-
-        private void logOnResponse()
-        {
-            Logger.info("WcfServer: WcfServer =====> Webservice.");
-            Logger.info("WcfServer: <3<3<3 Transaction Completed.");
-        }
-        
-
         public string regionCreate(string name, string shortName)
         {
-            logOnRequest();
-            string result = new RegionBusinessService().create(name, shortName);
-            logOnResponse();
-            return "";
+            return service(() => new RegionBusinessService().create(name, shortName));
         }
 
         public string regionSearch(Guid regionGuid)
         {
-            throw new NotImplementedException();
+            return service(() => new RegionBusinessService().search(regionGuid));
         }
 
         public string regionRead()
         {
-            throw new NotImplementedException();
+            return service(() => new RegionBusinessService().read());
         }
 
         public string regionUpdate(Guid regionGuid, string name, string shortName)
         {
-            throw new NotImplementedException();
+            return service(() => new RegionBusinessService().update(regionGuid, name, shortName));
         }
 
         public string regionDelete(Guid regionGuid)
         {
-            throw new NotImplementedException();
+            return service(() => new RegionBusinessService().delete(regionGuid));
         }
 
         public string volClassSearch(Guid volClassGuid)
