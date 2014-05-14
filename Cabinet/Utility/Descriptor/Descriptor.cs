@@ -7,7 +7,7 @@ namespace Cabinet.Utility
 {
     public class Descriptor
     {
-        public byte[] des { get; set; }
+        public byte[] des { get; protected set; }
 	    public int desLength { get; set; }
 	    public int desCapacity { get; protected set; }
 
@@ -45,6 +45,11 @@ namespace Cabinet.Utility
         protected Descriptor()
         {
 
+        }
+
+        public string toString(int index, int count)
+        {
+            return System.Text.Encoding.ASCII.GetString(des, index, count);
         }
 	
     }

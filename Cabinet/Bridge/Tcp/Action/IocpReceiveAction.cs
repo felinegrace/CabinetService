@@ -21,12 +21,13 @@ namespace Cabinet.Bridge.Tcp.Action
         {
             this.socket = null;
             buffer = DescriptorBuffer.create(defaultReceiveBufferSize);
+            iocpEventArgs.SetBuffer(buffer.des, 0, buffer.desLength);
         }
 
         public void attachSocket(Socket socket)
         {
             this.socket = socket;
-            this.iocpAsyncDelegate = socket.ReceiveAsync;
+            this.iocpAsyncDelegate = new IocpAsyncDelegate(socket.ReceiveAsync);
         }
 
         public void detachSocket()
@@ -48,19 +49,10 @@ namespace Cabinet.Bridge.Tcp.Action
             if (iocpEventArgs.BytesTransferred > 0)
             {
                 checkSocketError();
-
-                int recvLength = iocpEventArgs.BytesTransferred;
-
-                if (buffer.desCapacity - buffer.desLength < recvLength)
-                {
-                    buffer.recapacity((buffer.desLength + recvLength) * 2, true);
-                }
-
-                buffer.append(iocpEventArgs.Buffer, iocpEventArgs.Offset, recvLength);
-
+                buffer.desLength = iocpEventArgs.BytesTransferred;
+                IocpReceiveEventArgs args = new IocpReceiveEventArgs(buffer);
+                iocpReceiveEvent(this, args);
                 continousAsyncCall = continousReceive;
-           
-                
             }
             else
             {

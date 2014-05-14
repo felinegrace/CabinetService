@@ -9,6 +9,7 @@ namespace Cabinet.Bridge.Tcp.Action
     class IocpSendAction : IocpActionBase
     {
         protected Socket socket { get; set; }
+
         public IocpSendAction()
         {
 
@@ -17,7 +18,7 @@ namespace Cabinet.Bridge.Tcp.Action
         public void attachSocket(Socket socket)
         {
             this.socket = socket;
-            this.iocpAsyncDelegate = socket.SendAsync;
+            this.iocpAsyncDelegate = new IocpAsyncDelegate(socket.SendAsync);
         }
 
         public void detachSocket()

@@ -15,7 +15,7 @@ namespace Cabinet.Bridge.Tcp.Action
         public IocpConnectAction(Socket clientSocket)
         {
             this.clientSocket = clientSocket;
-            this.iocpAsyncDelegate = clientSocket.ConnectAsync;
+            this.iocpAsyncDelegate = new IocpAsyncDelegate(clientSocket.ConnectAsync);
         }
 
         protected override void onIocpEvent(out bool continousAsyncCall)

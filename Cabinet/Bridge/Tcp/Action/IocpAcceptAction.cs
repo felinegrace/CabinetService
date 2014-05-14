@@ -16,7 +16,7 @@ namespace Cabinet.Bridge.Tcp.Action
         public IocpAcceptAction(Socket listenSocket)
         {
             this.listenSocket = listenSocket;
-            this.iocpAsyncDelegate = listenSocket.AcceptAsync;
+            this.iocpAsyncDelegate = new IocpAsyncDelegate(listenSocket.AcceptAsync);
         }
 
         protected sealed override void onIocpEvent(out bool continousAsyncCall)
@@ -26,6 +26,8 @@ namespace Cabinet.Bridge.Tcp.Action
             {
                 AcceptedEvent(this, new IocpAcceptEventArgs(iocpEventArgs.AcceptSocket));
             }
+            // Socket must be cleared since the context object is being reused.
+            iocpEventArgs.AcceptSocket = null;
             continousAsyncCall = continousAccpet;
         }
 

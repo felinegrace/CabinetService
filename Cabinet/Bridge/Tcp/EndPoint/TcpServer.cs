@@ -38,14 +38,16 @@ namespace Cabinet.Bridge.Tcp.EndPoint
 
         public void start()
         {
-            Logger.debug("TcpServer: staring...");
-            
+            Logger.debug("TcpServer: starting...");
+            listener.start();
+            Logger.debug("TcpServer: start.");
         }
 
         public void stop()
         {
             Logger.debug("TcpServer: stopping...");
             sessionPool.dispose();
+            Logger.debug("TcpServer: stop.");
         }
     }
 }

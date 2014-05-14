@@ -24,6 +24,7 @@ namespace Cabinet.Bridge.Tcp.Session
             recvContext = new IocpReceiveAction();
             recvContext.iocpReceiveEvent += ((sender, e) =>
                 this.onIocpReceiveContextEvent(sender, e) );
+            Logger.debug("IocpSession: constructed.");
         }
 
         public void attachSocket(Socket socket)
@@ -51,19 +52,22 @@ namespace Cabinet.Bridge.Tcp.Session
 
         private void onIocpReceiveContextEvent(object sender, IocpReceiveEventArgs eventArgs)
         {
+            Logger.debug("IocpSession: session {0} on receive event ", sessionId);
             if(eventArgs.descriptor == null)
             {
+                Logger.debug("IocpSession: session {0} receives nothing as Disconnect signal.", sessionId);
                 dispose(this, EventArgs.Empty);
             }
             else
             {
+                Logger.debug("IocpSession: session {0} receives {1} bytes of data.", sessionId, eventArgs.descriptor.desLength);
                 onReceive(eventArgs.descriptor);
             }
         }
 
         private void onReceive(Descriptor descriptor)
         {
-
+            
         }
 
         public void send(byte[] buffer, int offset, int count)
@@ -78,6 +82,7 @@ namespace Cabinet.Bridge.Tcp.Session
 
         public void dispose(object sender, EventArgs args)
         {
+            Logger.debug("IocpSession: session {0} disposing...", sessionId);
             detachSocket();
             onSessionDisposedEvent(this, EventArgs.Empty);
         }

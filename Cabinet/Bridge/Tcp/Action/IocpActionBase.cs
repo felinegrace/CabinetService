@@ -9,7 +9,7 @@ namespace Cabinet.Bridge.Tcp.Action
     abstract class IocpActionBase
     {
         protected delegate bool IocpAsyncDelegate(SocketAsyncEventArgs args);
-        protected IocpAsyncDelegate iocpAsyncDelegate;
+        protected IocpAsyncDelegate iocpAsyncDelegate { get; set; }
         protected SocketAsyncEventArgs iocpEventArgs { get; private set; }
 
         protected IocpActionBase()
@@ -63,7 +63,14 @@ namespace Cabinet.Bridge.Tcp.Action
             }
         }
 
-
+        class IocpErrorEventArgs : EventArgs
+        {
+            public string message { get; private set; }
+            public IocpErrorEventArgs(string message)
+            {
+                this.message = message;
+            }
+        }
     }
 
 }

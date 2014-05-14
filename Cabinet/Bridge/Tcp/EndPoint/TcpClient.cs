@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 using System.Net;
+using Cabinet.Utility;
 using Cabinet.Bridge.Tcp.Session;
 using Cabinet.Bridge.Tcp.Action;
 
@@ -27,19 +28,33 @@ namespace Cabinet.Bridge.Tcp.EndPoint
 
         public void start()
         {
+            Logger.debug("TcpClient: starting...");
             connector.start();
+            Logger.debug("TcpClient: start.");
         }
 
         public void stop()
         {
+            Logger.debug("TcpClient: stopping...");
             session.dispose(this, EventArgs.Empty);
             connector.stop();
+            Logger.debug("TcpClient: stop.");
         }
 
         private void onServerConnected(object sender, IocpConnectEventArgs args)
         {
             session.attachSocket(args.socket);
-            session.recv();
+            //session.recv();
+        }
+
+        public void send(string buffer)
+        {
+            session.send(System.Text.Encoding.Default.GetBytes(buffer), 0, buffer.Length);
+        }
+
+        public void send(byte[] buffer, int offset, int count)
+        {
+            session.send(buffer, offset, count);
         }
     }
 }

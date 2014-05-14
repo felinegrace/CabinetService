@@ -15,10 +15,18 @@ namespace Demo_TcpClientConsole
             Logger.enable();
             TcpClient s = new TcpClient("127.0.0.1",6382,"127.0.0.1", 8732);
             s.start();
+            
             ConsoleKeyInfo ch;
             do
             {
                 ch = Console.ReadKey();
+                switch(ch.Key)
+                {
+                    case ConsoleKey.S: s.send("123456");
+                        break;
+                    default:
+                        break;
+                }
             } while (ch.Key != ConsoleKey.Q);
             s.stop();
         }
