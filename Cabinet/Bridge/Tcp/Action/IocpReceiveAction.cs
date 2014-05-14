@@ -10,25 +10,31 @@ namespace Cabinet.Bridge.Tcp.Action
     class IocpReceiveAction : IocpActionBase
     {
         protected Socket socket { get; set; }
+        private DescriptorBuffer buffer { get; set; }
+        private bool continousReceive { get; set; }
+
         public event EventHandler<IocpReceiveEventArgs> iocpReceiveEvent;
         private const int defaultReceiveBufferSize = 1024 * 4;
-        private DescriptorBuffer buffer { get; set; }
+  
+
         public IocpReceiveAction()
         {
             this.socket = null;
-            this.iocpAsyncDelegate = socket.ReceiveAsync;
             buffer = DescriptorBuffer.create(defaultReceiveBufferSize);
         }
 
         public void attachSocket(Socket socket)
         {
             this.socket = socket;
+            this.iocpAsyncDelegate = socket.ReceiveAsync;
         }
 
         public void detachSocket()
         {
+            this.iocpAsyncDelegate = null;
             try
             {
+                
                 socket.Shutdown(SocketShutdown.Receive);
                 this.socket = null;
             }
@@ -52,7 +58,7 @@ namespace Cabinet.Bridge.Tcp.Action
 
                 buffer.append(iocpEventArgs.Buffer, iocpEventArgs.Offset, recvLength);
 
-                continousAsyncCall = true;
+                continousAsyncCall = continousReceive;
            
                 
             }
@@ -68,11 +74,13 @@ namespace Cabinet.Bridge.Tcp.Action
 
         public void recv()
         {
+            continousReceive = true;
             iocpOperation();
         }
 
         public void shutdown()
         {
+            continousReceive = false;
             try
             {
                 socket.Shutdown(SocketShutdown.Receive);

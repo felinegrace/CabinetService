@@ -50,11 +50,19 @@ namespace Cabinet.Framework.BusinessLayer
             var q = from o in regionDao.r()
                     where o.guid == guid
                     select o;
-            RegionVO vo = q.Single<RegionVO>();
-            logOnFillingResult();
-            context.response.result.Add(vo.guid);
-            context.response.result.Add(vo.name);
-            context.response.result.Add(vo.shortName);
+            
+            if(q.Count<RegionVO>() == 1)
+            {
+                RegionVO vo = q.Single<RegionVO>();
+                logOnFillingResult();
+                context.response.result.Add(vo.guid);
+                context.response.result.Add(vo.name);
+                context.response.result.Add(vo.shortName);
+            }
+            else
+            {
+                throw new BOException("no such region of guid :" + guid.ToString());
+            }
         }
 
         private void doCreate()

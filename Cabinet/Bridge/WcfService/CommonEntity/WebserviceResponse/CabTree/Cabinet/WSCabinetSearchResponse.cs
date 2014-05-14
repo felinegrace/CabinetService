@@ -21,15 +21,48 @@ namespace Cabinet.Bridge.WcfService.CommonEntity
         /// </example>
         public string cabinetGuid { get; set; }
         /// <summary>
-        /// 查询的机房的名称
+        /// 查询的屏柜的名称
         /// </summary>
         /// <example> 
         /// 以json的字符串表示的名称如下
         /// <code>
-        /// "name" : "220KV天一变"
+        /// "name" : "Ca-001"
         /// </code>
         /// </example>
         public string name { get; set; }
+
+        /// <summary>
+        /// 查询的屏柜的名称
+        /// </summary>
+        /// <example> 
+        /// 以json的字符串表示的名称如下
+        /// <code>
+        /// "name" : "Ca-001"
+        /// </code>
+        /// </example>
+        int height;
+
+        /// <summary>
+        /// 查询的屏柜的名称
+        /// </summary>
+        /// <example> 
+        /// 以json的字符串表示的名称如下
+        /// <code>
+        /// "name" : ""
+        /// </code>
+        /// </example>
+        int width;
+
+        /// <summary>
+        /// 查询的屏柜的名称
+        /// </summary>
+        /// <example> 
+        /// 以json的字符串表示的名称如下
+        /// <code>
+        /// "depth" : 
+        /// </code>
+        /// </example>
+        int depth;
         internal WSCabinetSearchResponse()
         {
             

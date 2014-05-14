@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{541545EB-A200-42D7-AC29-909A7A4C226F}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{FB55679B-C34C-4749-9386-C5ADDFCB4993}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.Bridge.Tcp</RootNamespace>
-    <AssemblyName>Cabinet.Bridge.Tcp</AssemblyName>
+    <RootNamespace>Cabinet.Demo.TcpServerConsole</RootNamespace>
+    <AssemblyName>Cabinet.Demo.TcpServerConsole</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -39,27 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Action\IocpConnectAction.cs" />
-    <Compile Include="CommonEntity\IocpException.cs" />
-    <Compile Include="EndPoint\TcpClient.cs" />
-    <Compile Include="Session\IocpConnector.cs" />
-    <Compile Include="Session\IocpListener.cs" />
-    <Compile Include="EndPoint\TcpServer.cs" />
-    <Compile Include="Action\IocpAcceptAction.cs" />
-    <Compile Include="Action\IocpReceiveAction.cs" />
-    <Compile Include="Action\IocpSendAction.cs" />
-    <Compile Include="Session\IocpSession.cs" />
-    <Compile Include="Action\IocpActionBase.cs" />
-    <Compile Include="Session\IocpSessionPool.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Utility\Utility.csproj">
+    <ProjectReference Include="..\..\Cabinet\Bridge\Tcp\Tcp.csproj">
+      <Project>{541545eb-a200-42d7-ac29-909a7a4c226f}</Project>
+      <Name>Tcp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Cabinet\Utility\Utility.csproj">
       <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
       <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

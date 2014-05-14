@@ -2,30 +2,44 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cabinet.Bridge.Tcp.Session;
+using System.Net.Sockets;
+using System.Net;
 using Cabinet.Utility;
+using Cabinet.Bridge.Tcp.Session;
+using Cabinet.Bridge.Tcp.Action;
+
+
 
 namespace Cabinet.Bridge.Tcp.EndPoint
 {
     public class TcpServer
     {
         private IocpSessionPool sessionPool { get; set; }
-
+        private IocpListener listener { get; set; }
+        
 
         private const int initialSessionPoolSize = 64;
-        public TcpServer()
+        public TcpServer(string ipAddress, int port)
         {
+            listener = new IocpListener(new IPEndPoint(IPAddress.Parse(ipAddress), port));
+            listener.registerAcceptEventHanlder(this.onClientConnected);
             sessionPool = new IocpSessionPool(() => new IocpSession());
+            
         }
 
-        private void recycleSession(IocpSession session)
+        private void onClientConnected(object sender, IocpAcceptEventArgs args)
         {
-
+            IocpSession newSession = sessionPool.take();
+            
+            newSession.attachSocket(args.socket);
+            newSession.recv();
         }
+
 
         public void start()
         {
             Logger.debug("TcpServer: staring...");
+            
         }
 
         public void stop()

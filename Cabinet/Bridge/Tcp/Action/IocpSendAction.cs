@@ -11,19 +11,20 @@ namespace Cabinet.Bridge.Tcp.Action
         protected Socket socket { get; set; }
         public IocpSendAction()
         {
-            this.socket = null;
-            this.iocpAsyncDelegate = socket.SendAsync;
+
         }
 
         public void attachSocket(Socket socket)
         {
             this.socket = socket;
+            this.iocpAsyncDelegate = socket.SendAsync;
         }
 
         public void detachSocket()
         {
+            this.iocpAsyncDelegate = null;
             try
-            {
+            { 
                 socket.Shutdown(SocketShutdown.Send);
                 this.socket = null;
             }

@@ -9,6 +9,7 @@ namespace Cabinet.Bridge.Tcp.Action
     class IocpAcceptAction : IocpActionBase
     {
         private Socket listenSocket { get; set; }
+        private bool continousAccpet { get; set; }
 
         public event EventHandler<IocpAcceptEventArgs> AcceptedEvent;
 
@@ -25,7 +26,18 @@ namespace Cabinet.Bridge.Tcp.Action
             {
                 AcceptedEvent(this, new IocpAcceptEventArgs(iocpEventArgs.AcceptSocket));
             }
-            continousAsyncCall = true;
+            continousAsyncCall = continousAccpet;
+        }
+
+        public void accept()
+        {
+            continousAccpet = true;
+            iocpOperation();
+        }
+
+        public void shutdown()
+        {
+            continousAccpet = false;
         }
     }
 

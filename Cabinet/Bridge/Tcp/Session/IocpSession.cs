@@ -33,14 +33,14 @@ namespace Cabinet.Bridge.Tcp.Session
             sendContext.attachSocket(socket);
             recvContext.attachSocket(socket);
             IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
-            Logger.info("TcpServer: session {0} starts. remote address = {1}:{2}",
+            Logger.info("TcpSession: session {0} starts. remote address = {1}:{2}",
                 sessionId, remoteIpEndPoint.Address, remoteIpEndPoint.Port);
         }
 
         public void detachSocket()
         {
             IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
-            Logger.info("TcpServer: session {0} ends. remote address = {1}:{2}",
+            Logger.info("TcpSession: session {0} ends. remote address = {1}:{2}",
                 sessionId, remoteIpEndPoint.Address, remoteIpEndPoint.Port);
             sendContext.detachSocket();
             recvContext.detachSocket();

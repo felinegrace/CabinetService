@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.Text;
 using Cabinet.Bridge.WcfService;
 
-namespace Cabinet.Demo.CabTreeConsole
+namespace Cabinet.Demo.CabTreeServiceServerConsole
 {
     class Program
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cabinet.Utility;
+using Cabinet.Bridge.WcfService.CommonEntity;
 
 namespace Cabinet.Bridge.WcfService
 {
@@ -21,10 +22,18 @@ namespace Cabinet.Bridge.WcfService
 
         protected string service(Func<string> serviceFunction)
         {
-            logOnRequest();
-            string result = serviceFunction();
-            logOnResponse();
-            return result;
+            try
+            {
+                logOnRequest();
+                string result = serviceFunction();
+                logOnResponse();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                return new WSResponseErrorBase(ex.Message).toJson();
+            }
+            
         }
     }
 }
