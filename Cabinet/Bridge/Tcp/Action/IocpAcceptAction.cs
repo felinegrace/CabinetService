@@ -10,12 +10,12 @@ namespace Cabinet.Bridge.Tcp.Action
     {
         private Socket listenSocket { get; set; }
         private bool continousAccpet { get; set; }
+        private Action<Socket> onAcceptedAction { get; set; }
 
-        public event EventHandler<IocpAcceptEventArgs> AcceptedEvent;
-
-        public IocpAcceptAction(Socket listenSocket)
+        public IocpAcceptAction(Socket listenSocket, Action<Socket> onAcceptedAction)
         {
             this.listenSocket = listenSocket;
+            this.onAcceptedAction = onAcceptedAction;
             this.iocpAsyncDelegate = new IocpAsyncDelegate(listenSocket.AcceptAsync);
         }
 
@@ -24,7 +24,7 @@ namespace Cabinet.Bridge.Tcp.Action
             checkSocketError();
             if (iocpEventArgs.AcceptSocket.Connected)
             {
-                AcceptedEvent(this, new IocpAcceptEventArgs(iocpEventArgs.AcceptSocket));
+                onAcceptedAction(iocpEventArgs.AcceptSocket);
             }
             // Socket must be cleared since the context object is being reused.
             iocpEventArgs.AcceptSocket = null;
@@ -43,12 +43,4 @@ namespace Cabinet.Bridge.Tcp.Action
         }
     }
 
-    class IocpAcceptEventArgs : EventArgs
-    {
-        public Socket socket { get; private set; }
-        public IocpAcceptEventArgs(Socket socket)
-        {
-            this.socket = socket;
-        }
-    }
 }

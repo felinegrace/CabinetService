@@ -9,18 +9,16 @@ namespace Cabinet.Bridge.Tcp.Session
 {
     class IocpSessionPool
     {
-        private ConcurrentBag<IocpSession> sessionPoolBag;
-
-        private Func<IocpSession> itemConstructor;
-
-        private event EventHandler<EventArgs> sessionDisposeEvent;
+        private ConcurrentBag<IocpSession> sessionBag { get; set; }
+        private Func<IocpSession> itemConstructor { get; set; }
+        
         public IocpSessionPool(Func<IocpSession> itemConstructor)
         {
             if (itemConstructor == null)
             {
                 throw new IocpException("session pool item constructor cannot be null.");
             }
-            this.sessionPoolBag = new ConcurrentBag<IocpSession>();
+            this.sessionBag = new ConcurrentBag<IocpSession>();
             this.itemConstructor = itemConstructor;
             Logger.debug("TcpServer: IocpSessionPool constructed.");
         }
@@ -31,37 +29,28 @@ namespace Cabinet.Bridge.Tcp.Session
             {
                 throw new IocpException("session put back to pool cannot be null"); 
             }
-            sessionDisposeEvent -= session.dispose;
-            sessionPoolBag.Add(session);
-            Logger.debug("TcpServer: a session has put back into IocpSessionPool ");
+            Guid savedSessionId = session.sessionId;
+            session.sessionId = Guid.Empty;
+            sessionBag.Add(session);
+            Logger.debug("TcpServer: session {0} has put back into IocpSessionPool.", savedSessionId);
         }
 
         public IocpSession take()
         {
             IocpSession session;
-            if (sessionPoolBag.TryTake(out session) == false)
+            if (sessionBag.TryTake(out session) == false)
             {
                 Logger.debug("requires more context instance from IocpSessionPool, create one.");
                 session = itemConstructor();
-                session.onSessionDisposedEvent += (sender, e) => {
-                    IocpSession disposedSession = sender as IocpSession;
-                    put(disposedSession);
-                };
             }
-            sessionDisposeEvent += session.dispose;
-            Logger.debug("TcpServer: a session has took away from IocpSessionPool ");
+            session.sessionId = Guid.NewGuid();
+            Logger.debug("TcpServer: session {0} has took away from IocpSessionPool.", session.sessionId);
             return session;
-        }
-
-        public void dispose()
-        {
-            Logger.debug("TcpServer: dispose all sessions.");
-            sessionDisposeEvent(this, EventArgs.Empty);
         }
 
         public int available()
         {
-            return sessionPoolBag.Count;
+            return sessionBag.Count;
         }
 
 

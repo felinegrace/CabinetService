@@ -15,17 +15,13 @@ namespace Cabinet.Bridge.Tcp.Session
         private IPEndPoint serverEndPoint { get; set; }
         private IocpConnectAction connectAction { get; set; }
 
-        public void registerAcceptEventHanlder(EventHandler<IocpConnectEventArgs> handler)
-        {
-            connectAction.ConnectedEvent += handler;
-        }
-
-        public IocpConnector(IPEndPoint clientEndPoint, IPEndPoint serverEndPoint)
+        public IocpConnector(IPEndPoint clientEndPoint, IPEndPoint serverEndPoint, IIocpSessionObserver observer)
         {
             this.clientEndPoint = clientEndPoint;
             this.serverEndPoint = serverEndPoint;
             this.clientSocket = new Socket(clientEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            connectAction = new IocpConnectAction(clientSocket);
+            connectAction = new IocpConnectAction(clientSocket,
+                ((socket) => { observer.onSessionConnected(socket); }));
         }
 
         public void start()

@@ -42,6 +42,7 @@
     <Compile Include="Action\IocpConnectAction.cs" />
     <Compile Include="CommonEntity\IocpException.cs" />
     <Compile Include="EndPoint\TcpClient.cs" />
+    <Compile Include="Session\IIocpSessionObserver.cs" />
     <Compile Include="Session\IocpConnector.cs" />
     <Compile Include="Session\IocpListener.cs" />
     <Compile Include="EndPoint\TcpServer.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Action\IocpSendAction.cs" />
     <Compile Include="Session\IocpSession.cs" />
     <Compile Include="Action\IocpActionBase.cs" />
+    <Compile Include="Session\IocpSessionMap.cs" />
     <Compile Include="Session\IocpSessionPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -10,7 +10,7 @@ using Cabinet.Bridge.Tcp.Action;
 
 namespace Cabinet.Bridge.Tcp.EndPoint
 {
-    public class TcpClient
+    public class TcpClient : IIocpSessionObserver
     {
         private IocpSession session { get; set; }
         private IocpConnector connector { get; set; }
@@ -18,12 +18,11 @@ namespace Cabinet.Bridge.Tcp.EndPoint
         public TcpClient(string clientIpAddress, int clientPort,
             string serverIpAddress, int serverPort)
         {
-            session = new IocpSession();
+            session = new IocpSession(this);
             connector = new IocpConnector(
                 new IPEndPoint(IPAddress.Parse(clientIpAddress), clientPort),
-                new IPEndPoint(IPAddress.Parse(serverIpAddress), serverPort)
-                );
-            connector.registerAcceptEventHanlder(this.onServerConnected);
+                new IPEndPoint(IPAddress.Parse(serverIpAddress), serverPort),
+                this);
         }
 
         public void start()
@@ -41,12 +40,6 @@ namespace Cabinet.Bridge.Tcp.EndPoint
             Logger.debug("TcpClient: stop.");
         }
 
-        private void onServerConnected(object sender, IocpConnectEventArgs args)
-        {
-            session.attachSocket(args.socket);
-            //session.recv();
-        }
-
         public void send(string buffer)
         {
             session.send(System.Text.Encoding.Default.GetBytes(buffer), 0, buffer.Length);
@@ -55,6 +48,24 @@ namespace Cabinet.Bridge.Tcp.EndPoint
         public void send(byte[] buffer, int offset, int count)
         {
             session.send(buffer, offset, count);
+        }
+
+        public void onSessionConnected(Socket remoteSocket)
+        {
+            session.attachSocket(remoteSocket);
+            session.recv();
+        }
+
+        public void onSessionData(Guid sessionId, Descriptor descriptor)
+        {
+            Logger.debug("TcpServer: session {0} receives {1} bytes of data. ascii data: {2}",
+                    sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
+        }
+
+        public void onSessionDisconnected(Guid sessionId)
+        {
+            Logger.debug("TcpServer: session {0} disconnected.",
+                    sessionId);
         }
     }
 }

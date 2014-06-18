@@ -12,7 +12,7 @@ namespace Cabinet.Bridge.WcfService
         private ServiceHost serviceHost;
         public WcfServer()
         {
-            serviceHost = new ServiceHost(typeof(CabTreeService));
+            serviceHost = new ServiceHost(typeof(WorkInstructionService));
         }
         public void start()
         {

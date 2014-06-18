@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTest_RawRequest.cs" />
+    <Compile Include="UnitTest_WorkInstructionVO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Cabinet\Framework\CommonEntity\CommonEntity.csproj">

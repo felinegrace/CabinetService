@@ -71,7 +71,7 @@
     <Compile Include="CommonEntity\WebserviceResponse\WSResponseErrorBase.cs" />
     <Compile Include="CommonEntity\WebserviceResponse\WSResponseSuccessBase.cs" />
     <Compile Include="IAttrTypeService.cs" />
-    <Compile Include="IWorkInstruction.cs" />
+    <Compile Include="IWorkInstructionService.cs" />
     <Compile Include="ServiceImplBase.cs" />
     <Compile Include="WcfServerGateway.cs" />
     <Compile Include="BusinessServiceBase.cs" />
@@ -82,11 +82,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionBusinessService.cs" />
     <Compile Include="WcfServer.cs" />
-    <Compile Include="WorkInstruction.cs" />
+    <Compile Include="WorkInstructionBusinessService.cs" />
+    <Compile Include="WorkInstructionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\services.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Config\bindings.config">
       <SubType>Designer</SubType>

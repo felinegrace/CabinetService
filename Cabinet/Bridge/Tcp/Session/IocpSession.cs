@@ -11,28 +11,27 @@ namespace Cabinet.Bridge.Tcp.Session
 {
     class IocpSession
     {
-        public Guid sessionId { get; private set; }
+        public Guid sessionId { get; set; }
         private Socket socket { get; set; }
-        private IocpSendAction sendContext { get; set; }
-        private IocpReceiveAction recvContext { get; set; }
+        private IocpSendAction sendAction { get; set; }
+        private IocpReceiveAction recvAction { get; set; }
+        private IIocpSessionObserver observer { get; set; }
 
-        internal event EventHandler<EventArgs> onSessionDisposedEvent;
-
-        public IocpSession()
+        public IocpSession(IIocpSessionObserver observer)
         {
-            sendContext = new IocpSendAction();
-            recvContext = new IocpReceiveAction();
-            recvContext.iocpReceiveEvent += ((sender, e) =>
-                this.onIocpReceiveContextEvent(sender, e) );
+            this.observer = observer;
+            sendAction = new IocpSendAction(
+                ((bytesSent) => this.onIocpSendActionEvent(bytesSent)));
+            recvAction = new IocpReceiveAction(
+                (descriptor) => this.onIocpReceiveActionEvent(descriptor));
             Logger.debug("IocpSession: constructed.");
         }
 
         public void attachSocket(Socket socket)
         {
-            sessionId = Guid.NewGuid();
             this.socket = socket;
-            sendContext.attachSocket(socket);
-            recvContext.attachSocket(socket);
+            sendAction.attachSocket(socket);
+            recvAction.attachSocket(socket);
             IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
             Logger.info("TcpSession: session {0} starts. remote address = {1}:{2}",
                 sessionId, remoteIpEndPoint.Address, remoteIpEndPoint.Port);
@@ -43,49 +42,55 @@ namespace Cabinet.Bridge.Tcp.Session
             IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
             Logger.info("TcpSession: session {0} ends. remote address = {1}:{2}",
                 sessionId, remoteIpEndPoint.Address, remoteIpEndPoint.Port);
-            sendContext.detachSocket();
-            recvContext.detachSocket();
+            sendAction.detachSocket();
+            recvAction.detachSocket();
             socket.Close();
             socket = null;
-            sessionId = Guid.Empty;
         }
 
-        private void onIocpReceiveContextEvent(object sender, IocpReceiveEventArgs eventArgs)
+        private void onIocpReceiveActionEvent(Descriptor descriptor)
         {
             Logger.debug("IocpSession: session {0} on receive event ", sessionId);
-            if(eventArgs.descriptor == null)
+            if (descriptor == null)
             {
                 Logger.debug("IocpSession: session {0} receives nothing as Disconnect signal.", sessionId);
                 dispose(this, EventArgs.Empty);
             }
             else
             {
-                Logger.debug("IocpSession: session {0} receives {1} bytes of data.", sessionId, eventArgs.descriptor.desLength);
-                onReceive(eventArgs.descriptor);
+                Logger.debug("IocpSession: session {0} receives {1} bytes of data. ascii data: {2}",
+                    sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
+                digest(descriptor);
             }
         }
 
-        private void onReceive(Descriptor descriptor)
+        private void onIocpSendActionEvent(int bytesSent)
         {
-            
+            Logger.debug("IocpSession: session {0} sends {1} byte(s) of data.", sessionId, bytesSent);
+        }
+
+        private void digest(Descriptor descriptor)
+        {
+            observer.onSessionData(sessionId, descriptor);
         }
 
         public void send(byte[] buffer, int offset, int count)
         {
-            sendContext.send(buffer, offset, count);
+            sendAction.send(buffer, offset, count);
         }
 
         public void recv()
         {
-            recvContext.recv();
+            recvAction.recv();
         }
 
         public void dispose(object sender, EventArgs args)
         {
-            Logger.debug("IocpSession: session {0} disposing...", sessionId);
             detachSocket();
-            onSessionDisposedEvent(this, EventArgs.Empty);
+            Logger.debug("IocpSession: session {0} disposed.", sessionId);
+            observer.onSessionDisconnected(sessionId);
         }
 
     }
+
 }

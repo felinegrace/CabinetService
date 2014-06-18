@@ -10,18 +10,19 @@ namespace Cabinet.Bridge.Tcp.Action
     class IocpConnectAction : IocpActionBase
     {
         private Socket clientSocket { get; set; }
+        private Action<Socket> onConnectedAction { get; set; }
 
-        public event EventHandler<IocpConnectEventArgs> ConnectedEvent;
-        public IocpConnectAction(Socket clientSocket)
+        public IocpConnectAction(Socket clientSocket, Action<Socket> onConnectedAction)
         {
             this.clientSocket = clientSocket;
+            this.onConnectedAction = onConnectedAction;
             this.iocpAsyncDelegate = new IocpAsyncDelegate(clientSocket.ConnectAsync);
         }
 
         protected override void onIocpEvent(out bool continousAsyncCall)
         {
             checkSocketError();
-            ConnectedEvent(this, new IocpConnectEventArgs(clientSocket));
+            onConnectedAction(clientSocket);
             continousAsyncCall = false;
         }
 
@@ -37,12 +38,4 @@ namespace Cabinet.Bridge.Tcp.Action
         }
     }
 
-    class IocpConnectEventArgs : EventArgs
-    {
-        public Socket socket { get; private set; }
-        public IocpConnectEventArgs(Socket socket)
-        {
-            this.socket = socket;
-        }
-    }
 }

@@ -10,6 +10,7 @@ namespace Cabinet.Utility
     {
         private Thread thread { get; set; }
         private AutoResetEvent terminalEvent { get; set; }
+        public Action<string> onError { get; set; }
         public PollingThread()
         {
             terminalEvent = new AutoResetEvent(false);
@@ -33,12 +34,25 @@ namespace Cabinet.Utility
         }
         private void polling()
         {
-            onStart();
-            while (!terminalEvent.WaitOne(0))
+            try
             {
-                onPolling();
+                onStart();
+                while (!terminalEvent.WaitOne(0))
+                {
+                    onPolling();
+                }
             }
-            onStop();
+            catch (System.Exception ex)
+            {
+                stop();
+                Logger.error(ex.Message);
+                if (onError != null)
+                    onError(ex.Message);
+            }
+            finally
+            {
+                onStop();
+            }
         }
         protected abstract void onPolling();
         protected virtual void onStart()

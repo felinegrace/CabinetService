@@ -7,27 +7,22 @@ using System.Net;
 using Cabinet.Utility;
 using Cabinet.Bridge.Tcp.Action;
 
-namespace Cabinet.Bridge.Tcp.EndPoint
+namespace Cabinet.Bridge.Tcp.Session
 {
     class IocpListener
     {
         private IPEndPoint listenerEndPoint { get; set; }
         private Socket listenerSocket { get; set; }
         private IocpAcceptAction acceptAction { get; set; }
-        
 
         private const int initialPendingConnectionCount = 16;
 
-        public void registerAcceptEventHanlder(EventHandler<IocpAcceptEventArgs> handler)
-        {
-            acceptAction.AcceptedEvent += handler;
-        }
-
-        public IocpListener(IPEndPoint listenerEndPoint)
+        public IocpListener(IPEndPoint listenerEndPoint, IIocpSessionObserver observer)
         {
             this.listenerEndPoint = listenerEndPoint;
             this.listenerSocket = new Socket(listenerEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            acceptAction = new IocpAcceptAction(listenerSocket);
+            acceptAction = new IocpAcceptAction(listenerSocket,
+                ((socket) => { observer.onSessionConnected(socket); }));
         }
         public void start()
         {

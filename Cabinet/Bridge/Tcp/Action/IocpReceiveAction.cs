@@ -12,16 +12,15 @@ namespace Cabinet.Bridge.Tcp.Action
         protected Socket socket { get; set; }
         private DescriptorBuffer buffer { get; set; }
         private bool continousReceive { get; set; }
+        private Action<Descriptor> onReceivedAction { get; set; }
 
-        public event EventHandler<IocpReceiveEventArgs> iocpReceiveEvent;
         private const int defaultReceiveBufferSize = 1024 * 4;
-  
 
-        public IocpReceiveAction()
+        public IocpReceiveAction(Action<Descriptor> onReceivedAction)
         {
-            this.socket = null;
+            this.onReceivedAction = onReceivedAction;
             buffer = DescriptorBuffer.create(defaultReceiveBufferSize);
-            iocpEventArgs.SetBuffer(buffer.des, 0, buffer.desLength);
+            iocpEventArgs.SetBuffer(buffer.des, 0, defaultReceiveBufferSize);
         }
 
         public void attachSocket(Socket socket)
@@ -50,15 +49,13 @@ namespace Cabinet.Bridge.Tcp.Action
             {
                 checkSocketError();
                 buffer.desLength = iocpEventArgs.BytesTransferred;
-                IocpReceiveEventArgs args = new IocpReceiveEventArgs(buffer);
-                iocpReceiveEvent(this, args);
+                onReceivedAction(buffer);
                 continousAsyncCall = continousReceive;
             }
             else
             {
                 //send null as disconnect event
-                IocpReceiveEventArgs args = new IocpReceiveEventArgs(null);
-                iocpReceiveEvent(this, args);
+                onReceivedAction(null);
                 continousAsyncCall = false;
             }
         }
@@ -82,12 +79,4 @@ namespace Cabinet.Bridge.Tcp.Action
         }
     }
 
-    class IocpReceiveEventArgs : EventArgs
-    {
-        public Descriptor descriptor { get; private set; }
-        public IocpReceiveEventArgs(Descriptor descriptor)
-        {
-            this.descriptor = descriptor;
-        }
-    }
 }

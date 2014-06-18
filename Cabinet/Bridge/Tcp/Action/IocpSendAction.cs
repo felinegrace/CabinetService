@@ -9,10 +9,10 @@ namespace Cabinet.Bridge.Tcp.Action
     class IocpSendAction : IocpActionBase
     {
         protected Socket socket { get; set; }
-
-        public IocpSendAction()
+        private Action<int> onSentAction { get; set; }
+        public IocpSendAction(Action<int> onSentAction)
         {
-
+            this.onSentAction = onSentAction;
         }
 
         public void attachSocket(Socket socket)
@@ -36,10 +36,8 @@ namespace Cabinet.Bridge.Tcp.Action
         protected sealed override void onIocpEvent(out bool continousAsyncCall)
         {
             checkSocketError();
-            if (iocpEventArgs.BytesTransferred != iocpEventArgs.Buffer.Length)
-            {
-                throw new IocpException("not all datas are sent.");
-            }
+
+            onSentAction(iocpEventArgs.BytesTransferred);
             continousAsyncCall = false;
         }
 
@@ -55,7 +53,12 @@ namespace Cabinet.Bridge.Tcp.Action
 
         public void shutdown()
         {
-            
+            try
+            {
+                socket.Shutdown(SocketShutdown.Send);
+            }
+            // throws if client process has already closed
+            catch (Exception) { }
         }
     }
 }
