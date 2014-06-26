@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A532A29F-9292-4D18-BB95-96A6AF2643A7}</ProjectGuid>
+    <ProjectGuid>{007A5933-1E81-4F39-A19C-50EB84507197}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.Utility</RootNamespace>
-    <AssemblyName>Cabinet.Utility</AssemblyName>
+    <RootNamespace>Cabinet.Bridge.EqptRoomComm</RootNamespace>
+    <AssemblyName>Cabinet.Bridge.EqptRoomComm</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,13 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\..\AwfulService\Lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\AwfulService\Lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,24 +39,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Descriptor\Descriptor.cs" />
-    <Compile Include="Descriptor\DescriptorBuffer.cs" />
-    <Compile Include="Descriptor\DescriptorReference.cs" />
-    <Compile Include="Descriptor\DescriptorException.cs" />
-    <Compile Include="Polling\EventablePollingThread.cs" />
-    <Compile Include="Logger\Logger.cs" />
-    <Compile Include="Logger\Logger4LINQ.cs" />
-    <Compile Include="Polling\PollingThread.cs" />
+    <Compile Include="CommonEntity\EqptRoomCommException.cs" />
+    <Compile Include="EndPoint\EqptRoomClient.cs" />
+    <Compile Include="EndPoint\EqptRoomHub.cs" />
+    <Compile Include="EndPoint\EqptRoomClientMap.cs" />
+    <Compile Include="EndPoint\EqptRoomHubBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Polling\SingleListServer.cs" />
-    <Compile Include="Serializing\BytesHelper.cs" />
-    <Compile Include="Serializing\Jsonable.cs" />
+    <Compile Include="Protocol\Message\MessageBase.cs" />
+    <Compile Include="Protocol\Message\RegisterMessage.cs" />
+    <Compile Include="Protocol\Parser\MessageParser.cs" />
+    <Compile Include="Protocol\PayloadEntity\Acknowledge.cs" />
+    <Compile Include="Protocol\PayloadEntity\Register.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Config\log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\..\Utility\Utility.csproj">
+      <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tcp\Tcp.csproj">
+      <Project>{541545eb-a200-42d7-ac29-909a7a4c226f}</Project>
+      <Name>Tcp</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

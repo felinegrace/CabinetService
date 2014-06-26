@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EBE6C2C9-80F4-461C-8D95-A19349942A6E}</ProjectGuid>
+    <ProjectGuid>{CAA78835-58AA-4279-BEE1-1A3F26E4DF64}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.UnitTest.BusinessLayer</RootNamespace>
-    <AssemblyName>Cabinet.UnitTest.BusinessLayer</AssemblyName>
+    <RootNamespace>Cabinet.UnitTest.EqptRoomComm</RootNamespace>
+    <AssemblyName>Cabinet.UnitTest.EqptRoomComm</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,7 +39,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.Linq" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -54,29 +53,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest_RegionBO.cs" />
+    <Compile Include="UnitTest_Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Cabinet\Framework\BusinessLayer\BusinessLayer.csproj">
-      <Project>{5600499e-fbf1-409e-b01b-aff8121d6769}</Project>
-      <Name>BusinessLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Cabinet\Framework\CommonEntity\CommonEntity.csproj">
-      <Project>{c4f6b129-a8f4-4178-a270-21ca79c4636c}</Project>
-      <Name>CommonEntity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Cabinet\Framework\PersistenceLayer\PersistenceLayer.csproj">
-      <Project>{9f64d17b-4dc7-426a-8a96-b6d9b591fa17}</Project>
-      <Name>PersistenceLayer</Name>
+    <ProjectReference Include="..\..\Cabinet\Bridge\EqptRoomComm\EqptRoomComm.csproj">
+      <Project>{007a5933-1e81-4f39-a19c-50eb84507197}</Project>
+      <Name>EqptRoomComm</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Cabinet\Utility\Utility.csproj">
       <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
       <Name>Utility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TestUtility\TestUtility.csproj">
-      <Project>{b4cae167-5877-43f6-849b-a48676b4def0}</Project>
-      <Name>TestUtility</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

@@ -66,6 +66,10 @@
       <Project>{9f64d17b-4dc7-426a-8a96-b6d9b591fa17}</Project>
       <Name>PersistenceLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Cabinet\Utility\Utility.csproj">
+      <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestUtility\TestUtility.csproj">
       <Project>{b4cae167-5877-43f6-849b-a48676b4def0}</Project>
       <Name>TestUtility</Name>

@@ -7,6 +7,7 @@ using Cabinet.Framework.PersistenceLayer;
 using System.Data.Linq.SqlClient;
 using Cabinet.UnitTest.Utility;
 using System.Collections.Generic;
+using Cabinet.Utility;
 
 namespace Cabinet.UnitTest.BusinessLayer
 {

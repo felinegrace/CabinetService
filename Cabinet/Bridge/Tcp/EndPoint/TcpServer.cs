@@ -17,11 +17,13 @@ namespace Cabinet.Bridge.Tcp.EndPoint
         private IocpSessionPool pendingSessions { get; set; }
         private IocpSessionMap runningSessions { get; set; }
         private IocpListener listener { get; set; }
-        
+        private TcpServerObserver tcpServerObserver { get; set; }
+
         private const int initialSessionPoolSize = 64;
 
-        public TcpServer(string ipAddress, int port)
+        public TcpServer(string ipAddress, int port, TcpServerObserver tcpServerObserver)
         {
+            this.tcpServerObserver = tcpServerObserver;
             listener = new IocpListener(new IPEndPoint(IPAddress.Parse(ipAddress), port), this);
             pendingSessions = new IocpSessionPool(() => new IocpSession(this));
             runningSessions = new IocpSessionMap();
@@ -67,12 +69,22 @@ namespace Cabinet.Bridge.Tcp.EndPoint
             Logger.debug("TcpServer: echo session {0} with {1} bytes of data. ascii data: {2}",
                     sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
             runningSessions.search(sessionId).send(descriptor.des, 0, descriptor.desLength);
+            if(tcpServerObserver != null)
+            {
+                tcpServerObserver.onTcpData(sessionId, descriptor);
+            }
         }
 
         public void onSessionDisconnected(Guid sessionId)
         {
             IocpSession endSession = runningSessions.take(sessionId);
             pendingSessions.put(endSession);
+        }
+
+        public void sendData(Guid sessionId, byte[] data, int offset, int count)
+        {
+            IocpSession dstSession = runningSessions.search(sessionId);
+            dstSession.send(data, offset, count);
         }
     }
 

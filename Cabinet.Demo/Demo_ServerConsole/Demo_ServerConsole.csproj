@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A532A29F-9292-4D18-BB95-96A6AF2643A7}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{6B282090-1791-491D-A7D1-839A8D18DB1A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.Utility</RootNamespace>
-    <AssemblyName>Cabinet.Utility</AssemblyName>
+    <RootNamespace>Cabinet.Demo.ServerConsole</RootNamespace>
+    <AssemblyName>Cabinet.Demo.ServerConsole</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,13 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\..\AwfulService\Lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\AwfulService\Lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,23 +41,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Descriptor\Descriptor.cs" />
-    <Compile Include="Descriptor\DescriptorBuffer.cs" />
-    <Compile Include="Descriptor\DescriptorReference.cs" />
-    <Compile Include="Descriptor\DescriptorException.cs" />
-    <Compile Include="Polling\EventablePollingThread.cs" />
-    <Compile Include="Logger\Logger.cs" />
-    <Compile Include="Logger\Logger4LINQ.cs" />
-    <Compile Include="Polling\PollingThread.cs" />
+    <Compile Include="EqptRoomHubConsole.cs" />
+    <Compile Include="IpcServerConsole.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Polling\SingleListServer.cs" />
-    <Compile Include="Serializing\BytesHelper.cs" />
-    <Compile Include="Serializing\Jsonable.cs" />
+    <Compile Include="TcpServerConsole.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Config\log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\..\Cabinet\Bridge\EqptRoomComm\EqptRoomComm.csproj">
+      <Project>{007a5933-1e81-4f39-a19c-50eb84507197}</Project>
+      <Name>EqptRoomComm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Cabinet\Bridge\Ipc\Ipc.csproj">
+      <Project>{fb802af3-1319-4748-a385-dfbcf8387af1}</Project>
+      <Name>Ipc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Cabinet\Bridge\Tcp\Tcp.csproj">
+      <Project>{541545eb-a200-42d7-ac29-909a7a4c226f}</Project>
+      <Name>Tcp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Cabinet\Utility\Utility.csproj">
+      <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
