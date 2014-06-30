@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Cabinet.Utility;
 
-namespace Demo_ClientConsole
+namespace Cabinet.Demo.ClientConsole
 {
     class Program
     {
         static void Main(string[] args)
         {
+            Logger.enable();
+            EqptRoomClientConsole.entry();
         }
     }
 }

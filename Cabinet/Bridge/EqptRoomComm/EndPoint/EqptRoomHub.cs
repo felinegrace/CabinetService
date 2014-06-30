@@ -6,44 +6,25 @@ using Cabinet.Bridge.Tcp.EndPoint;
 using Cabinet.Utility;
 using Cabinet.Bridge.EqptRoomComm.Protocol.Parser;
 using Cabinet.Bridge.EqptRoomComm.Protocol.PayloadEntity;
+using Cabinet.Bridge.EqptRoomComm.Protocol.Message;
 
 namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 {
-    public class EqptRoomHub : TcpServerObserver
+    public class EqptRoomHub : TcpEndPointObserver, MessageHandlerObserver
     {
         private TcpServer tcpServer { get; set; }
         private EqptRoomClientMap eqptRoomClientMap { get; set; }
-        private EqptRoomHubBusiness eqptRoomHubBusiness { get; set; }
+        private MessageHandler messageHandler { get; set; }
         public EqptRoomHub(string ipAddress, int port)
         {
             tcpServer = new TcpServer(ipAddress, port, this);
             eqptRoomClientMap = new EqptRoomClientMap();
-            eqptRoomHubBusiness = new EqptRoomHubBusiness();
+            messageHandler = new MessageHandler(this);
         }
 
         public void onTcpData(Guid sessionId, Descriptor descriptor)
         {
-            try
-            {
-                MessageParser parser = new MessageParser(descriptor);
-                switch (parser.verb())
-                {
-                    case "register":
-                        {
-                            Register register = parser.parseAsRegister();
-                            eqptRoomHubBusiness.onRegister(register);
-                            break;
-                        }
-                    default:                    
-                        throw new EqptRoomCommException("verb error");
-                        
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Logger.error("EqptRoomHub: corrupted data {0}, from session {1}, error: {2}",
-                    sessionId, descriptor.des.ToString(), ex.Message);
-            }
+            messageHandler.handleMessage(sessionId, descriptor);
         }
 
         public void start()
@@ -60,31 +41,51 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             Logger.debug("EqptRoomHub: stop.");
         }
 
-        private void onEqptRoomClientConnected(Guid eqptRoomGuid, Guid sessionId)
+        public void dispatchDataByEqptRoomGuid(Guid eqptRoomGuid, byte[] data, int offset, int count)
         {
-            eqptRoomClientMap.put(eqptRoomGuid, sessionId);
-            Logger.debug("EqptRoomHub: new client recgonized: eqpt room guid {0}, session guid {1}",
-                eqptRoomGuid, sessionId);
-        }
-
-        private void onEqptRoomClientDisconnected(Guid sessionId)
-        {
-            eqptRoomClientMap.removeBySessionGuid(sessionId);
-            Logger.debug("EqptRoomHub: a client offline: session guid {0}",
-                sessionId);
-        }
-
-        public void dispatchData(Guid eqptRoomGuid, byte[] data, int offset, int count)
-        {
-            Guid sessionId = eqptRoomClientMap.searchSessionGuid(eqptRoomGuid);
-            if(sessionId == Guid.Empty)
+            Guid sessionGuid = eqptRoomClientMap.searchSessionGuid(eqptRoomGuid);
+            if (sessionGuid == Guid.Empty)
             {
                 throw new EqptRoomCommException("cannot find session");
             }
             else
             {
-                tcpServer.sendData(sessionId, data, offset, count);
+                dispatchDataBySessionGuid(sessionGuid, data, offset, count);
             }
+        }
+
+        public void dispatchDataBySessionGuid(Guid sessionGuid, byte[] data, int offset, int count)
+        {
+            if (sessionGuid == Guid.Empty)
+            {
+                throw new EqptRoomCommException("error session guid.");
+            }
+            else
+            {
+                tcpServer.sendData(sessionGuid, data, offset, count);
+            }
+        }
+
+        void MessageHandlerObserver.onRegister(Guid sessionId, Register register)
+        {
+            Logger.debug("EqptRoomHubBusiness: eqpt room guid {0} request register.",
+                register.eqptRoomGuid);
+            eqptRoomClientMap.put(register.eqptRoomGuid, sessionId);
+            Logger.debug("EqptRoomHubBusiness: eqpt room guid {0} register complete.",
+                register.eqptRoomGuid);
+        }
+
+        void MessageHandlerObserver.doAcknowledge(Guid sessionId, Acknowledge acknowledge)
+        {
+            AcknowledgeMessage acknowledgeMessage = new AcknowledgeMessage(acknowledge);
+            byte[] acknowledgeBytes = System.Text.Encoding.ASCII.GetBytes(acknowledgeMessage.rawMessage());
+            dispatchDataBySessionGuid(sessionId, acknowledgeBytes, 0, acknowledgeBytes.Length);
+        }
+
+        void MessageHandlerObserver.onAcknowledge(Guid sessionId, Acknowledge acknowledge)
+        {
+            Logger.debug("EqptRoomHubBusiness: eqpt room guid {0} reports {1},{2}.",
+                sessionId, acknowledge.statusCode, acknowledge.message);
         }
     }
 }

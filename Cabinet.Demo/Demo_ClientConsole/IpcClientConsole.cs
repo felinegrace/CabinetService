@@ -23,9 +23,9 @@ namespace Cabinet.Demo.ClientConsole
                 workerId = id;
             }
         }
-        static void entry()
+        public static void entry()
         {
-            Logger.enable();
+
             IpcClientSync c = new IpcClientSync();
 
             ThreadPool.SetMinThreads(1, 1);

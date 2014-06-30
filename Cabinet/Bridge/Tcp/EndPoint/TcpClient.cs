@@ -14,10 +14,12 @@ namespace Cabinet.Bridge.Tcp.EndPoint
     {
         private IocpSession session { get; set; }
         private IocpConnector connector { get; set; }
-
+        private TcpEndPointObserver tcpEndPointObserver { get; set; }
         public TcpClient(string clientIpAddress, int clientPort,
-            string serverIpAddress, int serverPort)
+            string serverIpAddress, int serverPort,
+            TcpEndPointObserver tcpEndPointObserver)
         {
+            this.tcpEndPointObserver = tcpEndPointObserver;
             session = new IocpSession(this);
             connector = new IocpConnector(
                 new IPEndPoint(IPAddress.Parse(clientIpAddress), clientPort),
@@ -42,7 +44,7 @@ namespace Cabinet.Bridge.Tcp.EndPoint
 
         public void send(string buffer)
         {
-            session.send(System.Text.Encoding.Default.GetBytes(buffer), 0, buffer.Length);
+            session.send(System.Text.Encoding.ASCII.GetBytes(buffer), 0, buffer.Length);
         }
 
         public void send(byte[] buffer, int offset, int count)
@@ -58,13 +60,18 @@ namespace Cabinet.Bridge.Tcp.EndPoint
 
         public void onSessionData(Guid sessionId, Descriptor descriptor)
         {
-            Logger.debug("TcpServer: session {0} receives {1} bytes of data. ascii data: {2}",
+            Logger.debug("TcpClient: receives {1} bytes of data. ascii data: {2}",
                     sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
+            if(tcpEndPointObserver != null)
+            {
+                tcpEndPointObserver.onTcpData(sessionId, descriptor);
+            }
+
         }
 
         public void onSessionDisconnected(Guid sessionId)
         {
-            Logger.debug("TcpServer: session {0} disconnected.",
+            Logger.debug("TcpClient: disconnected.",
                     sessionId);
         }
     }

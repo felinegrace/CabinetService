@@ -38,5 +38,10 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
         {
             return Register.fromJson<Register>(messageBase.payload);
         }
+
+        public Acknowledge parseAsAcknowledge()
+        {
+            return Acknowledge.fromJson<Acknowledge>(messageBase.payload);
+        }
     }
 }

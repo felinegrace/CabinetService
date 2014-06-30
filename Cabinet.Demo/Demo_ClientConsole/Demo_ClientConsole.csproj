@@ -41,12 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EqptRoomClientConsole.cs" />
     <Compile Include="IpcClientConsole.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TcpClinetConsole.cs" />
+    <Compile Include="TcpClientConsole.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Cabinet\Bridge\EqptRoomComm\EqptRoomComm.csproj">
+      <Project>{007a5933-1e81-4f39-a19c-50eb84507197}</Project>
+      <Name>EqptRoomComm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Cabinet\Bridge\Ipc\Ipc.csproj">
       <Project>{fb802af3-1319-4748-a385-dfbcf8387af1}</Project>
       <Name>Ipc</Name>

@@ -11,7 +11,6 @@ namespace Cabinet.Demo.ServerConsole
     {
         public static void entry()
         {
-            Logger.enable();
             EqptRoomHub s = new EqptRoomHub("127.0.0.1", 8732);
             s.start();
             ConsoleKeyInfo ch;

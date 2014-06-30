@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cabinet.Utility;
-using Cabinet.Bridge.Tcp.EndPoint;
+using Cabinet.Bridge.EqptRoomComm.EndPoint;
 
 namespace Cabinet.Demo.ClientConsole
 {
-    class TcpClinetConsole
+    class EqptRoomClientConsole
     {
-        static void entry()
+        public static void entry()
         {
 
-            Logger.enable();
-            TcpClient s = new TcpClient("127.0.0.1", 6382, "127.0.0.1", 8732);
+            EqptRoomClient s = new EqptRoomClient("127.0.0.1", 6382, "127.0.0.1", 8732);
             s.start();
 
             ConsoleKeyInfo ch;
@@ -22,7 +20,7 @@ namespace Cabinet.Demo.ClientConsole
                 ch = Console.ReadKey();
                 switch (ch.Key)
                 {
-                    case ConsoleKey.S: s.send("123456");
+                    case ConsoleKey.S: s.register(new Guid("0A3065ED-28F2-4F75-8A35-58333FF2E78B"));
                         break;
                     default:
                         break;

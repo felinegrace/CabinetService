@@ -10,9 +10,9 @@ namespace Cabinet.Demo.ServerConsole
 {
     class IpcServerConsole
     {
-        static void entry()
+        public static void entry()
         {
-            Logger.enable();
+
             IpcServer s = new IpcServer();
             s.IpcServerEvent += (
                 (sender, e) => IpcServerConsole.onMessage(sender, e));

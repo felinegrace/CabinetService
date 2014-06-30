@@ -6,7 +6,7 @@ using Cabinet.Utility;
 
 namespace Cabinet.Bridge.Tcp.EndPoint
 {
-    public interface TcpServerObserver
+    public interface TcpEndPointObserver
     {
         void onTcpData(Guid sessionId, Descriptor descriptor);
     }

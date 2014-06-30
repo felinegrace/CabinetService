@@ -17,13 +17,13 @@ namespace Cabinet.Bridge.Tcp.EndPoint
         private IocpSessionPool pendingSessions { get; set; }
         private IocpSessionMap runningSessions { get; set; }
         private IocpListener listener { get; set; }
-        private TcpServerObserver tcpServerObserver { get; set; }
+        private TcpEndPointObserver tcpEndPointObserver { get; set; }
 
         private const int initialSessionPoolSize = 64;
 
-        public TcpServer(string ipAddress, int port, TcpServerObserver tcpServerObserver)
+        public TcpServer(string ipAddress, int port, TcpEndPointObserver tcpEndPointObserver)
         {
-            this.tcpServerObserver = tcpServerObserver;
+            this.tcpEndPointObserver = tcpEndPointObserver;
             listener = new IocpListener(new IPEndPoint(IPAddress.Parse(ipAddress), port), this);
             pendingSessions = new IocpSessionPool(() => new IocpSession(this));
             runningSessions = new IocpSessionMap();
@@ -66,12 +66,12 @@ namespace Cabinet.Bridge.Tcp.EndPoint
         {
             Logger.debug("TcpServer: session {0} receives {1} bytes of data. ascii data: {2}",
                     sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
-            Logger.debug("TcpServer: echo session {0} with {1} bytes of data. ascii data: {2}",
-                    sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
-            runningSessions.search(sessionId).send(descriptor.des, 0, descriptor.desLength);
-            if(tcpServerObserver != null)
+            //Logger.debug("TcpServer: echo session {0} with {1} bytes of data. ascii data: {2}",
+            //        sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
+            //runningSessions.search(sessionId).send(descriptor.des, 0, descriptor.desLength);
+            if(tcpEndPointObserver != null)
             {
-                tcpServerObserver.onTcpData(sessionId, descriptor);
+                tcpEndPointObserver.onTcpData(sessionId, descriptor);
             }
         }
 
