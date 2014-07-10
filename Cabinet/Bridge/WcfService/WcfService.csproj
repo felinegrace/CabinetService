@@ -82,10 +82,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionBusinessService.cs" />
     <Compile Include="WcfServer.cs" />
+    <Compile Include="WebComm\WorkInstructionReportProxy.cs" />
     <Compile Include="WorkInstructionBusinessService.cs" />
     <Compile Include="WorkInstructionService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Config\clients.config" />
     <None Include="Config\services.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -96,6 +98,7 @@
     </None>
     <None Include="Config\behaviors.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

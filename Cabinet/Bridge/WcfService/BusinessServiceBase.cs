@@ -25,7 +25,7 @@ namespace Cabinet.Bridge.WcfService
 
         private void commit()
         {
-            WcfServerGateway.getInstance().postEvent(baseContext);
+            WcfServerGateway.getInstance().postWcfBusinessEvent(baseContext);
         }
 
         private void wait()

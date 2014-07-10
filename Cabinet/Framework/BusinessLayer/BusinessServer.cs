@@ -47,9 +47,12 @@ namespace Cabinet.Framework.BusinessLayer
             {
                 BOBase bo = BOFactory.getInstance(context);
                 bo.handleBusiness();
+                context.response.isSuccess = true;
             }
             catch(Exception Exception)
             {
+                context.response.isSuccess = false;
+                context.response.errorMessage = Exception.Message;
                 Logger.error("BusinessServer: skip this request for reason: {0}", Exception.Message);
             }
             finally

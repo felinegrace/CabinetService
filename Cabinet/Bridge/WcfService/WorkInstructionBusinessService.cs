@@ -26,10 +26,12 @@ namespace Cabinet.Bridge.WcfService
 
             baseRequest.param.Add(vo);
             commitAndWait();
+            if(baseResponse.isSuccess == false)
+            {
+                return new WSResponseErrorBase(baseResponse.errorMessage).toJson();
+            }
             logOnParsingResponse();
-
             WSResponseSuccessBase response = new WSResponseSuccessBase();
-
             return response.toJson();
         
 

@@ -54,6 +54,7 @@
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Logger\Logger4LINQ.cs" />
     <Compile Include="Polling\PollingThread.cs" />
+    <Compile Include="Polling\SingleListServerInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Polling\SingleListServer.cs" />
     <Compile Include="Serializing\BytesHelper.cs" />

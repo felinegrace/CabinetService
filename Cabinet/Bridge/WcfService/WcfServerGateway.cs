@@ -28,25 +28,25 @@ namespace Cabinet.Bridge.WcfService
             return instance;
         }
 
-        public delegate void WcfServiceGatewayEventHandler(object sender, WcfServerGatewayEventArgs args);
-        internal event WcfServiceGatewayEventHandler WcfServiceGatewayEvent;
+        public delegate void WcfBusinessEventHandler(object sender, WcfBusinessEventArgs args);
+        internal event WcfBusinessEventHandler WcfBusinessEvent;
 
-        public void registerHanlder(WcfServiceGatewayEventHandler handler)
+        public void registerHanlder(WcfBusinessEventHandler handler)
         {
-            WcfServiceGatewayEvent = handler;
+            WcfBusinessEvent = handler;
         }
         
-        public void postEvent(BusinessContext context)
+        public void postWcfBusinessEvent(BusinessContext context)
         {
             Logger.debug("WcfServer: WcfServer - - -> AxisServer");
-            WcfServiceGatewayEvent(this, new WcfServerGatewayEventArgs(context));
+            WcfBusinessEvent(this, new WcfBusinessEventArgs(context));
         }
     }
 
-    public class WcfServerGatewayEventArgs : EventArgs
+    public class WcfBusinessEventArgs : EventArgs
     {
         public BusinessContext context { get; set; }
-        public WcfServerGatewayEventArgs(BusinessContext context)
+        public WcfBusinessEventArgs(BusinessContext context)
         {
             this.context = context;
         }
