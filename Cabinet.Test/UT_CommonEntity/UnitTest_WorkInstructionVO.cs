@@ -71,6 +71,7 @@ namespace Cabinet.UnitTest.CommonEntity
                 ""procedureList"" : 
                 [
                     {
+                    ""procedureGuid"" : ""0A3065ED-28F2-4F75-8A35-58333FF2E78B"",
                     ""procedure"" : ""test1"",
                     ""corrCabinetGuid"" : ""0A3065ED-28F2-4F75-8A35-58333FF2E78B""
                     }

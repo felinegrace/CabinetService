@@ -28,7 +28,7 @@ namespace Cabinet.Utility
             catch (System.Exception ex)
             {
                 Logger.error("Jsonable: error: {0} | json: {1}", ex.Message, json);
-                return default(T);
+                throw ex;
             }
             
         }

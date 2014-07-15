@@ -43,6 +43,7 @@
     <Compile Include="BOException.cs" />
     <Compile Include="BOFactory.cs" />
     <Compile Include="BusinessServer.cs" />
+    <Compile Include="BusinessServerGateway.cs" />
     <Compile Include="RegionBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkInstructionBO.cs" />

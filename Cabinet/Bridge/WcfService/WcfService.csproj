@@ -40,8 +40,10 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -72,6 +74,11 @@
     <Compile Include="CommonEntity\WebserviceResponse\WSResponseSuccessBase.cs" />
     <Compile Include="IAttrTypeService.cs" />
     <Compile Include="IWorkInstructionService.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="ServiceImplBase.cs" />
     <Compile Include="WcfServerGateway.cs" />
     <Compile Include="BusinessServiceBase.cs" />
@@ -82,10 +89,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionBusinessService.cs" />
     <Compile Include="WcfServer.cs" />
+    <Compile Include="Web References\WebComm\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="WorkInstructionBusinessService.cs" />
     <Compile Include="WorkInstructionService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Config\clients.config" />
     <None Include="Config\services.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -96,7 +109,20 @@
     </None>
     <None Include="Config\behaviors.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\WebComm\CubService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebComm\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\WebComm\WebServerService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\CommonEntity\CommonEntity.csproj">
@@ -110,6 +136,22 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CommonEntity\WebserviceResponse\Device\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://10.148.219.206:8089/CubService%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebComm\</RelPath>
+      <UpdateFromURL>http://10.148.219.206:8089/CubService%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Cabinet_Bridge_WcfService_WebComm_WebServerService</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
