@@ -2,14 +2,14 @@
 <definitions xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="WebServerService" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
   <types>
     <xsd:schema>
-      <xsd:import schemaLocation="http://10.148.219.206:8089/CubService?xsd=1" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://10.136.122.134:8089/CubService?xsd=1" namespace="http://tempuri.org/" />
     </xsd:schema>
   </types>
-  <message name="getAlarmOption">
-    <part name="parameters" element="tns:getAlarmOption" />
+  <message name="updateWorkInstrStatus">
+    <part name="parameters" element="tns:updateWorkInstrStatus" />
   </message>
-  <message name="getAlarmOptionResponse">
-    <part name="parameters" element="tns:getAlarmOptionResponse" />
+  <message name="updateWorkInstrStatusResponse">
+    <part name="parameters" element="tns:updateWorkInstrStatusResponse" />
   </message>
   <message name="executeResultInfo">
     <part name="parameters" element="tns:executeResultInfo" />
@@ -17,29 +17,19 @@
   <message name="executeResultInfoResponse">
     <part name="parameters" element="tns:executeResultInfoResponse" />
   </message>
-  <message name="updateWorkInstrStatus">
-    <part name="parameters" element="tns:updateWorkInstrStatus" />
-  </message>
-  <message name="updateWorkInstrStatusResponse">
-    <part name="parameters" element="tns:updateWorkInstrStatusResponse" />
-  </message>
   <portType name="WebServer">
-    <operation name="getAlarmOption">
-      <input wsam:Action="http://tempuri.org/WebServer/getAlarmOptionRequest" message="tns:getAlarmOption" />
-      <output wsam:Action="http://tempuri.org/WebServer/getAlarmOptionResponse" message="tns:getAlarmOptionResponse" />
+    <operation name="updateWorkInstrStatus">
+      <input wsam:Action="http://tempuri.org/WebServer/updateWorkInstrStatusRequest" message="tns:updateWorkInstrStatus" />
+      <output wsam:Action="http://tempuri.org/WebServer/updateWorkInstrStatusResponse" message="tns:updateWorkInstrStatusResponse" />
     </operation>
     <operation name="executeResultInfo">
       <input wsam:Action="http://tempuri.org/WebServer/executeResultInfoRequest" message="tns:executeResultInfo" />
       <output wsam:Action="http://tempuri.org/WebServer/executeResultInfoResponse" message="tns:executeResultInfoResponse" />
     </operation>
-    <operation name="updateWorkInstrStatus">
-      <input wsam:Action="http://tempuri.org/WebServer/updateWorkInstrStatusRequest" message="tns:updateWorkInstrStatus" />
-      <output wsam:Action="http://tempuri.org/WebServer/updateWorkInstrStatusResponse" message="tns:updateWorkInstrStatusResponse" />
-    </operation>
   </portType>
   <binding name="WebServerPortBinding" type="tns:WebServer">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <operation name="getAlarmOption">
+    <operation name="updateWorkInstrStatus">
       <soap:operation soapAction="" />
       <input>
         <soap:body use="literal" />
@@ -49,15 +39,6 @@
       </output>
     </operation>
     <operation name="executeResultInfo">
-      <soap:operation soapAction="" />
-      <input>
-        <soap:body use="literal" />
-      </input>
-      <output>
-        <soap:body use="literal" />
-      </output>
-    </operation>
-    <operation name="updateWorkInstrStatus">
       <soap:operation soapAction="" />
       <input>
         <soap:body use="literal" />
@@ -69,7 +50,7 @@
   </binding>
   <service name="WebServerService">
     <port name="WebServerPort" binding="tns:WebServerPortBinding">
-      <soap:address location="http://10.148.219.206:8089/CubService" />
+      <soap:address location="http://10.136.122.134:8089/CubService" />
     </port>
   </service>
 </definitions>

@@ -29,17 +29,13 @@ namespace Cabinet.Bridge.WcfService.WebComm {
     [System.Web.Services.WebServiceBindingAttribute(Name="WebServerPortBinding", Namespace="http://tempuri.org/")]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(updateWorkInstrStatusResponse))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(updateWorkInstrStatus))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(getAlarmOptionResponse))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(getAlarmOption))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(executeResultInfoResponse))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(executeResultInfo))]
     public partial class WebServerService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
-        private System.Threading.SendOrPostCallback getAlarmOptionOperationCompleted;
+        private System.Threading.SendOrPostCallback updateWorkInstrStatusOperationCompleted;
         
         private System.Threading.SendOrPostCallback executeResultInfoOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback updateWorkInstrStatusOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -80,43 +76,40 @@ namespace Cabinet.Bridge.WcfService.WebComm {
         }
         
         /// <remarks/>
-        public event getAlarmOptionCompletedEventHandler getAlarmOptionCompleted;
+        public event updateWorkInstrStatusCompletedEventHandler updateWorkInstrStatusCompleted;
         
         /// <remarks/>
         public event executeResultInfoCompletedEventHandler executeResultInfoCompleted;
         
         /// <remarks/>
-        public event updateWorkInstrStatusCompletedEventHandler updateWorkInstrStatusCompleted;
-        
-        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public object getAlarmOption([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0, [System.Xml.Serialization.XmlElementAttribute("arg1", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string[] arg1) {
-            object[] results = this.Invoke("getAlarmOption", new object[] {
+        public object updateWorkInstrStatus([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] int arg1) {
+            object[] results = this.Invoke("updateWorkInstrStatus", new object[] {
                         arg0,
                         arg1});
             return ((object)(results[0]));
         }
         
         /// <remarks/>
-        public void getAlarmOptionAsync(string arg0, string[] arg1) {
-            this.getAlarmOptionAsync(arg0, arg1, null);
+        public void updateWorkInstrStatusAsync(string arg0, int arg1) {
+            this.updateWorkInstrStatusAsync(arg0, arg1, null);
         }
         
         /// <remarks/>
-        public void getAlarmOptionAsync(string arg0, string[] arg1, object userState) {
-            if ((this.getAlarmOptionOperationCompleted == null)) {
-                this.getAlarmOptionOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetAlarmOptionOperationCompleted);
+        public void updateWorkInstrStatusAsync(string arg0, int arg1, object userState) {
+            if ((this.updateWorkInstrStatusOperationCompleted == null)) {
+                this.updateWorkInstrStatusOperationCompleted = new System.Threading.SendOrPostCallback(this.OnupdateWorkInstrStatusOperationCompleted);
             }
-            this.InvokeAsync("getAlarmOption", new object[] {
+            this.InvokeAsync("updateWorkInstrStatus", new object[] {
                         arg0,
-                        arg1}, this.getAlarmOptionOperationCompleted, userState);
+                        arg1}, this.updateWorkInstrStatusOperationCompleted, userState);
         }
         
-        private void OngetAlarmOptionOperationCompleted(object arg) {
-            if ((this.getAlarmOptionCompleted != null)) {
+        private void OnupdateWorkInstrStatusOperationCompleted(object arg) {
+            if ((this.updateWorkInstrStatusCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getAlarmOptionCompleted(this, new getAlarmOptionCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.updateWorkInstrStatusCompleted(this, new updateWorkInstrStatusCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -149,38 +142,6 @@ namespace Cabinet.Bridge.WcfService.WebComm {
             if ((this.executeResultInfoCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.executeResultInfoCompleted(this, new executeResultInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public object updateWorkInstrStatus([System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] string arg0, [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)] int arg1) {
-            object[] results = this.Invoke("updateWorkInstrStatus", new object[] {
-                        arg0,
-                        arg1});
-            return ((object)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void updateWorkInstrStatusAsync(string arg0, int arg1) {
-            this.updateWorkInstrStatusAsync(arg0, arg1, null);
-        }
-        
-        /// <remarks/>
-        public void updateWorkInstrStatusAsync(string arg0, int arg1, object userState) {
-            if ((this.updateWorkInstrStatusOperationCompleted == null)) {
-                this.updateWorkInstrStatusOperationCompleted = new System.Threading.SendOrPostCallback(this.OnupdateWorkInstrStatusOperationCompleted);
-            }
-            this.InvokeAsync("updateWorkInstrStatus", new object[] {
-                        arg0,
-                        arg1}, this.updateWorkInstrStatusOperationCompleted, userState);
-        }
-        
-        private void OnupdateWorkInstrStatusOperationCompleted(object arg) {
-            if ((this.updateWorkInstrStatusCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.updateWorkInstrStatusCompleted(this, new updateWorkInstrStatusCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -266,63 +227,6 @@ namespace Cabinet.Bridge.WcfService.WebComm {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
-    public partial class getAlarmOptionResponse {
-        
-        private object returnField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public object @return {
-            get {
-                return this.returnField;
-            }
-            set {
-                this.returnField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.1015")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
-    public partial class getAlarmOption {
-        
-        private string arg0Field;
-        
-        private string[] arg1Field;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string arg0 {
-            get {
-                return this.arg0Field;
-            }
-            set {
-                this.arg0Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("arg1", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string[] arg1 {
-            get {
-                return this.arg1Field;
-            }
-            set {
-                this.arg1Field = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.1015")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class executeResultInfoResponse {
         
         private object returnField;
@@ -376,17 +280,17 @@ namespace Cabinet.Bridge.WcfService.WebComm {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
-    public delegate void getAlarmOptionCompletedEventHandler(object sender, getAlarmOptionCompletedEventArgs e);
+    public delegate void updateWorkInstrStatusCompletedEventHandler(object sender, updateWorkInstrStatusCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getAlarmOptionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class updateWorkInstrStatusCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal getAlarmOptionCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal updateWorkInstrStatusCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -413,32 +317,6 @@ namespace Cabinet.Bridge.WcfService.WebComm {
         private object[] results;
         
         internal executeResultInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public object Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((object)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
-    public delegate void updateWorkInstrStatusCompletedEventHandler(object sender, updateWorkInstrStatusCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class updateWorkInstrStatusCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal updateWorkInstrStatusCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }

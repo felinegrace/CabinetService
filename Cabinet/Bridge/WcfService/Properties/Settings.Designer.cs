@@ -26,7 +26,7 @@ namespace Cabinet.Bridge.WcfService.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://10.148.219.206:8089/CubService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.136.122.134:8089/CubService")]
         public string Cabinet_Bridge_WcfService_WebComm_WebServerService {
             get {
                 return ((string)(this["Cabinet_Bridge_WcfService_WebComm_WebServerService"]));
