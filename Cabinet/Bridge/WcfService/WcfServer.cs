@@ -46,27 +46,71 @@ namespace Cabinet.Bridge.WcfService
 
         public void wiReportProcedure(Guid procedureGuid, bool isSuccess)
         {
+<<<<<<< HEAD
             WebComm.WebServerService webComm = new WebComm.WebServerService();
             string isSuccessString = isSuccess ? "true" : "false";
             webComm.executeResultInfo(procedureGuid.ToString(), isSuccessString);
+=======
+<<<<<<< HEAD
+            Logger.info("WcfServer: AxisServer =====> WcfServer.");
+            Logger.info("WcfServer: WcfServer - - -> Webservice.");
+            WebComm.WebServerService webComm = new WebComm.WebServerService();
+            string isSuccessString = isSuccess ? "true" : "false";
+            webComm.executeResultInfo(procedureGuid.ToString(), isSuccessString);
+            Logger.info("WcfServer: WcfServer =====> Webservice.");
+>>>>>>> d1c4b94d8d0c2e3a774c703830a9ec1e2cbf1e36
         }
 
         public void wiProceeding(Guid wiGuid)
         {
+<<<<<<< HEAD
             WebComm.WebServerService webComm = new WebComm.WebServerService();
             webComm.updateWorkInstrStatus(wiGuid.ToString(), 1);
+=======
+            Logger.info("WcfServer: AxisServer =====> WcfServer.");
+            Logger.info("WcfServer: WcfServer - - -> Webservice.");
+            WebComm.WebServerService webComm = new WebComm.WebServerService();
+            webComm.updateWorkInstrStatus(wiGuid.ToString(), 1);
+            Logger.info("WcfServer: WcfServer =====> Webservice.");
+>>>>>>> d1c4b94d8d0c2e3a774c703830a9ec1e2cbf1e36
         }
 
         public void wiComplete(Guid wiGuid)
         {
+<<<<<<< HEAD
             WebComm.WebServerService webComm = new WebComm.WebServerService();
             webComm.updateWorkInstrStatus(wiGuid.ToString(), 2);
+=======
+            Logger.info("WcfServer: AxisServer =====> WcfServer.");
+            Logger.info("WcfServer: WcfServer - - -> Webservice.");
+            WebComm.WebServerService webComm = new WebComm.WebServerService();
+            webComm.updateWorkInstrStatus(wiGuid.ToString(), 2);
+            Logger.info("WcfServer: WcfServer =====> Webservice.");
+>>>>>>> d1c4b94d8d0c2e3a774c703830a9ec1e2cbf1e36
         }
 
         public void wiFail(Guid wiGuid)
         {
+<<<<<<< HEAD
             WebComm.WebServerService webComm = new WebComm.WebServerService();
             webComm.updateWorkInstrStatus(wiGuid.ToString(), 3);
+=======
+            Logger.info("WcfServer: AxisServer =====> WcfServer.");
+            Logger.info("WcfServer: WcfServer - - -> Webservice.");
+            WebComm.WebServerService webComm = new WebComm.WebServerService();
+            webComm.updateWorkInstrStatus(wiGuid.ToString(), 3);
+            Logger.info("WcfServer: WcfServer =====> Webservice.");
+=======
+            WebServerClient webServerClient = new WebServerClient();
+            webServerClient.updateWorkInstrStatus(procedureGuid.ToString(), isSuccess.ToString());
+        }
+
+        public void wiComplete(Guid wiGuid, bool isSuccess)
+        {
+            WebServerClient webServerClient = new WebServerClient();
+            webServerClient.executeResultInfo(wiGuid.ToString(), isSuccess.ToString());
+>>>>>>> ae841d4af93b45a0348747ced1e1879ebb090cb9
+>>>>>>> d1c4b94d8d0c2e3a774c703830a9ec1e2cbf1e36
         }
     }
 }
