@@ -28,20 +28,8 @@ namespace Cabinet.Bridge.WcfService
             commitAndWait();
             if(baseResponse.isSuccess == false)
             {
-<<<<<<< HEAD
                 return new WSResponseErrorBase(baseResponse.errorMessage).toJson();
             }
-=======
-<<<<<<< HEAD
-                Logger.debug("WcfServer: business server returns error: {0}", baseResponse.errorMessage);
-                return new WSResponseErrorBase(baseResponse.errorMessage).toJson();
-            }
-            Logger.debug("WcfServer: business server returns success.");
-=======
-                return new WSResponseErrorBase(baseResponse.errorMessage).toJson();
-            }
->>>>>>> ae841d4af93b45a0348747ced1e1879ebb090cb9
->>>>>>> d1c4b94d8d0c2e3a774c703830a9ec1e2cbf1e36
             logOnParsingResponse();
             WSResponseSuccessBase response = new WSResponseSuccessBase();
             return response.toJson();
