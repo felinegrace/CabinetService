@@ -17,7 +17,7 @@ namespace Cabinet.Bridge.WcfService
         protected void logOnResponse()
         {
             Logger.info("WcfServer: WcfServer =====> Webservice.");
-            Logger.info("WcfServer: <3<3<3 Transaction Completed.");
+            Logger.info("WcfServer: <3<3<3 Wcf Server Transaction Completed.");
         }
 
         protected string service(Func<string> serviceFunction)

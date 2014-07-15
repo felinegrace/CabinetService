@@ -9,7 +9,8 @@ namespace Cabinet.Framework.BusinessLayer
 {
     class WorkInstructionBO : BOBase
     {
-        public WorkInstructionBO(BusinessContext businessContext) : base(businessContext)
+        public WorkInstructionBO(BusinessContext businessContext)
+            : base(businessContext)
         {
 
         }
@@ -18,13 +19,13 @@ namespace Cabinet.Framework.BusinessLayer
         {
             switch (context.request.method)
             {
-                case "delivery" :
+                case "delivery":
                     doDelivery();
                     break;
-                case "report" :
+                case "report":
                     doReport();
                     break;
-                case "complete" :
+                case "complete":
                     doComplete();
                     break;
                 default:
@@ -34,6 +35,7 @@ namespace Cabinet.Framework.BusinessLayer
 
         void doDelivery()
         {
+            Logger.debug("BusinessServer: business workInstruction/delivery starts.");
             logOnValidatingParams();
             validateParamCount(1);
             validateParamAsSpecificType(0, typeof(WorkInstructionDeliveryVO));
@@ -48,20 +50,21 @@ namespace Cabinet.Framework.BusinessLayer
             BusinessContext completeCtx1 = new BusinessContext(completeRequest1, completeResponse1);
 
             context.server.postRequest(completeCtx1);
+            Logger.debug("BusinessServer: post workInstruction/complete with proceeding for test...");
 
-
-            foreach(WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
+            foreach (WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
             {
-                Logger.debug("BusinessServer: delivery reporting pcd {0} for test...", workInstructionProcedureVO.procedureGuid);
                 BusinessRequest request = new BusinessRequest();
                 request.business = "workInstruction";
                 request.method = "report";
                 request.param.Add(workInstructionProcedureVO.procedureGuid);
                 request.param.Add(true);
                 BusinessResponse response = new testReportResponse();
-                BusinessContext ctx = new BusinessContext(request,response);
+                BusinessContext ctx = new BusinessContext(request, response);
 
                 context.server.postRequest(ctx);
+                Logger.debug("BusinessServer: delivery reporting pcd {0} for test...", workInstructionProcedureVO.procedureGuid);
+
             }
 
             BusinessRequest completeRequest2 = new BusinessRequest();
@@ -73,19 +76,22 @@ namespace Cabinet.Framework.BusinessLayer
             BusinessContext completeCtx2 = new BusinessContext(completeRequest2, completeResponse2);
 
             context.server.postRequest(completeCtx2);
+            Logger.debug("BusinessServer: post workInstruction/complete with complete for test...");
+            Logger.debug("BusinessServer: business workInstruction/delivery ends.");
         }
 
         class testReportResponse : BusinessResponse
         {
             public override void onResponsed()
             {
-                
+
             }
         }
 
         //单步步骤报告
         void doReport()
         {
+            Logger.debug("BusinessServer: business workInstruction/report starts.");
             logOnValidatingParams();
             validateParamCount(2);
             validateParamAsSpecificType(0, typeof(Guid));
@@ -96,12 +102,13 @@ namespace Cabinet.Framework.BusinessLayer
             BusinessServerGateway businessServerGateway = BusinessServerGateway.getInstance();
             businessServerGateway.postWorkInstructionProcedureConfirmEvent(procedureGuid, isSuccess);
             logOnFillingResult();
-            Logger.debug("BusinessServer: report procedure {0} as {1}...", procedureGuid, isSuccess);
-            
+            Logger.debug("BusinessServer: reported procedure {0} as {1}...", procedureGuid, isSuccess);
+            Logger.debug("BusinessServer: business workInstruction/report ends.");
         }
 
         void doComplete()
         {
+            Logger.debug("BusinessServer: business workInstruction/complete starts.");
             logOnValidatingParams();
             validateParamCount(2);
             validateParamAsSpecificType(0, typeof(Guid));
@@ -123,7 +130,8 @@ namespace Cabinet.Framework.BusinessLayer
             }
 
             logOnFillingResult();
-            Logger.debug("BusinessServer: report wi {0} as {1}...", wiGuid, status);
+            Logger.debug("BusinessServer: reported wi {0} as {1}...", wiGuid, status);
+            Logger.debug("BusinessServer: business workInstruction/complete ends.");
         }
     }
 }
