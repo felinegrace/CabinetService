@@ -8,6 +8,8 @@ namespace Cabinet.Framework.CommonEntity
 {
     public abstract class BusinessResponse : Jsonable
     {
+        public bool isSuccess { get; set; }
+        public string errorMessage { get; set; }
         public List<object> result { get; private set; }
         public BusinessResponse()
         {

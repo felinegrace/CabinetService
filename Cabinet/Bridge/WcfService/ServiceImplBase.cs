@@ -31,6 +31,7 @@ namespace Cabinet.Bridge.WcfService
             }
             catch (System.Exception ex)
             {
+                Logger.error("WcfService: ws error returned to client: {0}",ex.Message);
                 return new WSResponseErrorBase(ex.Message).toJson();
             }
             

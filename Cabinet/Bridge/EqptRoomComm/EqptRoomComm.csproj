@@ -52,6 +52,7 @@
     <Compile Include="Protocol\Parser\MessageParser.cs" />
     <Compile Include="Protocol\PayloadEntity\Acknowledge.cs" />
     <Compile Include="Protocol\PayloadEntity\Register.cs" />
+    <Compile Include="Protocol\PayloadEntity\WorkInstructionDelivery.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Utility\Utility.csproj">

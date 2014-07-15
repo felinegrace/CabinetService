@@ -12,6 +12,8 @@ namespace Cabinet.Framework.BusinessLayer
         {
             switch (context.request.business)
             {
+                case ("workInstruction"):
+                    return new WorkInstructionBO(context);
                 case ("region"):
                     return new RegionBO(context);
                 default:

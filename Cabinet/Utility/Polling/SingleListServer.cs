@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Cabinet.Utility
 {
-    public abstract class SingleListServer<T> : EventablePollingThread
+    public abstract class SingleListServer<T> : EventablePollingThread, SingleListServerInterface<T>
     {
         private class ServerEventArgs : EventArgs
         {

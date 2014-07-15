@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using Cabinet.Utility;
+using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.WcfService
 {
@@ -43,5 +44,29 @@ namespace Cabinet.Bridge.WcfService
             
         }
 
+        public void wiReportProcedure(Guid procedureGuid, bool isSuccess)
+        {
+            WebComm.WebServerService webComm = new WebComm.WebServerService();
+            string isSuccessString = isSuccess ? "true" : "false";
+            webComm.executeResultInfo(procedureGuid.ToString(), isSuccessString);
+        }
+
+        public void wiProceeding(Guid wiGuid)
+        {
+            WebComm.WebServerService webComm = new WebComm.WebServerService();
+            webComm.updateWorkInstrStatus(wiGuid.ToString(), 1);
+        }
+
+        public void wiComplete(Guid wiGuid)
+        {
+            WebComm.WebServerService webComm = new WebComm.WebServerService();
+            webComm.updateWorkInstrStatus(wiGuid.ToString(), 2);
+        }
+
+        public void wiFail(Guid wiGuid)
+        {
+            WebComm.WebServerService webComm = new WebComm.WebServerService();
+            webComm.updateWorkInstrStatus(wiGuid.ToString(), 3);
+        }
     }
 }
