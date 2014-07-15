@@ -24,6 +24,7 @@ namespace Cabinet.Axis
                 new BusinessServerGateway.WorkInstructionProcedureConfirmEventHandler(
                 this.onWorkInstructionProcedureConfirmMessage));
             BusinessServerGateway.getInstance().registerHanlder(
+<<<<<<< HEAD
                 new BusinessServerGateway.WorkInstructionProceedingEventHandler(
                 this.onWorkInstructionProceedingMessage));
             BusinessServerGateway.getInstance().registerHanlder(
@@ -32,6 +33,10 @@ namespace Cabinet.Axis
             BusinessServerGateway.getInstance().registerHanlder(
                 new BusinessServerGateway.WorkInstructionFailEventHandler(
                 this.onWorkInstructionFailMessage));
+=======
+                new BusinessServerGateway.WorkInstructionCompleteEventHandler(
+                this.onWorkInstructionCompleteMessage));
+>>>>>>> ae841d4af93b45a0348747ced1e1879ebb090cb9
             businessServer = new BusinessServer();
             wcfServer = new WcfServer();
             
@@ -63,11 +68,16 @@ namespace Cabinet.Axis
 
         private void onWorkInstructionProcedureConfirmMessage(object sender, WorkInstructionProcedureConfirmEventArgs args)
         {
+<<<<<<< HEAD
             Logger.info("AxisServer: BusinessServer =====> AxisServer");
+=======
+            Logger.debug("AxisServer: BusinessServer =====> AxisServer");
+>>>>>>> ae841d4af93b45a0348747ced1e1879ebb090cb9
             Logger.info("AxisServer: AxisServer - - -> WcfServer.");
             wcfServer.wiReportProcedure(args.procedureGuid, args.isSuccess);
         }
 
+<<<<<<< HEAD
         private void onWorkInstructionProceedingMessage(object sender, WorkInstructionEventArgs args)
         {
             Logger.info("AxisServer: BusinessServer =====> AxisServer");
@@ -87,6 +97,13 @@ namespace Cabinet.Axis
             Logger.info("AxisServer: BusinessServer =====> AxisServer");
             Logger.info("AxisServer: AxisServer - - -> WcfServer.");
             wcfServer.wiFail(args.wiGuid);
+=======
+        private void onWorkInstructionCompleteMessage(object sender, WorkInstructionCompleteEventArgs args)
+        {
+            Logger.debug("AxisServer: BusinessServer =====> AxisServer");
+            Logger.info("AxisServer: AxisServer - - -> WcfServer.");
+            wcfServer.wiComplete(args.wiGuid, args.isSuccess);
+>>>>>>> ae841d4af93b45a0348747ced1e1879ebb090cb9
         }
     }
 }

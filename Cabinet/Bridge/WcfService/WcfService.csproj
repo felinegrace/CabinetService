@@ -89,11 +89,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionBusinessService.cs" />
     <Compile Include="WcfServer.cs" />
+<<<<<<< HEAD
     <Compile Include="Web References\WebComm\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+=======
+    <Compile Include="WebComm\WorkInstructionReportProxy.cs" />
+>>>>>>> ae841d4af93b45a0348747ced1e1879ebb090cb9
     <Compile Include="WorkInstructionBusinessService.cs" />
     <Compile Include="WorkInstructionService.cs" />
   </ItemGroup>
@@ -110,6 +114,7 @@
     <None Include="Config\behaviors.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+<<<<<<< HEAD
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -121,6 +126,8 @@
     <None Include="Web References\WebComm\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
+=======
+>>>>>>> ae841d4af93b45a0348747ced1e1879ebb090cb9
     </None>
     <None Include="Web References\WebComm\WebServerService.wsdl" />
   </ItemGroup>

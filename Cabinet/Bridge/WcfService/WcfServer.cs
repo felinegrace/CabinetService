@@ -46,6 +46,7 @@ namespace Cabinet.Bridge.WcfService
 
         public void wiReportProcedure(Guid procedureGuid, bool isSuccess)
         {
+<<<<<<< HEAD
             Logger.info("WcfServer: AxisServer =====> WcfServer.");
             Logger.info("WcfServer: WcfServer - - -> Webservice.");
             WebComm.WebServerService webComm = new WebComm.WebServerService();
@@ -79,6 +80,16 @@ namespace Cabinet.Bridge.WcfService
             WebComm.WebServerService webComm = new WebComm.WebServerService();
             webComm.updateWorkInstrStatus(wiGuid.ToString(), 3);
             Logger.info("WcfServer: WcfServer =====> Webservice.");
+=======
+            WebServerClient webServerClient = new WebServerClient();
+            webServerClient.updateWorkInstrStatus(procedureGuid.ToString(), isSuccess.ToString());
+        }
+
+        public void wiComplete(Guid wiGuid, bool isSuccess)
+        {
+            WebServerClient webServerClient = new WebServerClient();
+            webServerClient.executeResultInfo(wiGuid.ToString(), isSuccess.ToString());
+>>>>>>> ae841d4af93b45a0348747ced1e1879ebb090cb9
         }
     }
 }
