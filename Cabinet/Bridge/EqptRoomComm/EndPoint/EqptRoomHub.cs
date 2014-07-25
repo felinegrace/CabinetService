@@ -7,6 +7,7 @@ using Cabinet.Utility;
 using Cabinet.Bridge.EqptRoomComm.Protocol.Parser;
 using Cabinet.Bridge.EqptRoomComm.Protocol.PayloadEntity;
 using Cabinet.Bridge.EqptRoomComm.Protocol.Message;
+using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 {
@@ -53,7 +54,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
                 dispatchDataBySessionGuid(sessionGuid, data, offset, count);
             }
         }
-
+        
         public void dispatchDataBySessionGuid(Guid sessionGuid, byte[] data, int offset, int count)
         {
             if (sessionGuid == Guid.Empty)
@@ -64,6 +65,13 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             {
                 tcpServer.sendData(sessionGuid, data, offset, count);
             }
+        }
+
+        public void deliveryWorkInstrucion(WorkInstructionDeliveryVO workInstructionDeliveryVO)
+        {
+            WorkInstructionDeliveryMessage workInstructionDeliveryMessage = new WorkInstructionDeliveryMessage(workInstructionDeliveryVO);
+            byte[] workInstructionDeliveryBytes = System.Text.Encoding.ASCII.GetBytes(workInstructionDeliveryMessage.rawMessage());
+            dispatchDataByEqptRoomGuid(workInstructionDeliveryVO.eqptRoomGuid, workInstructionDeliveryBytes, 0, workInstructionDeliveryBytes.Length);
         }
 
         void MessageHandlerObserver.onRegister(Guid sessionId, Register register)
@@ -86,6 +94,40 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
         {
             Logger.debug("EqptRoomHubBusiness: eqpt room guid {0} reports {1},{2}.",
                 sessionId, acknowledge.statusCode, acknowledge.message);
+        }
+
+        void MessageHandlerObserver.doDelivery(Guid sessionId, WorkInstructionDeliveryVO workInstructionDeliveryVO)
+        {
+            WorkInstructionDeliveryMessage workInstructionDeliveryMessage = new WorkInstructionDeliveryMessage(workInstructionDeliveryVO);
+            byte[] workInstructionDeliveryBytes = System.Text.Encoding.ASCII.GetBytes(workInstructionDeliveryMessage.rawMessage());
+            dispatchDataBySessionGuid(sessionId, workInstructionDeliveryBytes, 0, workInstructionDeliveryBytes.Length);
+        }
+
+        void MessageHandlerObserver.onDelivery(Guid sessionId, WorkInstructionDeliveryVO workInstructionDeliveryVO)
+        {
+            throw new EqptRoomCommException("server not supported.");
+        }
+
+        void MessageHandlerObserver.doReport(Guid sessionId, WorkInstructionProcedureReportVO workInstructionProcedureReportVO)
+        {
+            throw new EqptRoomCommException("server not supported.");
+        }
+
+        void MessageHandlerObserver.onReport(Guid sessionId, WorkInstructionProcedureReportVO workInstructionProcedureReportVO)
+        {
+            EqptRoomHubGateway gateway = EqptRoomHubGateway.getInstance();
+            gateway.postWorkInstructionProcedureReportEvent(workInstructionProcedureReportVO);
+        }
+
+        void MessageHandlerObserver.doComplete(Guid sessionId, WorkInstructionReportVO workInstructionReportVO)
+        {
+            throw new EqptRoomCommException("server not supported.");
+        }
+
+        void MessageHandlerObserver.onComplete(Guid sessionId, WorkInstructionReportVO workInstructionReportVO)
+        {
+            EqptRoomHubGateway gateway = EqptRoomHubGateway.getInstance();
+            gateway.postWorkInstructionProceedingEvent(workInstructionReportVO);
         }
     }
 }

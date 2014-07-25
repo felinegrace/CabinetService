@@ -40,53 +40,10 @@ namespace Cabinet.Framework.BusinessLayer
             validateParamCount(1);
             validateParamAsSpecificType(0, typeof(WorkInstructionDeliveryVO));
             WorkInstructionDeliveryVO workInstructionDeliveryVO = (WorkInstructionDeliveryVO)context.request.param.ElementAt<object>(0);
-
-            BusinessRequest completeRequest1 = new BusinessRequest();
-            completeRequest1.business = "workInstruction";
-            completeRequest1.method = "complete";
-            completeRequest1.param.Add(workInstructionDeliveryVO.wiGuid);
-            completeRequest1.param.Add("proceeding");
-            BusinessResponse completeResponse1 = new testReportResponse();
-            BusinessContext completeCtx1 = new BusinessContext(completeRequest1, completeResponse1);
-
-            context.server.postRequest(completeCtx1);
-            Logger.debug("BusinessServer: post workInstruction/complete with proceeding for test...");
-
-            foreach (WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
-            {
-                BusinessRequest request = new BusinessRequest();
-                request.business = "workInstruction";
-                request.method = "report";
-                request.param.Add(workInstructionProcedureVO.procedureGuid);
-                request.param.Add(true);
-                BusinessResponse response = new testReportResponse();
-                BusinessContext ctx = new BusinessContext(request, response);
-
-                context.server.postRequest(ctx);
-                Logger.debug("BusinessServer: delivery reporting pcd {0} for test...", workInstructionProcedureVO.procedureGuid);
-
-            }
-
-            BusinessRequest completeRequest2 = new BusinessRequest();
-            completeRequest2.business = "workInstruction";
-            completeRequest2.method = "complete";
-            completeRequest2.param.Add(workInstructionDeliveryVO.wiGuid);
-            completeRequest2.param.Add("complete");
-            BusinessResponse completeResponse2 = new testReportResponse();
-            BusinessContext completeCtx2 = new BusinessContext(completeRequest2, completeResponse2);
-
-            context.server.postRequest(completeCtx2);
-            Logger.debug("BusinessServer: post workInstruction/complete with complete for test...");
-            Logger.debug("BusinessServer: business workInstruction/delivery ends.");
+            BusinessServerGateway.getInstance().postWorkInstructionDeliveryEvent(workInstructionDeliveryVO);
+            
         }
 
-        class testReportResponse : BusinessResponse
-        {
-            public override void onResponsed()
-            {
-
-            }
-        }
 
         //单步步骤报告
         void doReport()

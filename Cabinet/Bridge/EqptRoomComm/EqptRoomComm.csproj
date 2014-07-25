@@ -43,18 +43,26 @@
     <Compile Include="EndPoint\EqptRoomClient.cs" />
     <Compile Include="EndPoint\EqptRoomHub.cs" />
     <Compile Include="EndPoint\EqptRoomClientMap.cs" />
+    <Compile Include="EndPoint\EqptRoomHubGateway.cs" />
+    <Compile Include="EndPoint\EqptRoomHubInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol\Message\AcknowledgeMessage.cs" />
     <Compile Include="Protocol\Message\MessageBase.cs" />
     <Compile Include="Protocol\Message\RegisterMessage.cs" />
+    <Compile Include="Protocol\Message\WorkInstructionDeliveryMessage.cs" />
+    <Compile Include="Protocol\Message\WorkInstructionProcedureReportMessage.cs" />
+    <Compile Include="Protocol\Message\WorkInstructionReportMessage.cs" />
     <Compile Include="Protocol\Parser\MessageHandler.cs" />
     <Compile Include="Protocol\Parser\MessageHandlerObserver.cs" />
     <Compile Include="Protocol\Parser\MessageParser.cs" />
     <Compile Include="Protocol\PayloadEntity\Acknowledge.cs" />
     <Compile Include="Protocol\PayloadEntity\Register.cs" />
-    <Compile Include="Protocol\PayloadEntity\WorkInstructionDelivery.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\CommonEntity\CommonEntity.csproj">
+      <Project>{c4f6b129-a8f4-4178-a270-21ca79c4636c}</Project>
+      <Name>CommonEntity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Utility\Utility.csproj">
       <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
       <Name>Utility</Name>

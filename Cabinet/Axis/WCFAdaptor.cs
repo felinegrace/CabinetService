@@ -1,10 +1,13 @@
-﻿using Cabinet.Bridge.WcfService;
-using Cabinet.Framework.BusinessLayer;
-using Cabinet.Utility;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Cabinet.Bridge.WcfService;
+using Cabinet.Framework.BusinessLayer;
+using Cabinet.Utility;
+using Cabinet.Bridge.EqptRoomComm.EndPoint;
+using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Axis
 {
@@ -13,7 +16,7 @@ namespace Cabinet.Axis
 
         private BusinessServer businessServer { get; set; }
         private WcfServer wcfServer { get; set; }
-
+        private EqptRoomHub eqptRoomHub { get; set; }
         public WcfAdaptor()
         {
             Logger.debug("AxisServer: constructing servers...");
@@ -32,21 +35,35 @@ namespace Cabinet.Axis
             BusinessServerGateway.getInstance().registerHanlder(
                 new BusinessServerGateway.WorkInstructionFailEventHandler(
                 this.onWorkInstructionFailMessage));
+            BusinessServerGateway.getInstance().registerHanlder(
+                new BusinessServerGateway.WorkInstructionDeliveryEventHandler(
+                    this.onWorkInstructionDelivery)
+                );
+            EqptRoomHubGateway.getInstance().registerHanlder(
+                new EqptRoomHubGateway.WorkInstructionProcedureReportEventHandler(
+                    this.onEqptWiProcedureReport)
+                );
+            EqptRoomHubGateway.getInstance().registerHanlder(
+                new EqptRoomHubGateway.WorkInstructionReportEventHandler(
+                    this.onEqptWiReport)
+                );
             businessServer = new BusinessServer();
             wcfServer = new WcfServer();
-
+            eqptRoomHub = new EqptRoomHub("10.31.31.31", 8135);
         }
         public void start()
         {
             Logger.debug("AxisServer: launching servers...");
             businessServer.start();
             wcfServer.start();
+            eqptRoomHub.start();
         }
         public void stop()
         {
             Logger.debug("AxisServer: closing servers...");
             businessServer.stop();
             wcfServer.stop();
+            eqptRoomHub.stop();
         }
 
         private void onWCFMessage(object sender, WcfBusinessEventArgs args)
@@ -87,6 +104,47 @@ namespace Cabinet.Axis
             Logger.info("AxisServer: BusinessServer =====> AxisServer");
             Logger.info("AxisServer: AxisServer - - -> WcfServer.");
             wcfServer.wiFail(args.wiGuid);
+        }
+
+        private void onWorkInstructionDelivery(object sender, WorkInstructionDeliveryEventArgs args)
+        {
+            eqptRoomHub.deliveryWorkInstrucion(args.workInstructionDeliveryVO);
+        }
+
+        private void onEqptWiProcedureReport(object sender, WorkInstructionProcedureReportEventArgs args)
+        {
+            BusinessRequest request = new BusinessRequest();
+            request.business = "workInstruction";
+            request.method = "report";
+            request.param.Add(args.workInstructionProcedureReportVO.procedureGuid);
+            request.param.Add(args.workInstructionProcedureReportVO.isSuccess);
+            BusinessResponse response = new testReportResponse();
+            BusinessContext ctx = new BusinessContext(request, response);
+
+            businessServer.postRequest(ctx);
+
+        }
+
+        private void onEqptWiReport(object sender, WorkInstructionReportEventArgs args)
+        {
+            BusinessRequest completeRequest1 = new BusinessRequest();
+            completeRequest1.business = "workInstruction";
+            completeRequest1.method = "complete";
+            completeRequest1.param.Add(args.workInstructionReportVO.workInstructionGuid);
+            completeRequest1.param.Add(args.workInstructionReportVO.status);
+            BusinessResponse completeResponse1 = new testReportResponse();
+            BusinessContext completeCtx1 = new BusinessContext(completeRequest1, completeResponse1);
+
+            businessServer.postRequest(completeCtx1);
+
+        }
+    }
+
+    class testReportResponse : BusinessResponse
+    {
+        public override void onResponsed()
+        {
+
         }
     }
 }

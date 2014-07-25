@@ -40,6 +40,10 @@ namespace Cabinet.Framework.BusinessLayer
         public delegate void WorkInstructionFailEventHandler(object sender, WorkInstructionEventArgs args);
         internal event WorkInstructionFailEventHandler WorkInstructionFailEvent;
 
+        public delegate void WorkInstructionDeliveryEventHandler(object sender, WorkInstructionDeliveryEventArgs args);
+        internal event WorkInstructionDeliveryEventHandler WorkInstructionDeliveryEvent;
+
+
         public void registerHanlder(WorkInstructionProcedureConfirmEventHandler handler)
         {
             WorkInstructionProcedureConfirmEvent = handler;
@@ -58,6 +62,11 @@ namespace Cabinet.Framework.BusinessLayer
         public void registerHanlder(WorkInstructionFailEventHandler handler)
         {
             WorkInstructionFailEvent = handler;
+        }
+
+        public void registerHanlder(WorkInstructionDeliveryEventHandler handler)
+        {
+            WorkInstructionDeliveryEvent = handler;
         }
 
         public void postWorkInstructionProcedureConfirmEvent(Guid procedureGuid, bool isSuccess)
@@ -83,6 +92,11 @@ namespace Cabinet.Framework.BusinessLayer
             Logger.debug("BusinessServer: BusinessServer - - -> AxisServer");
             WorkInstructionFailEvent(this, new WorkInstructionEventArgs(wiGuid));
         }
+
+        public void postWorkInstructionDeliveryEvent(WorkInstructionDeliveryVO workInstructionDeliveryVO)
+        {
+            WorkInstructionDeliveryEvent(this, new WorkInstructionDeliveryEventArgs(workInstructionDeliveryVO));
+        }
     }
 
     public class WorkInstructionProcedureConfirmEventArgs : EventArgs
@@ -102,6 +116,15 @@ namespace Cabinet.Framework.BusinessLayer
         public WorkInstructionEventArgs(Guid wiGuid)
         {
             this.wiGuid = wiGuid;
+        }
+    }
+
+    public class WorkInstructionDeliveryEventArgs : EventArgs
+    {
+        public WorkInstructionDeliveryVO workInstructionDeliveryVO { get; set; }
+        public WorkInstructionDeliveryEventArgs(WorkInstructionDeliveryVO workInstructionDeliveryVO)
+        {
+            this.workInstructionDeliveryVO = workInstructionDeliveryVO;
         }
     }
 }

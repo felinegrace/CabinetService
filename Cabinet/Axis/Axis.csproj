@@ -44,9 +44,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bridge\EqptRoomComm\EqptRoomComm.csproj">
+      <Project>{007a5933-1e81-4f39-a19c-50eb84507197}</Project>
+      <Name>EqptRoomComm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bridge\Ipc\Ipc.csproj">
       <Project>{fb802af3-1319-4748-a385-dfbcf8387af1}</Project>
       <Name>Ipc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bridge\Tcp\Tcp.csproj">
+      <Project>{541545eb-a200-42d7-ac29-909a7a4c226f}</Project>
+      <Name>Tcp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bridge\WcfService\WcfService.csproj">
       <Project>{b967ecc6-5d34-4f0a-94b6-aa77d59e5028}</Project>

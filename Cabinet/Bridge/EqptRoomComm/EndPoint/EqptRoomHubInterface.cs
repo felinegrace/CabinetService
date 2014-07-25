@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cabinet.Bridge.EqptRoomComm.Protocol.PayloadEntity
+namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 {
-    class WorkInstructionDelivery
+    interface EqptRoomHubInterface
     {
+
     }
 }

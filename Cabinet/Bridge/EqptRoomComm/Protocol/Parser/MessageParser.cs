@@ -5,6 +5,7 @@ using System.Text;
 using Cabinet.Utility;
 using Cabinet.Bridge.EqptRoomComm.Protocol.Message;
 using Cabinet.Bridge.EqptRoomComm.Protocol.PayloadEntity;
+using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
 {
@@ -34,6 +35,11 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
             return messageBase.verb;
         }
 
+        public T parseAs<T>()
+        {
+            return Jsonable.fromJson<T>(messageBase.payload);
+        }
+
         public Register parseAsRegister()
         {
             return Register.fromJson<Register>(messageBase.payload);
@@ -43,5 +49,12 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
         {
             return Acknowledge.fromJson<Acknowledge>(messageBase.payload);
         }
+
+        public WorkInstructionDeliveryVO parseAsWorkInstructionDeliveryVO()
+        {
+            return WorkInstructionDeliveryVO.fromJson<WorkInstructionDeliveryVO>(messageBase.payload);
+        }
+
+
     }
 }

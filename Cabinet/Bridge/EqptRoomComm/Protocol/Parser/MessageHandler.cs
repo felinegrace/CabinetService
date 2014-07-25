@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Cabinet.Utility;
 using Cabinet.Bridge.EqptRoomComm.Protocol.PayloadEntity;
+using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
 {
@@ -32,17 +33,36 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
                 {
                     case "acknowledge":
                         {
-                            Acknowledge acknowledge = parser.parseAsAcknowledge();
+                            Acknowledge acknowledge = parser.parseAs<Acknowledge>();
                             messageHandlerObserver.onAcknowledge(sessionId, acknowledge);
                             needAcknowledge = false;
                             break;
                         }
                     case "register":
                         {
-                            Register register = parser.parseAsRegister();
+                            Register register = parser.parseAs<Register>();
                             messageHandlerObserver.onRegister(sessionId, register);
                             break;
                         }
+                    case "delivery":
+                        {
+                            WorkInstructionDeliveryVO workInstructionDeliveryVO = parser.parseAs<WorkInstructionDeliveryVO>();
+                            messageHandlerObserver.onDelivery(sessionId, workInstructionDeliveryVO);
+                            break;
+                        }
+                    case "report":
+                        {
+                            WorkInstructionProcedureReportVO workInstructionProcedureReportVO = parser.parseAs<WorkInstructionProcedureReportVO>();
+                            messageHandlerObserver.onReport(sessionId, workInstructionProcedureReportVO);
+                            break;
+                        }
+                    case "complete":
+                        {
+                            WorkInstructionReportVO workInstructionReportVO = parser.parseAs<WorkInstructionReportVO>();
+                            messageHandlerObserver.onComplete(sessionId, workInstructionReportVO);
+                            break;
+                        }
+                        
                     default:                    
                         throw new EqptRoomCommException("verb error");
                         
