@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
+using System.Net;
 using System.Net.Sockets;
 using Cabinet.Bridge.Tcp.Action;
 using Cabinet.Utility;
-using System.Net;
+using System.Threading;
 
 namespace Cabinet.Bridge.Tcp.Session
 {
@@ -16,6 +18,15 @@ namespace Cabinet.Bridge.Tcp.Session
         private IocpSendAction sendAction { get; set; }
         private IocpReceiveAction recvAction { get; set; }
         private IIocpSessionObserver observer { get; set; }
+        private ConcurrentQueue<Descriptor> sendQueue { get; set; }
+        private int sendQueueStatus;
+        private static int sendQueueIdle = 0;
+        private static int sendQueueRunning = 1;
+        private void clearSendQueue()
+        {
+            Descriptor ignored;
+            while (sendQueue.TryDequeue(out ignored)) { };
+        }
 
         public IocpSession(IIocpSessionObserver observer)
         {
@@ -24,6 +35,8 @@ namespace Cabinet.Bridge.Tcp.Session
                 ((bytesSent) => this.onIocpSendActionEvent(bytesSent)));
             recvAction = new IocpReceiveAction(
                 (descriptor) => this.onIocpReceiveActionEvent(descriptor));
+            sendQueue = new ConcurrentQueue<Descriptor>();
+            sendQueueStatus = sendQueueIdle;
             Logger.debug("IocpSession: constructed.");
         }
 
@@ -35,6 +48,7 @@ namespace Cabinet.Bridge.Tcp.Session
             IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
             Logger.info("TcpSession: session {0} starts. remote address = {1}:{2}",
                 sessionId, remoteIpEndPoint.Address, remoteIpEndPoint.Port);
+            
         }
 
         public void detachSocket()
@@ -46,6 +60,7 @@ namespace Cabinet.Bridge.Tcp.Session
             recvAction.detachSocket();
             socket.Close();
             socket = null;
+            clearSendQueue();
         }
 
         private void onIocpReceiveActionEvent(Descriptor descriptor)
@@ -67,6 +82,7 @@ namespace Cabinet.Bridge.Tcp.Session
         private void onIocpSendActionEvent(int bytesSent)
         {
             Logger.debug("IocpSession: session {0} sends {1} byte(s) of data.", sessionId, bytesSent);
+            sendNextItem();
         }
 
         private void digest(Descriptor descriptor)
@@ -76,7 +92,27 @@ namespace Cabinet.Bridge.Tcp.Session
 
         public void send(byte[] buffer, int offset, int count)
         {
-            sendAction.send(buffer, offset, count);
+            DescriptorBuffer descriptorBuffer = DescriptorBuffer.create(buffer, offset, count, count);
+            sendQueue.Enqueue(descriptorBuffer);
+
+            if (Interlocked.CompareExchange(ref sendQueueStatus, sendQueueRunning, sendQueueIdle) == sendQueueIdle)
+            {
+                sendNextItem();
+            }
+            
+        }
+
+        private void sendNextItem()
+        {
+            Descriptor sendBuffer;
+            if (sendQueue.TryDequeue(out sendBuffer) == true)
+            {
+                sendAction.send(sendBuffer.des, 0, sendBuffer.desLength);
+            }
+            else
+            {
+                sendQueueStatus = sendQueueIdle;
+            }
         }
 
         public void recv()

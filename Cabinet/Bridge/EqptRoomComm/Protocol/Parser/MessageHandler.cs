@@ -23,69 +23,54 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
 
         internal void handleMessage(Guid sessionId, Descriptor descriptor)
         {
-            bool needAcknowledge = true;
-            int statusCode = 500;
-            string message = "internal error";
+            MessageParser parser = new MessageParser(descriptor);
+
             try
             {
-                MessageParser parser = new MessageParser(descriptor);
-                switch (parser.verb())
+                while(parser.parseIfHasNext())
                 {
-                    case "acknowledge":
-                        {
-                            Acknowledge acknowledge = parser.parseAs<Acknowledge>();
-                            messageHandlerObserver.onAcknowledge(sessionId, acknowledge);
-                            needAcknowledge = false;
-                            break;
-                        }
-                    case "register":
-                        {
-                            Register register = parser.parseAs<Register>();
-                            messageHandlerObserver.onRegister(sessionId, register);
-                            break;
-                        }
-                    case "delivery":
-                        {
-                            WorkInstructionDeliveryVO workInstructionDeliveryVO = parser.parseAs<WorkInstructionDeliveryVO>();
-                            messageHandlerObserver.onDelivery(sessionId, workInstructionDeliveryVO);
-                            break;
-                        }
-                    case "report":
-                        {
-                            WorkInstructionProcedureReportVO workInstructionProcedureReportVO = parser.parseAs<WorkInstructionProcedureReportVO>();
-                            messageHandlerObserver.onReport(sessionId, workInstructionProcedureReportVO);
-                            break;
-                        }
-                    case "complete":
-                        {
-                            WorkInstructionReportVO workInstructionReportVO = parser.parseAs<WorkInstructionReportVO>();
-                            messageHandlerObserver.onComplete(sessionId, workInstructionReportVO);
-                            break;
-                        }
-                        
-                    default:                    
-                        throw new EqptRoomCommException("verb error");
-                        
-                }
-                statusCode = 200;
-                message = "OK";
+                    switch (parser.verb())
+                    {
+                        case "acknowledge":
+                            {
+                                break;
+                            }
+                        case "register":
+                            {
+                                Register register = parser.parseAs<Register>();
+                                messageHandlerObserver.onRegister(sessionId, register);
+                                break;
+                            }
+                        case "delivery":
+                            {
+                                WorkInstructionDeliveryVO workInstructionDeliveryVO = parser.parseAs<WorkInstructionDeliveryVO>();
+                                messageHandlerObserver.onDelivery(sessionId, workInstructionDeliveryVO);
+                                break;
+                            }
+                        case "report":
+                            {
+                                WorkInstructionProcedureReportVO workInstructionProcedureReportVO = parser.parseAs<WorkInstructionProcedureReportVO>();
+                                messageHandlerObserver.onReport(sessionId, workInstructionProcedureReportVO);
+                                break;
+                            }
+                        case "complete":
+                            {
+                                WorkInstructionReportVO workInstructionReportVO = parser.parseAs<WorkInstructionReportVO>();
+                                messageHandlerObserver.onComplete(sessionId, workInstructionReportVO);
+                                break;
+                            }
+
+                        default:
+                            throw new EqptRoomCommException("verb error");
+
+                    }
+                }      
             }
             catch (System.Exception ex)
             {
                 Logger.error("EqptRoomHub: corrupted data {0}, from session {1}, error: {2}",
                     sessionId, descriptor.des.ToString(), ex.Message);
-                statusCode = 400;
-                message = "bad request";
-            }
-            finally
-            {
-                if(needAcknowledge)
-                {
-                    Acknowledge acknowledge = new Acknowledge();
-                    acknowledge.statusCode = statusCode;
-                    acknowledge.message = message;
-                    messageHandlerObserver.doAcknowledge(sessionId, acknowledge);
-                }
+                
             }
         }
     }

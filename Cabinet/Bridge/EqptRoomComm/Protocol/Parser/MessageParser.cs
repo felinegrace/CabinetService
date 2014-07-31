@@ -11,25 +11,50 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
 {
     class MessageParser
     {
+        private Descriptor descriptor { get; set; }
+        private IEnumerable<int> lineEnds { get; set; }
+        private int lineEndsIndex { get; set; }
+        private int lineEndsCount { get; set; }
         private MessageBase messageBase { get; set; }
+
+        private static int lineEndsInEachMessage = 3;
+
+        private static int lineEndsPatternLength = 2;
         public MessageParser(Descriptor descriptor)
         {
+            lineEndsIndex = 0;
+            messageBase = new MessageBase();
+            this.descriptor = descriptor;
             byte[] pattern = new byte[] { (byte)'\r', (byte)'\n' };
-            IEnumerable<int> lineEnds = BytesHelper.indexOf(descriptor.des, 0, descriptor.desLength, pattern); 
-            if(lineEnds.Count() < 2)
+            lineEnds = BytesHelper.indexOf(descriptor.des, 0, descriptor.desLength, pattern);
+            lineEndsCount = lineEnds.Count<int>();
+
+        }
+
+        public bool parseIfHasNext()
+        {
+            if (lineEndsIndex > lineEndsCount)
             {
                 throw new EqptRoomCommException("corrupted message.");
             }
-            else
+            if(lineEndsIndex == lineEndsCount)
             {
-                messageBase = new MessageBase();
-                messageBase.verb = System.Text.Encoding.ASCII.GetString(
-                    descriptor.des, 0, lineEnds.ElementAt(0));
-                int payloadOffset = lineEnds.ElementAt(0) + pattern.Length;
-                messageBase.payload = System.Text.Encoding.ASCII.GetString(
-                    descriptor.des, payloadOffset, lineEnds.ElementAt(1) - payloadOffset);
+                return false;
             }
+
+            int payloadOffset = lineEndsIndex == 0 ?
+                0 :
+                lineEnds.ElementAt(lineEndsIndex - 1) + lineEndsPatternLength;
+
+            messageBase.verb = System.Text.Encoding.Default.GetString(
+                descriptor.des, payloadOffset, lineEnds.ElementAt(lineEndsIndex) - payloadOffset);
+            payloadOffset = lineEnds.ElementAt(lineEndsIndex) + lineEndsPatternLength;
+            messageBase.payload = System.Text.Encoding.Default.GetString(
+                descriptor.des, payloadOffset, lineEnds.ElementAt(lineEndsIndex + 1) - payloadOffset);
+            lineEndsIndex += lineEndsInEachMessage;
+            return true;
         }
+
         public string verb()
         {
             return messageBase.verb;

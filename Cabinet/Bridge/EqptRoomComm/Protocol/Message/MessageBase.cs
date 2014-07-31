@@ -12,7 +12,7 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Message
 
         public string rawMessage()
         {
-            return verb + "\r\n" + payload + "\r\n";
+            return verb + "\r\n" + payload + "\r\n" + " \r\n";
         }
     }
 }
