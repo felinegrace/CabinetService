@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6B282090-1791-491D-A7D1-839A8D18DB1A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{1AD78548-B704-4089-810E-CA3AD054655B}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cabinet.Demo.ServerConsole</RootNamespace>
-    <AssemblyName>Cabinet.Demo.ServerConsole</AssemblyName>
+    <RootNamespace>Cabinet.Framework.CommonModuleEntry</RootNamespace>
+    <AssemblyName>Cabinet.Framework.CommonModuleEntry</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,32 +39,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EqptRoomHubConsole.cs" />
-    <Compile Include="IpcServerConsole.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="CommonModuleGateway.cs" />
+    <Compile Include="EqptRoomCommModuleEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TcpServerConsole.cs" />
+    <Compile Include="WcfServiceModuleEntry.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Cabinet\Bridge\EqptRoomComm\EqptRoomComm.csproj">
-      <Project>{007a5933-1e81-4f39-a19c-50eb84507197}</Project>
-      <Name>EqptRoomComm</Name>
+    <ProjectReference Include="..\Cabinet\Framework\CommonEntity\CommonEntity.csproj">
+      <Project>{c4f6b129-a8f4-4178-a270-21ca79c4636c}</Project>
+      <Name>CommonEntity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Cabinet\Bridge\Ipc\Ipc.csproj">
-      <Project>{fb802af3-1319-4748-a385-dfbcf8387af1}</Project>
-      <Name>Ipc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Cabinet\Bridge\Tcp\Tcp.csproj">
-      <Project>{541545eb-a200-42d7-ac29-909a7a4c226f}</Project>
-      <Name>Tcp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Cabinet\Utility\Utility.csproj">
+    <ProjectReference Include="..\Cabinet\Utility\Utility.csproj">
       <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
       <Name>Utility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CommonModuleEntry\CommonModuleEntry.csproj">
-      <Project>{1ad78548-b704-4089-810e-ca3ad054655b}</Project>
-      <Name>CommonModuleEntry</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

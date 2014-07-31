@@ -6,7 +6,7 @@ using Cabinet.Utility;
 
 namespace Cabinet.Framework.CommonEntity
 {
-    public class WorkInstructionProcedureReportVO : Jsonable
+    public class ReportWiProcedureResultVO : Jsonable
     {
         public Guid procedureGuid { get; set; }
 

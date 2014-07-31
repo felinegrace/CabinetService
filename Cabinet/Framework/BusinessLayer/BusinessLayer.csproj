@@ -43,12 +43,15 @@
     <Compile Include="BOException.cs" />
     <Compile Include="BOFactory.cs" />
     <Compile Include="BusinessServer.cs" />
-    <Compile Include="BusinessServerGateway.cs" />
-    <Compile Include="RegionBO.cs" />
+    <Compile Include="Deprecated\RegionBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkInstructionBO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CommonModuleEntry\CommonModuleEntry.csproj">
+      <Project>{1ad78548-b704-4089-810e-ca3ad054655b}</Project>
+      <Name>CommonModuleEntry</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Utility\Utility.csproj">
       <Project>{a532a29f-9292-4d18-bb95-96a6af2643a7}</Project>
       <Name>Utility</Name>

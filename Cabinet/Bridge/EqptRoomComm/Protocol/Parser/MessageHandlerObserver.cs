@@ -15,10 +15,10 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
         void onRegister(Guid sessionId, Register register);
         void doDelivery(Guid sessionId, WorkInstructionDeliveryVO workInstructionDeliveryVO);
         void onDelivery(Guid sessionId, WorkInstructionDeliveryVO workInstructionDeliveryVO);
-        void doReport(Guid sessionId, WorkInstructionProcedureReportVO workInstructionProcedureReportVO);
-        void onReport(Guid sessionId, WorkInstructionProcedureReportVO workInstructionProcedureReportVO);
-        void doComplete(Guid sessionId, WorkInstructionReportVO workInstructionReportVO);
-        void onComplete(Guid sessionId, WorkInstructionReportVO workInstructionReportVO);
+        void doReport(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO);
+        void onReport(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO);
+        void doComplete(Guid sessionId, UpdateWiStatusVO updateWiStatusVO);
+        void onComplete(Guid sessionId, UpdateWiStatusVO updateWiStatusVO);
 
     }
 }

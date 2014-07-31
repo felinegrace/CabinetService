@@ -45,11 +45,11 @@
   <ItemGroup>
     <Compile Include="BusinessContext.cs" />
     <Compile Include="BusinessResponse.cs" />
-    <Compile Include="RegionVO.cs" />
+    <Compile Include="Deprecated\RegionVO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BusinessRequest.cs" />
     <Compile Include="WorkInstructionDeliveryVO.cs" />
-    <Compile Include="WorkInstructionProcedureReportVO.cs" />
+    <Compile Include="ReportWiProcedureResultVO.cs" />
     <Compile Include="WorkInstructionProcedureVO.cs" />
     <Compile Include="WorkInstructionReportVO.cs" />
   </ItemGroup>

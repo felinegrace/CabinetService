@@ -6,11 +6,11 @@ using Cabinet.Utility;
 
 namespace Cabinet.Framework.CommonEntity
 {
-    public class WorkInstructionReportVO : Jsonable
+    public class UpdateWiStatusVO : Jsonable
     {
-        public static string proceeding = "proceeding";
-        public static string complete = "complete";
-        public static string fail = "fail";
+        public const string proceeding = "proceeding";
+        public const string complete = "complete";
+        public const string fail = "fail";
         public Guid workInstructionGuid { get; set; }
         public string status { get; set; }
     }

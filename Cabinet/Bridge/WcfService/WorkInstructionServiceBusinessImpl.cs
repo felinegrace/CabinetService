@@ -8,9 +8,9 @@ using Cabinet.Bridge.WcfService.CommonEntity;
 
 namespace Cabinet.Bridge.WcfService
 {
-    class WorkInstructionBusinessService : BusinessServiceBase
+    class WorkInstructionServiceBusinessImpl : ServiceBusinessImplBase
     {
-        public WorkInstructionBusinessService()
+        public WorkInstructionServiceBusinessImpl()
         {
             baseRequest.business = "workInstruction";
         }

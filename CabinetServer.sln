@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo_ClientConsole", "Cabin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo_WebserviceTest", "Cabinet.Demo\Demo_WebserviceTest\Demo_WebserviceTest.csproj", "{463104A4-BB1C-42F3-B854-1509D4D5A2CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonModuleEntry", "CommonModuleEntry\CommonModuleEntry.csproj", "{1AD78548-B704-4089-810E-CA3AD054655B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,10 @@ Global
 		{463104A4-BB1C-42F3-B854-1509D4D5A2CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{463104A4-BB1C-42F3-B854-1509D4D5A2CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{463104A4-BB1C-42F3-B854-1509D4D5A2CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AD78548-B704-4089-810E-CA3AD054655B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AD78548-B704-4089-810E-CA3AD054655B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AD78548-B704-4089-810E-CA3AD054655B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AD78548-B704-4089-810E-CA3AD054655B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,5 +175,6 @@ Global
 		{6B282090-1791-491D-A7D1-839A8D18DB1A} = {045AF529-78FE-4854-9339-F2B03BD4FB42}
 		{75250846-3D45-4370-B433-7F16487BDED7} = {045AF529-78FE-4854-9339-F2B03BD4FB42}
 		{463104A4-BB1C-42F3-B854-1509D4D5A2CF} = {045AF529-78FE-4854-9339-F2B03BD4FB42}
+		{1AD78548-B704-4089-810E-CA3AD054655B} = {0FD9225F-639D-444C-9D01-842B9BB627A4}
 	EndGlobalSection
 EndGlobal

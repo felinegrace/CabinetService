@@ -49,13 +49,13 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
                             }
                         case "report":
                             {
-                                WorkInstructionProcedureReportVO workInstructionProcedureReportVO = parser.parseAs<WorkInstructionProcedureReportVO>();
+                                ReportWiProcedureResultVO workInstructionProcedureReportVO = parser.parseAs<ReportWiProcedureResultVO>();
                                 messageHandlerObserver.onReport(sessionId, workInstructionProcedureReportVO);
                                 break;
                             }
                         case "complete":
                             {
-                                WorkInstructionReportVO workInstructionReportVO = parser.parseAs<WorkInstructionReportVO>();
+                                UpdateWiStatusVO workInstructionReportVO = parser.parseAs<UpdateWiStatusVO>();
                                 messageHandlerObserver.onComplete(sessionId, workInstructionReportVO);
                                 break;
                             }

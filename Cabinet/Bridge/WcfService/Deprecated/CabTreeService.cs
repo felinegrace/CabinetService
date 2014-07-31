@@ -10,7 +10,7 @@ using Cabinet.Utility;
 namespace Cabinet.Bridge.WcfService
 {
     
-    class CabTreeService : ServiceImplBase, ICabTreeService
+    class CabTreeService : ServiceBase, ICabTreeService
     {
         public string regionCreate(string name, string shortName)
         {

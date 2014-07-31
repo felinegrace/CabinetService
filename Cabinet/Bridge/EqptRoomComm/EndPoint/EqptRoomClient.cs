@@ -75,22 +75,22 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 
         void MessageHandlerObserver.onDelivery(Guid sessionId, WorkInstructionDeliveryVO workInstructionDeliveryVO)
         {
-            WorkInstructionReportVO workInstructionReportVO1 = new WorkInstructionReportVO();
+            UpdateWiStatusVO workInstructionReportVO1 = new UpdateWiStatusVO();
             workInstructionReportVO1.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
-            workInstructionReportVO1.status = WorkInstructionReportVO.proceeding;
+            workInstructionReportVO1.status = UpdateWiStatusVO.proceeding;
             doComplete(sessionId, workInstructionReportVO1);
 
             foreach (WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
             {
-                WorkInstructionProcedureReportVO workInstructionProcedureReportVO = new WorkInstructionProcedureReportVO();
+                ReportWiProcedureResultVO workInstructionProcedureReportVO = new ReportWiProcedureResultVO();
                 workInstructionProcedureReportVO.procedureGuid = workInstructionProcedureVO.procedureGuid;
                 workInstructionProcedureReportVO.isSuccess = true;
                 doReport(sessionId, workInstructionProcedureReportVO);
             }
 
-            WorkInstructionReportVO workInstructionReportVO2 = new WorkInstructionReportVO();
+            UpdateWiStatusVO workInstructionReportVO2 = new UpdateWiStatusVO();
             workInstructionReportVO2.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
-            workInstructionReportVO2.status = WorkInstructionReportVO.complete;
+            workInstructionReportVO2.status = UpdateWiStatusVO.complete;
             doComplete(sessionId, workInstructionReportVO2);
             /* 
              BusinessRequest completeRequest1 = new BusinessRequest();
@@ -133,24 +133,24 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
              */
         }
 
-        public void doReport(Guid sessionId, WorkInstructionProcedureReportVO workInstructionProcedureReportVO)
+        public void doReport(Guid sessionId, ReportWiProcedureResultVO workInstructionProcedureReportVO)
         {
             WorkInstructionProcedureReportMessage workInstructionProcedureReportMessage = new WorkInstructionProcedureReportMessage(workInstructionProcedureReportVO);
             tcpClient.send(workInstructionProcedureReportMessage.rawMessage());
         }
 
-        void MessageHandlerObserver.onReport(Guid sessionId, WorkInstructionProcedureReportVO workInstructionProcedureReportVO)
+        void MessageHandlerObserver.onReport(Guid sessionId, ReportWiProcedureResultVO workInstructionProcedureReportVO)
         {
             throw new EqptRoomCommException("client not supported.");
         }
 
-        public void doComplete(Guid sessionId, WorkInstructionReportVO workInstructionReportVO)
+        public void doComplete(Guid sessionId, UpdateWiStatusVO workInstructionReportVO)
         {
             WorkInstructionReportMessage workInstructionReportMessage = new WorkInstructionReportMessage(workInstructionReportVO);
             tcpClient.send(workInstructionReportMessage.rawMessage());
         }
 
-        void MessageHandlerObserver.onComplete(Guid sessionId, WorkInstructionReportVO workInstructionReportVO)
+        void MessageHandlerObserver.onComplete(Guid sessionId, UpdateWiStatusVO workInstructionReportVO)
         {
             throw new EqptRoomCommException("client not supported.");
         }

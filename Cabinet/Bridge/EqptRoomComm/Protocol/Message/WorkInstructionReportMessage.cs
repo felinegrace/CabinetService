@@ -8,7 +8,7 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Message
 {
     class WorkInstructionReportMessage : MessageBase
     {
-        public WorkInstructionReportMessage(WorkInstructionReportVO workInstructionReportVO)
+        public WorkInstructionReportMessage(UpdateWiStatusVO workInstructionReportVO)
         {
             verb = "complete";
             payload = workInstructionReportVO.toJson();

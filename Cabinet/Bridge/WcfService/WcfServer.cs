@@ -5,12 +5,17 @@ using System.ServiceModel;
 using System.Text;
 using Cabinet.Utility;
 using Cabinet.Framework.CommonEntity;
+using Cabinet.Framework.CommonModuleEntry;
 
 namespace Cabinet.Bridge.WcfService
 {
-    public class WcfServer
+    public class WcfServer : WcfServiceModuleEntry
     {
         private ServiceHost serviceHost;
+
+        private static int contractedWiStatusProceeding = 1;
+        private static int contractedWiStatusComplete = 2;
+        private static int contractedWiStatusFail = 3;
         public WcfServer()
         {
             serviceHost = new ServiceHost(typeof(WorkInstructionService));
@@ -44,45 +49,42 @@ namespace Cabinet.Bridge.WcfService
 
         }
 
-        public void wiReportProcedure(Guid procedureGuid, bool isSuccess)
+
+
+        public void reportWiProcedureResult(ReportWiProcedureResultVO reportWiProcedureResultVO)
         {
             Logger.info("WcfServer: AxisServer =====> WcfServer.");
             Logger.info("WcfServer: WcfServer - - -> Webservice.");
             WebComm.WebServerService webComm = new WebComm.WebServerService();
-            string isSuccessString = isSuccess ? "true" : "false";
-            webComm.executeResultInfo(procedureGuid.ToString(), isSuccessString);
+            string isSuccessString = reportWiProcedureResultVO.isSuccess ? "true" : "false";
+            webComm.executeResultInfo(reportWiProcedureResultVO.procedureGuid.ToString(), isSuccessString);
             Logger.info("WcfServer: <3<3<3 Wcf Client Transaction Completed.");
             Logger.info("WcfServer: WcfServer =====> Webservice.");
         }
 
-        public void wiProceeding(Guid wiGuid)
+        private void reportWiStatus(Guid wiGuid, int wiStatus)
         {
             Logger.info("WcfServer: AxisServer =====> WcfServer.");
             Logger.info("WcfServer: WcfServer - - -> Webservice.");
             WebComm.WebServerService webComm = new WebComm.WebServerService();
-            webComm.updateWorkInstrStatus(wiGuid.ToString(), 1);
+            webComm.updateWorkInstrStatus(wiGuid.ToString(), wiStatus);
             Logger.info("WcfServer: <3<3<3 Wcf Client Transaction Completed.");
             Logger.info("WcfServer: WcfServer =====> Webservice.");
         }
 
-        public void wiComplete(Guid wiGuid)
+        public void updateWiStatusAsProceeding(Guid wiGuid)
         {
-            Logger.info("WcfServer: AxisServer =====> WcfServer.");
-            Logger.info("WcfServer: WcfServer - - -> Webservice.");
-            WebComm.WebServerService webComm = new WebComm.WebServerService();
-            webComm.updateWorkInstrStatus(wiGuid.ToString(), 2);
-            Logger.info("WcfServer: <3<3<3 Wcf Client Transaction Completed.");
-            Logger.info("WcfServer: WcfServer =====> Webservice.");
+            reportWiStatus(wiGuid, contractedWiStatusProceeding);
         }
 
-        public void wiFail(Guid wiGuid)
+        public void updateWiStatusAsComplete(Guid wiGuid)
         {
-            Logger.info("WcfServer: AxisServer =====> WcfServer.");
-            Logger.info("WcfServer: WcfServer - - -> Webservice.");
-            WebComm.WebServerService webComm = new WebComm.WebServerService();
-            webComm.updateWorkInstrStatus(wiGuid.ToString(), 3);
-            Logger.info("WcfServer: <3<3<3 Wcf Client Transaction Completed.");
-            Logger.info("WcfServer: WcfServer =====> Webservice.");
+            reportWiStatus(wiGuid, contractedWiStatusComplete);
+        }
+
+        public void updateWiStatusAsFail(Guid wiGuid)
+        {
+            reportWiStatus(wiGuid, contractedWiStatusFail);
         }
     }
 }

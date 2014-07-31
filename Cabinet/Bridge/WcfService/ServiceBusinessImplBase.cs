@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using Cabinet.Utility;
 using Cabinet.Framework.CommonEntity;
+using Cabinet.Framework.CommonModuleEntry;
 using Cabinet.Bridge.WcfService.CommonEntity;
 
 
 namespace Cabinet.Bridge.WcfService
 {
-    class BusinessServiceBase
+    class ServiceBusinessImplBase
     {
         private WcfMessage baseMessage { get; set; }
         internal BusinessRequest baseRequest { get; set; }
         internal WcfBusinessResponse baseResponse { get; set; }
         private BusinessContext baseContext { get; set; }
-        protected BusinessServiceBase()
+        protected ServiceBusinessImplBase()
         {
             baseMessage = new WcfMessage(true);
             baseRequest = new BusinessRequest();
@@ -25,7 +26,7 @@ namespace Cabinet.Bridge.WcfService
 
         private void commit()
         {
-            WcfServerGateway.getInstance().postWcfBusinessEvent(baseContext);
+            CommonModuleGateway.getInstance().businessServiceModuleEntry.postRequest(baseContext);
         }
 
         private void wait()

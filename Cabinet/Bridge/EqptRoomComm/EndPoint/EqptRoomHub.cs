@@ -8,10 +8,11 @@ using Cabinet.Bridge.EqptRoomComm.Protocol.Parser;
 using Cabinet.Bridge.EqptRoomComm.Protocol.PayloadEntity;
 using Cabinet.Bridge.EqptRoomComm.Protocol.Message;
 using Cabinet.Framework.CommonEntity;
+using Cabinet.Framework.CommonModuleEntry;
 
 namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 {
-    public class EqptRoomHub : TcpEndPointObserver, MessageHandlerObserver
+    public class EqptRoomHub : TcpEndPointObserver, MessageHandlerObserver, EqptRoomCommModuleEntry
     {
         private TcpServer tcpServer { get; set; }
         private EqptRoomClientMap eqptRoomClientMap { get; set; }
@@ -108,26 +109,24 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             throw new EqptRoomCommException("server not supported.");
         }
 
-        void MessageHandlerObserver.doReport(Guid sessionId, WorkInstructionProcedureReportVO workInstructionProcedureReportVO)
+        void MessageHandlerObserver.doReport(Guid sessionId, ReportWiProcedureResultVO workInstructionProcedureReportVO)
         {
             throw new EqptRoomCommException("server not supported.");
         }
 
-        void MessageHandlerObserver.onReport(Guid sessionId, WorkInstructionProcedureReportVO workInstructionProcedureReportVO)
+        void MessageHandlerObserver.onReport(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO)
         {
-            EqptRoomHubGateway gateway = EqptRoomHubGateway.getInstance();
-            gateway.postWorkInstructionProcedureReportEvent(workInstructionProcedureReportVO);
+            new WorkInstrucionServiceBusinessImpl().reportWiProcedureResult(reportWiProcedureResultVO);
         }
 
-        void MessageHandlerObserver.doComplete(Guid sessionId, WorkInstructionReportVO workInstructionReportVO)
+        void MessageHandlerObserver.doComplete(Guid sessionId, UpdateWiStatusVO workInstructionReportVO)
         {
             throw new EqptRoomCommException("server not supported.");
         }
 
-        void MessageHandlerObserver.onComplete(Guid sessionId, WorkInstructionReportVO workInstructionReportVO)
+        void MessageHandlerObserver.onComplete(Guid sessionId, UpdateWiStatusVO updateWiStatusVO)
         {
-            EqptRoomHubGateway gateway = EqptRoomHubGateway.getInstance();
-            gateway.postWorkInstructionProceedingEvent(workInstructionReportVO);
+            new WorkInstrucionServiceBusinessImpl().updateWiStatus(updateWiStatusVO);
         }
     }
 }

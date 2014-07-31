@@ -7,7 +7,7 @@ using Cabinet.Bridge.WcfService.CommonEntity;
 
 namespace Cabinet.Bridge.WcfService
 {
-    class ServiceImplBase
+    class ServiceBase
     {
         protected void logOnRequest()
         {

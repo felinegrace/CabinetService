@@ -40,10 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="WcfAdaptor.cs" />
-    <Compile Include="IPCAdaptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CommonModuleEntry\CommonModuleEntry.csproj">
+      <Project>{1ad78548-b704-4089-810e-ca3ad054655b}</Project>
+      <Name>CommonModuleEntry</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bridge\EqptRoomComm\EqptRoomComm.csproj">
       <Project>{007a5933-1e81-4f39-a19c-50eb84507197}</Project>
       <Name>EqptRoomComm</Name>

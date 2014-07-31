@@ -8,7 +8,7 @@ using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.WcfService
 {
-    class RegionBusinessService : BusinessServiceBase
+    class RegionBusinessService : ServiceBusinessImplBase
     {
         public RegionBusinessService()
         {
