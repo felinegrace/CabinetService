@@ -24,14 +24,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 
             commit();
 
-            if (baseResponse.isSuccess == false)
-            {
-                Logger.error("EqptRoomHub: business server returns error: {0}", baseResponse.errorMessage);
-            }
-            else
-            {
-                Logger.debug("EqptRoomHub: business server returns success.");
-            }
+
         }
 
         public void updateWiStatus(UpdateWiStatusVO updateWiStatusVO)
@@ -44,14 +37,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 
             commit();
 
-            if (baseResponse.isSuccess == false)
-            {
-                Logger.error("EqptRoomHub: business server returns error: {0}", baseResponse.errorMessage);
-            }
-            else
-            {
-                Logger.debug("EqptRoomHub: business server returns success.");
-            }
+
         }
     }
 }

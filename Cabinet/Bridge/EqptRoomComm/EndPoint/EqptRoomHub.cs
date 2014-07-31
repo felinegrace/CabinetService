@@ -12,7 +12,7 @@ using Cabinet.Framework.CommonModuleEntry;
 
 namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 {
-    public class EqptRoomHub : TcpEndPointObserver, MessageHandlerObserver, EqptRoomCommModuleEntry
+    public class EqptRoomHub : EqptRoomHubMessageExchanger, TcpEndPointObserver, EqptRoomCommModuleEntry
     {
         private TcpServer tcpServer { get; set; }
         private EqptRoomClientMap eqptRoomClientMap { get; set; }
@@ -43,6 +43,11 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             Logger.debug("EqptRoomHub: stop.");
         }
 
+        public void deliveryWorkInstrucion(WorkInstructionDeliveryVO workInstructionDeliveryVO)
+        {
+            doDelivery(workInstructionDeliveryVO);
+        }
+
         public void dispatchDataByEqptRoomGuid(Guid eqptRoomGuid, byte[] data, int offset, int count)
         {
             Guid sessionGuid = eqptRoomClientMap.searchSessionGuid(eqptRoomGuid);
@@ -68,14 +73,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             }
         }
 
-        public void deliveryWorkInstrucion(WorkInstructionDeliveryVO workInstructionDeliveryVO)
-        {
-            WorkInstructionDeliveryMessage workInstructionDeliveryMessage = new WorkInstructionDeliveryMessage(workInstructionDeliveryVO);
-            byte[] workInstructionDeliveryBytes = System.Text.Encoding.ASCII.GetBytes(workInstructionDeliveryMessage.rawMessage());
-            dispatchDataByEqptRoomGuid(workInstructionDeliveryVO.eqptRoomGuid, workInstructionDeliveryBytes, 0, workInstructionDeliveryBytes.Length);
-        }
-
-        void MessageHandlerObserver.onRegister(Guid sessionId, Register register)
+        protected sealed override void onRegisterMessage(Guid sessionId, Register register)
         {
             Logger.debug("EqptRoomHubBusiness: eqpt room guid {0} request register.",
                 register.eqptRoomGuid);
@@ -84,49 +82,23 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
                 register.eqptRoomGuid);
         }
 
-        void MessageHandlerObserver.doAcknowledge(Guid sessionId, Acknowledge acknowledge)
-        {
-            AcknowledgeMessage acknowledgeMessage = new AcknowledgeMessage(acknowledge);
-            byte[] acknowledgeBytes = System.Text.Encoding.ASCII.GetBytes(acknowledgeMessage.rawMessage());
-            dispatchDataBySessionGuid(sessionId, acknowledgeBytes, 0, acknowledgeBytes.Length);
-        }
-
-        void MessageHandlerObserver.onAcknowledge(Guid sessionId, Acknowledge acknowledge)
-        {
-            Logger.debug("EqptRoomHubBusiness: eqpt room guid {0} reports {1},{2}.",
-                sessionId, acknowledge.statusCode, acknowledge.message);
-        }
-
-        void MessageHandlerObserver.doDelivery(Guid sessionId, WorkInstructionDeliveryVO workInstructionDeliveryVO)
+        protected sealed override void doDelivery(WorkInstructionDeliveryVO workInstructionDeliveryVO)
         {
             WorkInstructionDeliveryMessage workInstructionDeliveryMessage = new WorkInstructionDeliveryMessage(workInstructionDeliveryVO);
             byte[] workInstructionDeliveryBytes = System.Text.Encoding.ASCII.GetBytes(workInstructionDeliveryMessage.rawMessage());
-            dispatchDataBySessionGuid(sessionId, workInstructionDeliveryBytes, 0, workInstructionDeliveryBytes.Length);
+            dispatchDataByEqptRoomGuid(workInstructionDeliveryVO.eqptRoomGuid, workInstructionDeliveryBytes, 0, workInstructionDeliveryBytes.Length);
         }
 
-        void MessageHandlerObserver.onDelivery(Guid sessionId, WorkInstructionDeliveryVO workInstructionDeliveryVO)
-        {
-            throw new EqptRoomCommException("server not supported.");
-        }
-
-        void MessageHandlerObserver.doReport(Guid sessionId, ReportWiProcedureResultVO workInstructionProcedureReportVO)
-        {
-            throw new EqptRoomCommException("server not supported.");
-        }
-
-        void MessageHandlerObserver.onReport(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO)
+        protected sealed override void onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO)
         {
             new WorkInstrucionServiceBusinessImpl().reportWiProcedureResult(reportWiProcedureResultVO);
         }
 
-        void MessageHandlerObserver.doComplete(Guid sessionId, UpdateWiStatusVO workInstructionReportVO)
-        {
-            throw new EqptRoomCommException("server not supported.");
-        }
-
-        void MessageHandlerObserver.onComplete(Guid sessionId, UpdateWiStatusVO updateWiStatusVO)
+        protected sealed override void onUpdateWiStatus(Guid sessionId, UpdateWiStatusVO updateWiStatusVO)
         {
             new WorkInstrucionServiceBusinessImpl().updateWiStatus(updateWiStatusVO);
         }
+
+
     }
 }

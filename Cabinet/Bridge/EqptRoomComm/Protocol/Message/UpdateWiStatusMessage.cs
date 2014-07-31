@@ -6,11 +6,11 @@ using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.EqptRoomComm.Protocol.Message
 {
-    class WorkInstructionReportMessage : MessageBase
+    class UpdateWiStatusMessage : MessageBase
     {
-        public WorkInstructionReportMessage(UpdateWiStatusVO workInstructionReportVO)
+        public UpdateWiStatusMessage(UpdateWiStatusVO workInstructionReportVO)
         {
-            verb = "complete";
+            verb = "updateWiStatus";
             payload = workInstructionReportVO.toJson();
         }
     }

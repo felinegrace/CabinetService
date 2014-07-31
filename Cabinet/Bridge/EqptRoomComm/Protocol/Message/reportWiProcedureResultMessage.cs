@@ -6,11 +6,11 @@ using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.EqptRoomComm.Protocol.Message
 {
-    class WorkInstructionProcedureReportMessage : MessageBase
+    class ReportWiProcedureResultMessage : MessageBase
     {
-        public WorkInstructionProcedureReportMessage(ReportWiProcedureResultVO workInstructionProcedureReportVO)
+        public ReportWiProcedureResultMessage(ReportWiProcedureResultVO workInstructionProcedureReportVO)
         {
-            verb = "report";
+            verb = "reportWiProcedureResult";
             payload = workInstructionProcedureReportVO.toJson();
         }
     }

@@ -10,9 +10,9 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
 {
     class MessageHandler
     {
-        private MessageHandlerObserver messageHandlerObserver { get; set; }
+        private MessageObserver messageHandlerObserver { get; set; }
 
-        public MessageHandler(MessageHandlerObserver messageHandlerObserver)
+        public MessageHandler(MessageObserver messageHandlerObserver)
         {
             if(messageHandlerObserver == null)
             {
@@ -47,16 +47,16 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
                                 messageHandlerObserver.onDelivery(sessionId, workInstructionDeliveryVO);
                                 break;
                             }
-                        case "report":
+                        case "reportWiProcedureResult":
                             {
-                                ReportWiProcedureResultVO workInstructionProcedureReportVO = parser.parseAs<ReportWiProcedureResultVO>();
-                                messageHandlerObserver.onReport(sessionId, workInstructionProcedureReportVO);
+                                ReportWiProcedureResultVO reportWiProcedureResultVO = parser.parseAs<ReportWiProcedureResultVO>();
+                                messageHandlerObserver.onReportWiProcedureResult(sessionId, reportWiProcedureResultVO);
                                 break;
                             }
-                        case "complete":
+                        case "updateWiStatus":
                             {
-                                UpdateWiStatusVO workInstructionReportVO = parser.parseAs<UpdateWiStatusVO>();
-                                messageHandlerObserver.onComplete(sessionId, workInstructionReportVO);
+                                UpdateWiStatusVO updateWiStatusVO = parser.parseAs<UpdateWiStatusVO>();
+                                messageHandlerObserver.onUpdateWiStatus(sessionId, updateWiStatusVO);
                                 break;
                             }
 
