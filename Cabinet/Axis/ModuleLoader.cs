@@ -11,18 +11,24 @@ using Cabinet.Framework.CommonModuleEntry;
 
 namespace Cabinet.Axis
 {
-    public class WcfAdaptor
+    public class ModuleLoader
     {
         private BusinessServer businessServer { get; set; }
         private WcfServer wcfServer { get; set; }
         private EqptRoomHub eqptRoomHub { get; set; }
-        public WcfAdaptor()
+        public ModuleLoader()
         {
-            Logger.debug("AxisServer: constructing servers...");
+            Logger.debug("ModuleLoader: loading config...");
+
+            string eqptRoomHubListenIp = AppConfigHelper.GetValue("EqptRoomHubListenIp");
+            string eqptRoomHubListenPortString = AppConfigHelper.GetValue("EqptRoomHubListenPort");
+            int eqptRoomHubListenPort = Convert.ToInt32(eqptRoomHubListenPortString);
+
+            Logger.debug("ModuleLoader: constructing servers...");
 
             businessServer = new BusinessServer();
             wcfServer = new WcfServer();
-            eqptRoomHub = new EqptRoomHub("10.31.31.31", 8135);
+            eqptRoomHub = new EqptRoomHub(eqptRoomHubListenIp, eqptRoomHubListenPort);
 
             CommonModuleGateway.getInstance().businessServiceModuleEntry = businessServer;
             CommonModuleGateway.getInstance().wcfServiceModuleEntry = wcfServer;
@@ -30,14 +36,14 @@ namespace Cabinet.Axis
         }
         public void start()
         {
-            Logger.debug("AxisServer: launching servers...");
+            Logger.debug("ModuleLoader: launching servers...");
             businessServer.start();
             wcfServer.start();
             eqptRoomHub.start();
         }
         public void stop()
         {
-            Logger.debug("AxisServer: closing servers...");
+            Logger.debug("ModuleLoader: closing servers...");
             businessServer.stop();
             wcfServer.stop();
             eqptRoomHub.stop();

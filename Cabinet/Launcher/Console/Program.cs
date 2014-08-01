@@ -12,8 +12,8 @@ namespace Cabinet.Demo.AxisConsole
         static void Main(string[] args)
         {
             Logger.enable();
-            WcfAdaptor m = new WcfAdaptor();
-
+            ModuleLoader m = new ModuleLoader();
+            
             ConsoleKeyInfo ch;
             do
             {
