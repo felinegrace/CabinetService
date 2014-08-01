@@ -43,6 +43,7 @@
     <Compile Include="CommonEntity\EqptRoomBusinessResponse.cs" />
     <Compile Include="EndPoint\EqptRoomClient.cs" />
     <Compile Include="EndPoint\EqptRoomClientMessageExchanger.cs" />
+    <Compile Include="EndPoint\EqptRoomClientObserver.cs" />
     <Compile Include="EndPoint\EqptRoomHub.cs" />
     <Compile Include="EndPoint\EqptRoomClientMap.cs" />
     <Compile Include="EndPoint\EqptRoomHubBusinessBase.cs" />

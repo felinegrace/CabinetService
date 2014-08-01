@@ -11,7 +11,7 @@ namespace Cabinet.Demo.ClientConsole
         static void Main(string[] args)
         {
             Logger.enable();
-            EqptRoomClientConsole.entry();
+            new EqptRoomClientConsole().entry();
         }
     }
 }

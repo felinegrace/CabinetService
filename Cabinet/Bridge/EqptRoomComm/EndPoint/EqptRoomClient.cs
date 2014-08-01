@@ -13,11 +13,14 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 {
     public class EqptRoomClient : EqptRoomClientMessageExchanger, TcpEndPointObserver
     {
+        private EqptRoomClientObserver eqptRoomClientObserver { get; set; }
         private TcpClient tcpClient { get; set; }
         private MessageHandler messageHandler { get; set; }
-        public EqptRoomClient(string clientIpAddress, int clientPort,
+        public EqptRoomClient(EqptRoomClientObserver eqptRoomClientObserver,
+            string clientIpAddress, int clientPort,
             string serverIpAddress, int serverPort)
         {
+            this.eqptRoomClientObserver = eqptRoomClientObserver;
             tcpClient = new TcpClient(clientIpAddress, clientPort,
                 serverIpAddress, serverPort, this);
             messageHandler = new MessageHandler(this);
@@ -45,30 +48,34 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             tcpClient.send(registerMessage.rawMessage());
         }
 
-        public void onTcpData(Guid sessionId, Descriptor descriptor)
+        void TcpEndPointObserver.onTcpData(Guid sessionId, Descriptor descriptor)
         {
             messageHandler.handleMessage(sessionId, descriptor);
         }
 
         protected override void onDeliveryMessage(WorkInstructionDeliveryVO workInstructionDeliveryVO)
         {
-            UpdateWiStatusVO workInstructionReportVO1 = new UpdateWiStatusVO();
-            workInstructionReportVO1.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
-            workInstructionReportVO1.status = UpdateWiStatusVO.proceeding;
-            doUpdateWiStatus(workInstructionReportVO1);
-
-            foreach (WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
+            if(eqptRoomClientObserver != null)
             {
-                ReportWiProcedureResultVO workInstructionProcedureReportVO = new ReportWiProcedureResultVO();
-                workInstructionProcedureReportVO.procedureGuid = workInstructionProcedureVO.procedureGuid;
-                workInstructionProcedureReportVO.isSuccess = true;
-                doReportWiProcedureResult(workInstructionProcedureReportVO);
+                eqptRoomClientObserver.onWorkInstrucionDelivery(workInstructionDeliveryVO);
             }
+            //UpdateWiStatusVO workInstructionReportVO1 = new UpdateWiStatusVO();
+            //workInstructionReportVO1.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
+            //workInstructionReportVO1.status = UpdateWiStatusVO.proceeding;
+            //doUpdateWiStatus(workInstructionReportVO1);
 
-            UpdateWiStatusVO workInstructionReportVO2 = new UpdateWiStatusVO();
-            workInstructionReportVO2.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
-            workInstructionReportVO2.status = UpdateWiStatusVO.complete;
-            doUpdateWiStatus(workInstructionReportVO2);
+            //foreach (WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
+            //{
+            //    ReportWiProcedureResultVO workInstructionProcedureReportVO = new ReportWiProcedureResultVO();
+            //    workInstructionProcedureReportVO.procedureGuid = workInstructionProcedureVO.procedureGuid;
+            //    workInstructionProcedureReportVO.isSuccess = true;
+            //    doReportWiProcedureResult(workInstructionProcedureReportVO);
+            //}
+
+            //UpdateWiStatusVO workInstructionReportVO2 = new UpdateWiStatusVO();
+            //workInstructionReportVO2.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
+            //workInstructionReportVO2.status = UpdateWiStatusVO.complete;
+            //doUpdateWiStatus(workInstructionReportVO2);
             /* 
              BusinessRequest completeRequest1 = new BusinessRequest();
             completeRequest1.business = "workInstruction";

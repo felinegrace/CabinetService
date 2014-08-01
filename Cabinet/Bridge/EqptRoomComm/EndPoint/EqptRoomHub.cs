@@ -24,7 +24,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             messageHandler = new MessageHandler(this);
         }
 
-        public void onTcpData(Guid sessionId, Descriptor descriptor)
+        void TcpEndPointObserver.onTcpData(Guid sessionId, Descriptor descriptor)
         {
             messageHandler.handleMessage(sessionId, descriptor);
         }
