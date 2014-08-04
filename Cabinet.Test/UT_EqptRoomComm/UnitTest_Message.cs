@@ -20,9 +20,9 @@ namespace UT_EqptRoomComm
             Assert.AreEqual("{\"eqptRoomGuid\":\"0a3065ed-28f2-4f75-8a35-58333ff2e78b\"}", message.payload);
             Assert.AreEqual("register\r\n{\"eqptRoomGuid\":\"0a3065ed-28f2-4f75-8a35-58333ff2e78b\"}\r\n", message.rawMessage());
             byte[] b = System.Text.Encoding.ASCII.GetBytes(message.rawMessage());
-            MessageParser parser = new MessageParser(new DescriptorReference(b,b.Length));
+            MessageFormatParser parser = new MessageFormatParser(new DescriptorReference(b,b.Length));
             Assert.AreEqual("register", parser.verb());
-            Register oo = parser.parseAsRegister();
+            Register oo = parser.parseAs<Register>();
             Assert.AreEqual(o.eqptRoomGuid, oo.eqptRoomGuid);
         }
     }

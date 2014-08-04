@@ -16,12 +16,12 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
     {
         private TcpServer tcpServer { get; set; }
         private EqptRoomClientMap eqptRoomClientMap { get; set; }
-        private MessageHandler messageHandler { get; set; }
+        private MessageBusinessHandler messageHandler { get; set; }
         public EqptRoomHub(string ipAddress, int port)
         {
             tcpServer = new TcpServer(ipAddress, port, this);
             eqptRoomClientMap = new EqptRoomClientMap();
-            messageHandler = new MessageHandler(this);
+            messageHandler = new MessageBusinessHandler(this);
         }
 
         void TcpEndPointObserver.onTcpData(Guid sessionId, Descriptor descriptor)
@@ -46,6 +46,17 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
         public void deliveryWorkInstrucion(WorkInstructionDeliveryVO workInstructionDeliveryVO)
         {
             doDelivery(workInstructionDeliveryVO);
+        }
+
+        public void acknowledge(Guid transactionGuid, Guid eqptRoomGuid, int statusCode, string message)
+        {
+            Acknowledge acknowledgeEntity = new Acknowledge(transactionGuid);
+            acknowledgeEntity.eqptRoomGuid = eqptRoomGuid;
+            acknowledgeEntity.statusCode = statusCode;
+            acknowledgeEntity.message = message;
+            AcknowledgeMessage acknowledgeMessage = new AcknowledgeMessage(acknowledgeEntity);
+            byte[] acknowledgeMessageBytes = acknowledgeMessage.rawBytes();
+            dispatchDataByEqptRoomGuid(eqptRoomGuid, acknowledgeMessageBytes, 0, acknowledgeMessageBytes.Length);
         }
 
         public void dispatchDataByEqptRoomGuid(Guid eqptRoomGuid, byte[] data, int offset, int count)
@@ -85,18 +96,18 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
         protected sealed override void doDelivery(WorkInstructionDeliveryVO workInstructionDeliveryVO)
         {
             WorkInstructionDeliveryMessage workInstructionDeliveryMessage = new WorkInstructionDeliveryMessage(workInstructionDeliveryVO);
-            byte[] workInstructionDeliveryBytes = System.Text.Encoding.ASCII.GetBytes(workInstructionDeliveryMessage.rawMessage());
+            byte[] workInstructionDeliveryBytes = workInstructionDeliveryMessage.rawBytes();
             dispatchDataByEqptRoomGuid(workInstructionDeliveryVO.eqptRoomGuid, workInstructionDeliveryBytes, 0, workInstructionDeliveryBytes.Length);
         }
 
-        protected sealed override void onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO)
+        protected sealed override void onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultTransactionVO reportWiProcedureResultTransactionVO)
         {
-            new WorkInstrucionServiceBusinessImpl().reportWiProcedureResult(reportWiProcedureResultVO);
+            new WorkInstrucionServiceBusinessImpl().reportWiProcedureResult(reportWiProcedureResultTransactionVO);
         }
 
-        protected sealed override void onUpdateWiStatus(Guid sessionId, UpdateWiStatusVO updateWiStatusVO)
+        protected sealed override void onUpdateWiStatus(Guid sessionId, UpdateWiStatusTransactionVO updateWiStatusTransactionVO)
         {
-            new WorkInstrucionServiceBusinessImpl().updateWiStatus(updateWiStatusVO);
+            new WorkInstrucionServiceBusinessImpl().updateWiStatus(updateWiStatusTransactionVO);
         }
 
 

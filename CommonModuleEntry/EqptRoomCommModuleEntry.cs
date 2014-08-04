@@ -8,6 +8,7 @@ namespace Cabinet.Framework.CommonModuleEntry
 {
     public interface EqptRoomCommModuleEntry
     {
+        void acknowledge(Guid transactionGuid, Guid eqptRoomGuid, int statusCode, string message);
         void deliveryWorkInstrucion(WorkInstructionDeliveryVO workInstructionDeliveryVO);
     }
 }

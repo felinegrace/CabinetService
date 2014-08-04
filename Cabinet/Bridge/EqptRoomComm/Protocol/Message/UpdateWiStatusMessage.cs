@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cabinet.Framework.CommonEntity;
+using Cabinet.Bridge.EqptRoomComm.Protocol.PayloadEntity;
 
 namespace Cabinet.Bridge.EqptRoomComm.Protocol.Message
 {
     class UpdateWiStatusMessage : MessageBase
     {
-        public UpdateWiStatusMessage(UpdateWiStatusVO workInstructionReportVO)
+        public UpdateWiStatusMessage(UpdateWiStatusTransactionVO updateWiStatusTransactionVO)
         {
             verb = "updateWiStatus";
-            payload = workInstructionReportVO.toJson();
+            payload = updateWiStatusTransactionVO.toJson();
         }
     }
 }

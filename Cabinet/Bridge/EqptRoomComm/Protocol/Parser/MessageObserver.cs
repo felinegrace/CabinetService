@@ -9,10 +9,11 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
 {
     interface MessageObserver
     {
+        void onAcknowledge(Guid sessionId, Acknowledge acknowledge);
         void onRegister(Guid sessionId, Register register);
         void onDelivery(Guid sessionId, WorkInstructionDeliveryVO workInstructionDeliveryVO);
-        void onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO);
-        void onUpdateWiStatus(Guid sessionId, UpdateWiStatusVO updateWiStatusVO);
+        void onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultTransactionVO reportWiProcedureResultTransactionVO);
+        void onUpdateWiStatus(Guid sessionId, UpdateWiStatusTransactionVO updateWiStatusTransactionVO);
 
     }
 }

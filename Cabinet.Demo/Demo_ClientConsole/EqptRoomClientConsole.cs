@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Cabinet.Utility;
 using Cabinet.Bridge.EqptRoomComm.EndPoint;
 using Cabinet.Framework.CommonEntity;
+using Cabinet.Bridge.EqptRoomComm.Protocol.PayloadEntity;
 
 namespace Cabinet.Demo.ClientConsole
 {
     class EqptRoomClientConsole : EqptRoomClientObserver
     {
         EqptRoomClient s;
+        Guid eqptRoomGuid;
         public void entry()
         {
+            eqptRoomGuid = new Guid("C9FB1218-5CB6-461D-A7C1-C23AF3EBEEDD");
             s = new EqptRoomClient(this, 
                 "127.0.0.1", 6382, "10.31.31.31", 8135);
             s.start();
@@ -22,8 +26,12 @@ namespace Cabinet.Demo.ClientConsole
                 ch = Console.ReadKey();
                 switch (ch.Key)
                 {
-                    case ConsoleKey.S: s.register(new Guid("C9FB1218-5CB6-461D-A7C1-C23AF3EBEEDD"));
-                        break;
+                    case ConsoleKey.S:
+                        {
+                            Guid logUsedGuid = s.doRegister(eqptRoomGuid);
+                            Logger.debug("a doRegister submitted with transId {0}.", logUsedGuid);
+                            break;
+                        }
                     default:
                         break;
                 }
@@ -31,25 +39,41 @@ namespace Cabinet.Demo.ClientConsole
             s.stop();
         }
 
+        public void onAcknowledge(Acknowledge acknowledge)
+        {
+            Logger.debug("transaction {0} returns result {1} with message {2} in EqptRoom {3}",
+                acknowledge.trasactionGuid,
+                acknowledge.statusCode,
+                acknowledge.message,
+                acknowledge.eqptRoomGuid);
+        }
+
         public void onWorkInstrucionDelivery(WorkInstructionDeliveryVO workInstructionDeliveryVO)
         {
+            Guid logUsedGuid;
+
             UpdateWiStatusVO workInstructionReportVO1 = new UpdateWiStatusVO();
             workInstructionReportVO1.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
             workInstructionReportVO1.status = UpdateWiStatusVO.proceeding;
-            s.doUpdateWiStatus(workInstructionReportVO1);
-
+            logUsedGuid = s.doUpdateWiStatus(eqptRoomGuid, workInstructionReportVO1);
+            Logger.debug("a doUpdateWiStatus submitted with transId {0}.",
+                logUsedGuid);
             foreach (WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
             {
                 ReportWiProcedureResultVO workInstructionProcedureReportVO = new ReportWiProcedureResultVO();
                 workInstructionProcedureReportVO.procedureGuid = workInstructionProcedureVO.procedureGuid;
                 workInstructionProcedureReportVO.isSuccess = true;
-                s.doReportWiProcedureResult(workInstructionProcedureReportVO);
+                logUsedGuid = s.doReportWiProcedureResult(eqptRoomGuid, workInstructionProcedureReportVO);
+                Logger.debug("a doReportWiProcedureResult submitted with transId {0}.",
+                    logUsedGuid);
             }
 
             UpdateWiStatusVO workInstructionReportVO2 = new UpdateWiStatusVO();
             workInstructionReportVO2.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
             workInstructionReportVO2.status = UpdateWiStatusVO.complete;
-            s.doUpdateWiStatus(workInstructionReportVO2);
+            logUsedGuid = s.doUpdateWiStatus(eqptRoomGuid, workInstructionReportVO2);
+            Logger.debug("a doUpdateWiStatus submitted with transId {0}.",
+                logUsedGuid);
         }
     }
 

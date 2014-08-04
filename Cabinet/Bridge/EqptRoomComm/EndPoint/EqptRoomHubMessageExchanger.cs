@@ -12,6 +12,10 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 {
     public abstract class EqptRoomHubMessageExchanger : MessageObserver
     {
+        void MessageObserver.onAcknowledge(Guid sessionId, Acknowledge acknowledge)
+        {
+            throw new EqptRoomCommException("server not supported.");
+        }
 
         void MessageObserver.onRegister(Guid sessionId, Register register)
         {
@@ -23,22 +27,22 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             throw new EqptRoomCommException("server not supported.");
         }
 
-        void MessageObserver.onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO)
+        void MessageObserver.onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultTransactionVO reportWiProcedureResultTransactionVO)
         {
-            onReportWiProcedureResult(sessionId, reportWiProcedureResultVO);
+            onReportWiProcedureResult(sessionId, reportWiProcedureResultTransactionVO);
         }
 
-        void MessageObserver.onUpdateWiStatus(Guid sessionId, UpdateWiStatusVO updateWiStatusVO)
+        void MessageObserver.onUpdateWiStatus(Guid sessionId, UpdateWiStatusTransactionVO updateWiStatusTransactionVO)
         {
-            onUpdateWiStatus(sessionId, updateWiStatusVO);
+            onUpdateWiStatus(sessionId, updateWiStatusTransactionVO);
         }
 
         protected abstract void doDelivery(WorkInstructionDeliveryVO workInstructionDeliveryVO);
 
         protected abstract void onRegisterMessage(Guid sessionId, Register register);
 
-        protected abstract void onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO);
+        protected abstract void onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultTransactionVO reportWiProcedureResultTransactionVO);
 
-        protected abstract void onUpdateWiStatus(Guid sessionId, UpdateWiStatusVO updateWiStatusVO);
+        protected abstract void onUpdateWiStatus(Guid sessionId, UpdateWiStatusTransactionVO updateWiStatusTransactionVO);
     }
 }

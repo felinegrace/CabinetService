@@ -8,11 +8,11 @@ using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
 {
-    class MessageHandler
+    class MessageBusinessHandler
     {
         private MessageObserver messageHandlerObserver { get; set; }
 
-        public MessageHandler(MessageObserver messageHandlerObserver)
+        public MessageBusinessHandler(MessageObserver messageHandlerObserver)
         {
             if(messageHandlerObserver == null)
             {
@@ -23,7 +23,7 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
 
         internal void handleMessage(Guid sessionId, Descriptor descriptor)
         {
-            MessageParser parser = new MessageParser(descriptor);
+            MessageFormatParser parser = new MessageFormatParser(descriptor);
 
             try
             {
@@ -33,6 +33,8 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
                     {
                         case "acknowledge":
                             {
+                                Acknowledge acknowledge = parser.parseAs<Acknowledge>();
+                                messageHandlerObserver.onAcknowledge(sessionId, acknowledge);
                                 break;
                             }
                         case "register":
@@ -49,14 +51,14 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
                             }
                         case "reportWiProcedureResult":
                             {
-                                ReportWiProcedureResultVO reportWiProcedureResultVO = parser.parseAs<ReportWiProcedureResultVO>();
-                                messageHandlerObserver.onReportWiProcedureResult(sessionId, reportWiProcedureResultVO);
+                                ReportWiProcedureResultTransactionVO reportWiProcedureResultTransactionVO = parser.parseAs<ReportWiProcedureResultTransactionVO>();
+                                messageHandlerObserver.onReportWiProcedureResult(sessionId, reportWiProcedureResultTransactionVO);
                                 break;
                             }
                         case "updateWiStatus":
                             {
-                                UpdateWiStatusVO updateWiStatusVO = parser.parseAs<UpdateWiStatusVO>();
-                                messageHandlerObserver.onUpdateWiStatus(sessionId, updateWiStatusVO);
+                                UpdateWiStatusTransactionVO updateWiStatusTransactionVO = parser.parseAs<UpdateWiStatusTransactionVO>();
+                                messageHandlerObserver.onUpdateWiStatus(sessionId, updateWiStatusTransactionVO);
                                 break;
                             }
 

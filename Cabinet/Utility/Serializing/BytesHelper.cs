@@ -27,10 +27,6 @@ namespace Cabinet.Utility
                     {
                         break;
                     }
-                    else
-                    {
-                        int a = 1;
-                    }
                 }
                 if (j == pattern.Length)
                 {

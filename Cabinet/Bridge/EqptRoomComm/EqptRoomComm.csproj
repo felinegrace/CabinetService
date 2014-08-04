@@ -56,11 +56,14 @@
     <Compile Include="Protocol\Message\WorkInstructionDeliveryMessage.cs" />
     <Compile Include="Protocol\Message\ReportWiProcedureResultMessage.cs" />
     <Compile Include="Protocol\Message\UpdateWiStatusMessage.cs" />
-    <Compile Include="Protocol\Parser\MessageHandler.cs" />
+    <Compile Include="Protocol\Parser\MessageBusinessHandler.cs" />
     <Compile Include="Protocol\Parser\MessageObserver.cs" />
-    <Compile Include="Protocol\Parser\MessageParser.cs" />
+    <Compile Include="Protocol\Parser\MessageFormatParser.cs" />
     <Compile Include="Protocol\PayloadEntity\Acknowledge.cs" />
     <Compile Include="Protocol\PayloadEntity\Register.cs" />
+    <Compile Include="Protocol\PayloadEntity\ReportWiProcedureResultTransactionVO.cs" />
+    <Compile Include="Protocol\PayloadEntity\TransactionEntityBase.cs" />
+    <Compile Include="Protocol\PayloadEntity\UpdateWiStatusTransactionVO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CommonModuleEntry\CommonModuleEntry.csproj">

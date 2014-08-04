@@ -9,7 +9,7 @@ using Cabinet.Framework.CommonEntity;
 
 namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
 {
-    class MessageParser
+    class MessageFormatParser
     {
         private Descriptor descriptor { get; set; }
         private IEnumerable<int> lineEnds { get; set; }
@@ -20,7 +20,7 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
         private static int lineEndsInEachMessage = 3;
 
         private static int lineEndsPatternLength = 2;
-        public MessageParser(Descriptor descriptor)
+        public MessageFormatParser(Descriptor descriptor)
         {
             lineEndsIndex = 0;
             messageBase = new MessageBase();
@@ -63,21 +63,6 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Parser
         public T parseAs<T>()
         {
             return Jsonable.fromJson<T>(messageBase.payload);
-        }
-
-        public Register parseAsRegister()
-        {
-            return Register.fromJson<Register>(messageBase.payload);
-        }
-
-        public Acknowledge parseAsAcknowledge()
-        {
-            return Acknowledge.fromJson<Acknowledge>(messageBase.payload);
-        }
-
-        public WorkInstructionDeliveryVO parseAsWorkInstructionDeliveryVO()
-        {
-            return WorkInstructionDeliveryVO.fromJson<WorkInstructionDeliveryVO>(messageBase.payload);
         }
 
 

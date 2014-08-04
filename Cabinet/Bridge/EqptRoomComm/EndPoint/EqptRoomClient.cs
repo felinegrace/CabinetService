@@ -15,7 +15,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
     {
         private EqptRoomClientObserver eqptRoomClientObserver { get; set; }
         private TcpClient tcpClient { get; set; }
-        private MessageHandler messageHandler { get; set; }
+        private MessageBusinessHandler messageHandler { get; set; }
         public EqptRoomClient(EqptRoomClientObserver eqptRoomClientObserver,
             string clientIpAddress, int clientPort,
             string serverIpAddress, int serverPort)
@@ -23,7 +23,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             this.eqptRoomClientObserver = eqptRoomClientObserver;
             tcpClient = new TcpClient(clientIpAddress, clientPort,
                 serverIpAddress, serverPort, this);
-            messageHandler = new MessageHandler(this);
+            messageHandler = new MessageBusinessHandler(this);
         }
 
         public void start()
@@ -40,17 +40,16 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             Logger.debug("EqptRoomClient: stop.");
         }
 
-        public void register(Guid eqptRoomGuid)
-        {
-            Register registerEntity = new Register();
-            registerEntity.eqptRoomGuid = eqptRoomGuid;
-            RegisterMessage registerMessage = new RegisterMessage(registerEntity);
-            tcpClient.send(registerMessage.rawMessage());
-        }
-
         void TcpEndPointObserver.onTcpData(Guid sessionId, Descriptor descriptor)
         {
             messageHandler.handleMessage(sessionId, descriptor);
+        }
+        protected override void onAcknowledgeMessage(Acknowledge acknowledge)
+        {
+            if (eqptRoomClientObserver != null)
+            {
+                eqptRoomClientObserver.onAcknowledge(acknowledge);
+            }
         }
 
         protected override void onDeliveryMessage(WorkInstructionDeliveryVO workInstructionDeliveryVO)
@@ -59,76 +58,33 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             {
                 eqptRoomClientObserver.onWorkInstrucionDelivery(workInstructionDeliveryVO);
             }
-            //UpdateWiStatusVO workInstructionReportVO1 = new UpdateWiStatusVO();
-            //workInstructionReportVO1.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
-            //workInstructionReportVO1.status = UpdateWiStatusVO.proceeding;
-            //doUpdateWiStatus(workInstructionReportVO1);
-
-            //foreach (WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
-            //{
-            //    ReportWiProcedureResultVO workInstructionProcedureReportVO = new ReportWiProcedureResultVO();
-            //    workInstructionProcedureReportVO.procedureGuid = workInstructionProcedureVO.procedureGuid;
-            //    workInstructionProcedureReportVO.isSuccess = true;
-            //    doReportWiProcedureResult(workInstructionProcedureReportVO);
-            //}
-
-            //UpdateWiStatusVO workInstructionReportVO2 = new UpdateWiStatusVO();
-            //workInstructionReportVO2.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
-            //workInstructionReportVO2.status = UpdateWiStatusVO.complete;
-            //doUpdateWiStatus(workInstructionReportVO2);
-            /* 
-             BusinessRequest completeRequest1 = new BusinessRequest();
-            completeRequest1.business = "workInstruction";
-            completeRequest1.method = "complete";
-            completeRequest1.param.Add(workInstructionDeliveryVO.wiGuid);
-            completeRequest1.param.Add("proceeding");
-            BusinessResponse completeResponse1 = new testReportResponse();
-            BusinessContext completeCtx1 = new BusinessContext(completeRequest1, completeResponse1);
-
-            context.server.postRequest(completeCtx1);
-            Logger.debug("BusinessServer: post workInstruction/complete with proceeding for test...");
-
-            foreach (WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
-            {
-                BusinessRequest request = new BusinessRequest();
-                request.business = "workInstruction";
-                request.method = "report";
-                request.param.Add(workInstructionProcedureVO.procedureGuid);
-                request.param.Add(true);
-                BusinessResponse response = new testReportResponse();
-                BusinessContext ctx = new BusinessContext(request, response);
-
-                context.server.postRequest(ctx);
-                Logger.debug("BusinessServer: delivery reporting pcd {0} for test...", workInstructionProcedureVO.procedureGuid);
-
-            }
-
-            BusinessRequest completeRequest2 = new BusinessRequest();
-            completeRequest2.business = "workInstruction";
-            completeRequest2.method = "complete";
-            completeRequest2.param.Add(workInstructionDeliveryVO.wiGuid);
-            completeRequest2.param.Add("complete");
-            BusinessResponse completeResponse2 = new testReportResponse();
-            BusinessContext completeCtx2 = new BusinessContext(completeRequest2, completeResponse2);
-
-            context.server.postRequest(completeCtx2);
-            Logger.debug("BusinessServer: post workInstruction/complete with complete for test...");
-            Logger.debug("BusinessServer: business workInstruction/delivery ends.");
-             */
         }
 
-
-
-        public override sealed void doUpdateWiStatus(UpdateWiStatusVO workInstructionReportVO)
+        public override sealed Guid doRegister(Guid eqptRoomGuid)
         {
-            UpdateWiStatusMessage workInstructionReportMessage = new UpdateWiStatusMessage(workInstructionReportVO);
+            Register registerEntity = new Register();
+            registerEntity.eqptRoomGuid = eqptRoomGuid;
+            RegisterMessage registerMessage = new RegisterMessage(registerEntity);
+            tcpClient.send(registerMessage.rawMessage());
+            return registerEntity.trasactionGuid;
+        }
+
+        public override sealed Guid doUpdateWiStatus(Guid eqptRoomGuid, UpdateWiStatusVO updateWiStatusVO)
+        {
+            UpdateWiStatusTransactionVO updateWiStatusTransactionVO = new UpdateWiStatusTransactionVO();
+            updateWiStatusTransactionVO.eqptRoomGuid = eqptRoomGuid;
+            UpdateWiStatusMessage workInstructionReportMessage = new UpdateWiStatusMessage(updateWiStatusTransactionVO);
             tcpClient.send(workInstructionReportMessage.rawMessage());
+            return updateWiStatusTransactionVO.trasactionGuid;
         }
 
-        public override sealed void doReportWiProcedureResult(ReportWiProcedureResultVO workInstructionProcedureReportVO)
+        public override sealed Guid doReportWiProcedureResult(Guid eqptRoomGuid, ReportWiProcedureResultVO reportWiProcedureResultVO)
         {
-            ReportWiProcedureResultMessage workInstructionProcedureReportMessage = new ReportWiProcedureResultMessage(workInstructionProcedureReportVO);
+            ReportWiProcedureResultTransactionVO reportWiProcedureResultTransactionVO = new ReportWiProcedureResultTransactionVO();
+            reportWiProcedureResultTransactionVO.eqptRoomGuid = eqptRoomGuid;
+            ReportWiProcedureResultMessage workInstructionProcedureReportMessage = new ReportWiProcedureResultMessage(reportWiProcedureResultTransactionVO);
             tcpClient.send(workInstructionProcedureReportMessage.rawMessage());
+            return reportWiProcedureResultTransactionVO.trasactionGuid;
         }
 
     }

@@ -51,14 +51,37 @@ namespace Cabinet.Framework.BusinessLayer
         {
             Logger.debug("BusinessServer: business workInstruction/doReportWiProcedureResult starts.");
             logOnValidatingParams();
-            validateParamCount(1);
+            validateParamCount(3);
             validateParamAsSpecificType(0, typeof(ReportWiProcedureResultVO));
             ReportWiProcedureResultVO reportWiProcedureResultVO = context.request.param.ElementAt<object>(0) as ReportWiProcedureResultVO;
+            validateParamAsSpecificType(1, typeof(ReportWiProcedureResultVO));
+            Guid transactionGuid = (Guid)context.request.param.ElementAt<object>(1);
+            validateParamAsSpecificType(2, typeof(ReportWiProcedureResultVO));
+            Guid eqptRoomGuid = (Guid)context.request.param.ElementAt<object>(2);
 
-            CommonModuleGateway.getInstance().wcfServiceModuleEntry.reportWiProcedureResult(reportWiProcedureResultVO);
+            try
+            {
+                CommonModuleGateway.getInstance().wcfServiceModuleEntry.reportWiProcedureResult(reportWiProcedureResultVO);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.debug("BusinessServer: feed ERROR back to EqptRoomComm.");
+                CommonModuleGateway.getInstance().eqptRoomCommModuleEntry.acknowledge(
+                    transactionGuid,
+                    eqptRoomGuid,
+                    500,
+                    ex.Message);
+                throw ex;
+            }
 
             logOnFillingResult();
             Logger.debug("BusinessServer: reported procedure {0} as {1}...", reportWiProcedureResultVO.procedureGuid, reportWiProcedureResultVO.isSuccess);
+            Logger.debug("BusinessServer: feed OK back to EqptRoomComm.");
+            CommonModuleGateway.getInstance().eqptRoomCommModuleEntry.acknowledge(
+                transactionGuid,
+                eqptRoomGuid,
+                200,
+                "OK");
             Logger.debug("BusinessServer: business workInstruction/doReportWiProcedureResult ends.");
         }
 
@@ -66,28 +89,50 @@ namespace Cabinet.Framework.BusinessLayer
         {
             Logger.debug("BusinessServer: business workInstruction/updateWiStatus starts.");
             logOnValidatingParams();
-            validateParamCount(1);
+            validateParamCount(3);
             validateParamAsSpecificType(0, typeof(UpdateWiStatusVO));
-
             UpdateWiStatusVO updateWiStatusVO = context.request.param.ElementAt<object>(0) as UpdateWiStatusVO;
-
-            WcfServiceModuleEntry wcfServiceModuleEntry = CommonModuleGateway.getInstance().wcfServiceModuleEntry;
-
-            switch (updateWiStatusVO.status)
+            validateParamAsSpecificType(1, typeof(ReportWiProcedureResultVO));
+            Guid transactionGuid = (Guid)context.request.param.ElementAt<object>(1);
+            validateParamAsSpecificType(2, typeof(ReportWiProcedureResultVO));
+            Guid eqptRoomGuid = (Guid)context.request.param.ElementAt<object>(2);
+            try
             {
-                case UpdateWiStatusVO.proceeding:
-                    wcfServiceModuleEntry.updateWiStatusAsProceeding(updateWiStatusVO.workInstructionGuid);
-                    break;
-                case UpdateWiStatusVO.complete:
-                    wcfServiceModuleEntry.updateWiStatusAsComplete(updateWiStatusVO.workInstructionGuid);
-                    break;
-                case UpdateWiStatusVO.fail:
-                    wcfServiceModuleEntry.updateWiStatusAsFail(updateWiStatusVO.workInstructionGuid);
-                    break;
+                WcfServiceModuleEntry wcfServiceModuleEntry = CommonModuleGateway.getInstance().wcfServiceModuleEntry;
+
+                switch (updateWiStatusVO.status)
+                {
+                    case UpdateWiStatusVO.proceeding:
+                        wcfServiceModuleEntry.updateWiStatusAsProceeding(updateWiStatusVO.workInstructionGuid);
+                        break;
+                    case UpdateWiStatusVO.complete:
+                        wcfServiceModuleEntry.updateWiStatusAsComplete(updateWiStatusVO.workInstructionGuid);
+                        break;
+                    case UpdateWiStatusVO.fail:
+                        wcfServiceModuleEntry.updateWiStatusAsFail(updateWiStatusVO.workInstructionGuid);
+                        break;
+                }
             }
+            catch (System.Exception ex)
+            {
+                Logger.debug("BusinessServer: feed ERROR back to EqptRoomComm.");
+                CommonModuleGateway.getInstance().eqptRoomCommModuleEntry.acknowledge(
+                    transactionGuid,
+                    eqptRoomGuid,
+                    500,
+                    ex.Message);
+                throw ex;
+            }
+
 
             logOnFillingResult();
             Logger.debug("BusinessServer: reported wi {0} as {1}...", updateWiStatusVO.workInstructionGuid, updateWiStatusVO.status);
+            Logger.debug("BusinessServer: feed OK back to EqptRoomComm.");
+            CommonModuleGateway.getInstance().eqptRoomCommModuleEntry.acknowledge(
+                transactionGuid,
+                eqptRoomGuid,
+                200,
+                "OK");
             Logger.debug("BusinessServer: business workInstruction/updateWiStatus ends.");
         }
     }

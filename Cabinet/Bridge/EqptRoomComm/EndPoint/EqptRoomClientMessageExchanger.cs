@@ -11,7 +11,10 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 {
     public abstract class EqptRoomClientMessageExchanger : MessageObserver
     {
-
+        void MessageObserver.onAcknowledge(Guid sessionId, Acknowledge acknowledge)
+        {
+            onAcknowledgeMessage(acknowledge);
+        }
         void MessageObserver.onRegister(Guid sessionId, Register register)
         {
             throw new EqptRoomCommException("client not supported.");
@@ -22,20 +25,26 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             onDeliveryMessage(workInstructionDeliveryVO);
         }
 
-        void MessageObserver.onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultVO reportWiProcedureResultVO)
+        void MessageObserver.onReportWiProcedureResult(Guid sessionId, ReportWiProcedureResultTransactionVO reportWiProcedureResultTransactionVO)
         {
             throw new EqptRoomCommException("client not supported.");
         }
 
-        void MessageObserver.onUpdateWiStatus(Guid sessionId, UpdateWiStatusVO updateWiStatusVO)
+        void MessageObserver.onUpdateWiStatus(Guid sessionId, UpdateWiStatusTransactionVO updateWiStatusTransactionVO)
         {
             throw new EqptRoomCommException("client not supported.");
         }
+        public abstract Guid doRegister(Guid eqptRoomGuid);
 
-        public abstract void doUpdateWiStatus(UpdateWiStatusVO workInstructionReportVO);
+        public abstract Guid doUpdateWiStatus(Guid eqptRoomGuid, UpdateWiStatusVO updateWiStatusVO);
 
-        public abstract void doReportWiProcedureResult(ReportWiProcedureResultVO workInstructionProcedureReportVO);
+        public abstract Guid doReportWiProcedureResult(Guid eqptRoomGuid, ReportWiProcedureResultVO reportWiProcedureResultVO);
+
+        protected abstract void onAcknowledgeMessage(Acknowledge acknowledge);
 
         protected abstract void onDeliveryMessage(WorkInstructionDeliveryVO workInstructionDeliveryVO);
+
+
+
     }
 }

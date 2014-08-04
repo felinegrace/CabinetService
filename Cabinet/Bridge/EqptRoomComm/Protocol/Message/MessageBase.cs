@@ -14,5 +14,10 @@ namespace Cabinet.Bridge.EqptRoomComm.Protocol.Message
         {
             return verb + "\r\n" + payload + "\r\n" + " \r\n";
         }
+
+        public byte[] rawBytes()
+        {
+            return System.Text.Encoding.Default.GetBytes(rawMessage());
+        }
     }
 }

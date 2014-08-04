@@ -6,8 +6,8 @@ using Cabinet.Utility;
 
 namespace Cabinet.Bridge.EqptRoomComm.Protocol.PayloadEntity
 {
-    public class Register : Jsonable
+    public class Register : TransactionEntityBase
     {
-        public Guid eqptRoomGuid { get; set; }
+        
     }
 }
