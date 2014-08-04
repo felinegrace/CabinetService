@@ -64,11 +64,6 @@ namespace Cabinet.Bridge.Tcp.EndPoint
 
         public void onSessionData(Guid sessionId, Descriptor descriptor)
         {
-            Logger.debug("TcpServer: session {0} receives {1} bytes of data. ascii data: {2}",
-                    sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
-            //Logger.debug("TcpServer: echo session {0} with {1} bytes of data. ascii data: {2}",
-            //        sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
-            //runningSessions.search(sessionId).send(descriptor.des, 0, descriptor.desLength);
             if(tcpEndPointObserver != null)
             {
                 tcpEndPointObserver.onTcpData(sessionId, descriptor);

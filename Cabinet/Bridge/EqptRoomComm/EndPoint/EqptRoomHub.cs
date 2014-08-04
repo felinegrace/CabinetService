@@ -89,6 +89,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             Logger.debug("EqptRoomHubBusiness: eqpt room guid {0} request register.",
                 register.eqptRoomGuid);
             eqptRoomClientMap.put(register.eqptRoomGuid, sessionId);
+            acknowledge(register.trasactionGuid, register.eqptRoomGuid, 200, "OK");
             Logger.debug("EqptRoomHubBusiness: eqpt room guid {0} register complete.",
                 register.eqptRoomGuid);
         }

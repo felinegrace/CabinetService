@@ -52,12 +52,13 @@ namespace Cabinet.Framework.BusinessLayer
             Logger.debug("BusinessServer: business workInstruction/doReportWiProcedureResult starts.");
             logOnValidatingParams();
             validateParamCount(3);
-            validateParamAsSpecificType(0, typeof(ReportWiProcedureResultVO));
-            ReportWiProcedureResultVO reportWiProcedureResultVO = context.request.param.ElementAt<object>(0) as ReportWiProcedureResultVO;
-            validateParamAsSpecificType(1, typeof(ReportWiProcedureResultVO));
-            Guid transactionGuid = (Guid)context.request.param.ElementAt<object>(1);
+            validateParamAsSpecificType(0, typeof(Guid));
+            Guid transactionGuid = (Guid)context.request.param.ElementAt<object>(0);
+            validateParamAsSpecificType(1, typeof(Guid));
+            Guid eqptRoomGuid = (Guid)context.request.param.ElementAt<object>(1);
             validateParamAsSpecificType(2, typeof(ReportWiProcedureResultVO));
-            Guid eqptRoomGuid = (Guid)context.request.param.ElementAt<object>(2);
+            ReportWiProcedureResultVO reportWiProcedureResultVO = context.request.param.ElementAt<object>(2) as ReportWiProcedureResultVO;
+            
 
             try
             {
@@ -90,12 +91,13 @@ namespace Cabinet.Framework.BusinessLayer
             Logger.debug("BusinessServer: business workInstruction/updateWiStatus starts.");
             logOnValidatingParams();
             validateParamCount(3);
-            validateParamAsSpecificType(0, typeof(UpdateWiStatusVO));
-            UpdateWiStatusVO updateWiStatusVO = context.request.param.ElementAt<object>(0) as UpdateWiStatusVO;
-            validateParamAsSpecificType(1, typeof(ReportWiProcedureResultVO));
-            Guid transactionGuid = (Guid)context.request.param.ElementAt<object>(1);
-            validateParamAsSpecificType(2, typeof(ReportWiProcedureResultVO));
-            Guid eqptRoomGuid = (Guid)context.request.param.ElementAt<object>(2);
+            validateParamAsSpecificType(0, typeof(Guid));
+            Guid transactionGuid = (Guid)context.request.param.ElementAt<object>(0);
+            validateParamAsSpecificType(1, typeof(Guid));
+            Guid eqptRoomGuid = (Guid)context.request.param.ElementAt<object>(1);
+            validateParamAsSpecificType(2, typeof(UpdateWiStatusVO));
+            UpdateWiStatusVO updateWiStatusVO = context.request.param.ElementAt<object>(2) as UpdateWiStatusVO;
+            
             try
             {
                 WcfServiceModuleEntry wcfServiceModuleEntry = CommonModuleGateway.getInstance().wcfServiceModuleEntry;

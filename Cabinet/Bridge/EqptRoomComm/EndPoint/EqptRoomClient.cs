@@ -73,6 +73,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
         {
             UpdateWiStatusTransactionVO updateWiStatusTransactionVO = new UpdateWiStatusTransactionVO();
             updateWiStatusTransactionVO.eqptRoomGuid = eqptRoomGuid;
+            updateWiStatusTransactionVO.updateWiStatusVO = updateWiStatusVO;
             UpdateWiStatusMessage workInstructionReportMessage = new UpdateWiStatusMessage(updateWiStatusTransactionVO);
             tcpClient.send(workInstructionReportMessage.rawMessage());
             return updateWiStatusTransactionVO.trasactionGuid;
@@ -82,6 +83,7 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
         {
             ReportWiProcedureResultTransactionVO reportWiProcedureResultTransactionVO = new ReportWiProcedureResultTransactionVO();
             reportWiProcedureResultTransactionVO.eqptRoomGuid = eqptRoomGuid;
+            reportWiProcedureResultTransactionVO.reportWiProcedureResultVO = reportWiProcedureResultVO;
             ReportWiProcedureResultMessage workInstructionProcedureReportMessage = new ReportWiProcedureResultMessage(reportWiProcedureResultTransactionVO);
             tcpClient.send(workInstructionProcedureReportMessage.rawMessage());
             return reportWiProcedureResultTransactionVO.trasactionGuid;

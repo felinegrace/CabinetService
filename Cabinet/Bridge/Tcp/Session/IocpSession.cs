@@ -73,8 +73,8 @@ namespace Cabinet.Bridge.Tcp.Session
             }
             else
             {
-                Logger.debug("IocpSession: session {0} receives {1} bytes of data. ascii data: {2}",
-                    sessionId, descriptor.desLength, descriptor.toString(0, descriptor.desLength));
+                Logger.debug("IocpSession: session {0} receives {1} bytes of data. string data: {2}",
+                    sessionId, descriptor.desLength, System.Text.Encoding.Default.GetString(descriptor.des, 0, descriptor.desLength));
                 digest(descriptor);
             }
         }
