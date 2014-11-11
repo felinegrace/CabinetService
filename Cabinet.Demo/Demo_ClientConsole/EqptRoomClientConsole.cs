@@ -58,6 +58,9 @@ namespace Cabinet.Demo.ClientConsole
             logUsedGuid = s.doUpdateWiStatus(eqptRoomGuid, workInstructionReportVO1);
             Logger.debug("a doUpdateWiStatus submitted with transId {0}.",
                 logUsedGuid);
+
+            //no longer needed
+            /*
             foreach (WorkInstructionProcedureVO workInstructionProcedureVO in workInstructionDeliveryVO.procedureList)
             {
                 ReportWiProcedureResultVO workInstructionProcedureReportVO = new ReportWiProcedureResultVO();
@@ -67,6 +70,7 @@ namespace Cabinet.Demo.ClientConsole
                 Logger.debug("a doReportWiProcedureResult submitted with transId {0}.",
                     logUsedGuid);
             }
+            */
 
             UpdateWiStatusVO workInstructionReportVO2 = new UpdateWiStatusVO();
             workInstructionReportVO2.workInstructionGuid = workInstructionDeliveryVO.wiGuid;
