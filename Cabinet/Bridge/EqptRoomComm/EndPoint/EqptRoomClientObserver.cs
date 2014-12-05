@@ -9,6 +9,9 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 {
     public interface EqptRoomClientObserver
     {
+        void onEqptRoomHubConnected();
+        void onEqptRoomHubDisconnected();
+        void onEqptRoomHubCommunicationError(string errorMessage);
         void onAcknowledge(Acknowledge acknowledge);
         void onWorkInstrucionDelivery(WorkInstructionDeliveryVO workInstructionDeliveryVO);
     }

@@ -40,10 +40,36 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             Logger.debug("EqptRoomClient: stop.");
         }
 
+        void TcpEndPointObserver.onTcpConnected(Guid sessionId)
+        {
+            if (eqptRoomClientObserver != null)
+            {
+                eqptRoomClientObserver.onEqptRoomHubConnected();
+            }
+            
+        }
+
         void TcpEndPointObserver.onTcpData(Guid sessionId, Descriptor descriptor)
         {
             messageHandler.handleMessage(sessionId, descriptor);
         }
+
+        void TcpEndPointObserver.onTcpDisconnected(Guid sessionId)
+        {
+            if (eqptRoomClientObserver != null)
+            {
+                eqptRoomClientObserver.onEqptRoomHubDisconnected();
+            }
+        }
+
+        void TcpEndPointObserver.onTcpError(Guid sessionId, string errorMessage)
+        {
+            if (eqptRoomClientObserver != null)
+            {
+                eqptRoomClientObserver.onEqptRoomHubCommunicationError(errorMessage);
+            }
+        }
+
         protected override void onAcknowledgeMessage(Acknowledge acknowledge)
         {
             if (eqptRoomClientObserver != null)
@@ -59,6 +85,8 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
                 eqptRoomClientObserver.onWorkInstrucionDelivery(workInstructionDeliveryVO);
             }
         }
+
+
 
         public override sealed Guid doRegister(Guid eqptRoomGuid)
         {
@@ -88,6 +116,11 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             tcpClient.send(workInstructionProcedureReportMessage.rawMessage());
             return reportWiProcedureResultTransactionVO.trasactionGuid;
         }
+
+
+
+
+
 
     }
 }

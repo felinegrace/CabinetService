@@ -10,7 +10,7 @@ using Cabinet.Bridge.Tcp.Action;
 
 namespace Cabinet.Bridge.Tcp.EndPoint
 {
-    public class TcpClient : IIocpSessionObserver
+    public class TcpClient : IocpSessionObserver
     {
         private IocpSession session { get; set; }
         private IocpConnector connector { get; set; }
@@ -56,11 +56,14 @@ namespace Cabinet.Bridge.Tcp.EndPoint
         {
             session.attachSocket(remoteSocket);
             session.recv();
+            if (tcpEndPointObserver != null)
+            {
+                tcpEndPointObserver.onTcpConnected(Guid.Empty);
+            }
         }
 
         public void onSessionData(Guid sessionId, Descriptor descriptor)
         {
-
             if(tcpEndPointObserver != null)
             {
                 tcpEndPointObserver.onTcpData(sessionId, descriptor);
@@ -72,6 +75,19 @@ namespace Cabinet.Bridge.Tcp.EndPoint
         {
             Logger.debug("TcpClient: disconnected.",
                     sessionId);
+            if (tcpEndPointObserver != null)
+            {
+                tcpEndPointObserver.onTcpDisconnected(Guid.Empty);
+            }
+        }
+
+
+        public void onSessionError(Guid sessionId, string errorMessage)
+        {
+            if (tcpEndPointObserver != null)
+            {
+                tcpEndPointObserver.onTcpError(sessionId, errorMessage);
+            }
         }
     }
 }

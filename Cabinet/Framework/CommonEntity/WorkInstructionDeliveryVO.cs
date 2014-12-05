@@ -10,7 +10,7 @@ namespace Cabinet.Framework.CommonEntity
     {
         public Guid wiGuid { get; set; }
         public Guid eqptRoomGuid { get; set; }
-        public Guid CorrCabinetGuid { get; set; }
+        public string wiCardNum { get; set; }
         public string wiOperator { get; set; }
         public DateTime wiOperStartTime { get; set; }
         public DateTime wiOperEndTime { get; set; }

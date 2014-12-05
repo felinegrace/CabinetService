@@ -17,7 +17,7 @@ namespace Cabinet.Bridge.Tcp.Session
         private Socket socket { get; set; }
         private IocpSendAction sendAction { get; set; }
         private IocpReceiveAction recvAction { get; set; }
-        private IIocpSessionObserver observer { get; set; }
+        private IocpSessionObserver observer { get; set; }
         private ConcurrentQueue<Descriptor> sendQueue { get; set; }
         private int sendQueueStatus;
         private static int sendQueueIdle = 0;
@@ -28,13 +28,17 @@ namespace Cabinet.Bridge.Tcp.Session
             while (sendQueue.TryDequeue(out ignored)) { };
         }
 
-        public IocpSession(IIocpSessionObserver observer)
+        public IocpSession(IocpSessionObserver observer)
         {
+            socket = null;
+            sessionId = Guid.Empty;
             this.observer = observer;
             sendAction = new IocpSendAction(
-                ((bytesSent) => this.onIocpSendActionEvent(bytesSent)));
+                ((bytesSent) => this.onIocpSendActionEvent(bytesSent)),
+                ((errorMessage) => { observer.onSessionError(sessionId, errorMessage); }));
             recvAction = new IocpReceiveAction(
-                (descriptor) => this.onIocpReceiveActionEvent(descriptor));
+                (descriptor) => this.onIocpReceiveActionEvent(descriptor),
+                ((errorMessage) => { observer.onSessionError(sessionId, errorMessage); }));
             sendQueue = new ConcurrentQueue<Descriptor>();
             sendQueueStatus = sendQueueIdle;
             Logger.debug("IocpSession: constructed.");
@@ -53,14 +57,18 @@ namespace Cabinet.Bridge.Tcp.Session
 
         public void detachSocket()
         {
-            IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
-            Logger.info("TcpSession: session {0} ends. remote address = {1}:{2}",
-                sessionId, remoteIpEndPoint.Address, remoteIpEndPoint.Port);
-            sendAction.detachSocket();
-            recvAction.detachSocket();
-            socket.Close();
-            socket = null;
-            clearSendQueue();
+            if(socket != null)
+            {
+                IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
+                Logger.info("TcpSession: session {0} ends. remote address = {1}:{2}",
+                    sessionId, remoteIpEndPoint.Address, remoteIpEndPoint.Port);
+                sendAction.detachSocket();
+                recvAction.detachSocket();
+                socket.Close();
+                socket = null;
+                clearSendQueue();
+            }
+            
         }
 
         private void onIocpReceiveActionEvent(Descriptor descriptor)
@@ -70,6 +78,7 @@ namespace Cabinet.Bridge.Tcp.Session
             {
                 Logger.debug("IocpSession: session {0} receives nothing as Disconnect signal.", sessionId);
                 dispose(this, EventArgs.Empty);
+                observer.onSessionDisconnected(sessionId);
             }
             else
             {
@@ -124,7 +133,7 @@ namespace Cabinet.Bridge.Tcp.Session
         {
             detachSocket();
             Logger.debug("IocpSession: session {0} disposed.", sessionId);
-            observer.onSessionDisconnected(sessionId);
+            //observer.onSessionDisconnected(sessionId);
         }
 
     }

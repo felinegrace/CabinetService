@@ -10,29 +10,23 @@ namespace Cabinet.Bridge.Tcp.Session
 {
     class IocpConnector
     {
-        private Socket clientSocket { get; set; }
-        private IPEndPoint clientEndPoint { get; set; }
-        private IPEndPoint serverEndPoint { get; set; }
         private IocpConnectAction connectAction { get; set; }
 
-        public IocpConnector(IPEndPoint clientEndPoint, IPEndPoint serverEndPoint, IIocpSessionObserver observer)
+        public IocpConnector(IPEndPoint clientEndPoint, IPEndPoint serverEndPoint, IocpSessionObserver observer)
         {
-            this.clientEndPoint = clientEndPoint;
-            this.serverEndPoint = serverEndPoint;
-            this.clientSocket = new Socket(clientEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            connectAction = new IocpConnectAction(clientSocket,
-                ((socket) => { observer.onSessionConnected(socket); }));
+            connectAction = new IocpConnectAction(clientEndPoint, serverEndPoint,
+                ((socket) => { observer.onSessionConnected(socket); }),
+                ((errorMessage) => { observer.onSessionError(Guid.Empty, errorMessage); }));
         }
 
         public void start()
         {
-            connectAction.connect(serverEndPoint);
+            connectAction.connect();
         }
 
         public void stop()
         {
             connectAction.shutdown();
-            clientSocket.Close();
         }
     }
 }

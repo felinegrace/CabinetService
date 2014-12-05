@@ -7,7 +7,7 @@ using Cabinet.Utility;
 
 namespace Cabinet.Bridge.Tcp.Session
 {
-    interface IIocpSessionObserver
+    interface IocpSessionObserver
     {
         void onSessionConnected(Socket remoteSocket);
 
@@ -15,5 +15,6 @@ namespace Cabinet.Bridge.Tcp.Session
 
         void onSessionDisconnected(Guid sessionId);
 
+        void onSessionError(Guid sessionId, string errorMessage);
     }
 }

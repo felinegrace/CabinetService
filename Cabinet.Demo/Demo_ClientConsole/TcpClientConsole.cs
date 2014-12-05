@@ -38,5 +38,21 @@ namespace Cabinet.Demo.ClientConsole
         {
 
         }
+
+        public void onTcpConnected(Guid sessionId)
+        {
+            
+        }
+
+        public void onTcpDisconnected(Guid sessionId)
+        {
+            
+        }
+
+
+        public void onTcpError(Guid sessionId, string errorMessage)
+        {
+         
+        }
     }
 }

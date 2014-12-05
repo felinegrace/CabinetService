@@ -10,7 +10,8 @@ namespace Cabinet.Bridge.Tcp.Action
     {
         protected Socket socket { get; set; }
         private Action<int> onSentAction { get; set; }
-        public IocpSendAction(Action<int> onSentAction)
+        public IocpSendAction(Action<int> onSentAction, Action<string> onErrorAction)
+            : base(onErrorAction)
         {
             this.onSentAction = onSentAction;
         }
@@ -33,11 +34,12 @@ namespace Cabinet.Bridge.Tcp.Action
             catch (Exception) { }
         }
 
-        protected sealed override void onIocpEvent(out bool continousAsyncCall)
+        protected sealed override void onIocpEvent(bool isSuccess, out bool continousAsyncCall)
         {
-            checkSocketError();
-
-            onSentAction(iocpEventArgs.BytesTransferred);
+            if (isSuccess)
+            {
+                onSentAction(iocpEventArgs.BytesTransferred);
+            }
             continousAsyncCall = false;
         }
 

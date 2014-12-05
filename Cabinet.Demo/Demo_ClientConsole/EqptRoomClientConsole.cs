@@ -17,9 +17,9 @@ namespace Cabinet.Demo.ClientConsole
         {
             eqptRoomGuid = new Guid("C9FB1218-5CB6-461D-A7C1-C23AF3EBEEDD");
             s = new EqptRoomClient(this, 
-                "127.0.0.1", 6382, "10.31.31.31", 8135);
+                "10.31.31.31", 6382, "10.31.31.31", 8135);
             s.start();
-
+            
             ConsoleKeyInfo ch;
             do
             {
@@ -30,6 +30,16 @@ namespace Cabinet.Demo.ClientConsole
                         {
                             Guid logUsedGuid = s.doRegister(eqptRoomGuid);
                             Logger.debug("a doRegister submitted with transId {0}.", logUsedGuid);
+                            break;
+                        }
+                    case ConsoleKey.C:
+                        {
+                            s.start();
+                            break;
+                        }
+                    case ConsoleKey.D:
+                        {
+                            s.stop();
                             break;
                         }
                     default:
@@ -78,6 +88,26 @@ namespace Cabinet.Demo.ClientConsole
             logUsedGuid = s.doUpdateWiStatus(eqptRoomGuid, workInstructionReportVO2);
             Logger.debug("a doUpdateWiStatus submitted with transId {0}.",
                 logUsedGuid);
+        }
+
+        public void onEqptRoomHubConnected()
+        {
+            Logger.debug("server connected!!!");
+            //s.stop();
+        }
+
+        public void onEqptRoomHubDisconnected()
+        {
+            Logger.debug("server disconnected!!!");
+            //s.start();
+        }
+
+
+        public void onEqptRoomHubCommunicationError(string errorMessage)
+        {
+            Logger.error("server error!!!  {0}", errorMessage);
+            s.stop();
+            s.start();
         }
     }
 

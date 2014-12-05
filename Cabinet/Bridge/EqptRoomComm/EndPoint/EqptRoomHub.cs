@@ -23,10 +23,26 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             eqptRoomClientMap = new EqptRoomClientMap();
             messageHandler = new MessageBusinessHandler(this);
         }
+        void TcpEndPointObserver.onTcpConnected(Guid sessionId)
+        {
+            Logger.debug("session {0} connected but not registered yet.", sessionId);
+        }
+
 
         void TcpEndPointObserver.onTcpData(Guid sessionId, Descriptor descriptor)
         {
             messageHandler.handleMessage(sessionId, descriptor);
+        }
+
+        void TcpEndPointObserver.onTcpDisconnected(Guid sessionId)
+        {
+            Logger.debug("session {0} disconnected.", sessionId);
+            eqptRoomClientMap.removeBySessionGuid(sessionId);
+        }
+
+        void TcpEndPointObserver.onTcpError(Guid sessionId, string errorMessage)
+        {
+            Logger.error("session {0} encountered an error : {1}.", sessionId, errorMessage);
         }
 
         public void start()
@@ -110,6 +126,11 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
         {
             new WorkInstrucionServiceBusinessImpl().updateWiStatus(updateWiStatusTransactionVO);
         }
+
+
+
+
+
 
 
     }

@@ -28,6 +28,11 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             {
                 if (dictKeyByEqptRoomGuid.ContainsKey(eqptRoomGuid))
                 {
+                    Guid existedSessionGuid = dictKeyByEqptRoomGuid[eqptRoomGuid];
+                    if (dictKeyBySessionGuid.ContainsKey(existedSessionGuid))
+                    {
+                        dictKeyBySessionGuid.Remove(existedSessionGuid);
+                    }
                     dictKeyByEqptRoomGuid[eqptRoomGuid] = sessionGuid;
                 }
                 else
@@ -37,6 +42,11 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
 
                 if (dictKeyBySessionGuid.ContainsKey(sessionGuid))
                 {
+                    Guid existedEqptRoomGuid = dictKeyBySessionGuid[sessionGuid];
+                    if (dictKeyByEqptRoomGuid.ContainsKey(existedEqptRoomGuid))
+                    {
+                        dictKeyByEqptRoomGuid.Remove(existedEqptRoomGuid);
+                    }
                     dictKeyBySessionGuid[sessionGuid] = eqptRoomGuid;
                 }
                 else
@@ -95,11 +105,20 @@ namespace Cabinet.Bridge.EqptRoomComm.EndPoint
             {
                 lock (dictLocker)
                 {
-                    Guid eqptRoomGuid = dictKeyBySessionGuid[sessionGuid];
-                    dictKeyBySessionGuid.Remove(sessionGuid);
-                    dictKeyByEqptRoomGuid.Remove(eqptRoomGuid);
-                    Logger.debug("EqptRoomHub: eqpt room guid {0} with session {1} has removed from IocpSessionMap.",
-                        eqptRoomGuid, sessionGuid);
+                    if(dictKeyBySessionGuid.ContainsKey(sessionGuid))
+                    {
+                        Guid eqptRoomGuid = dictKeyBySessionGuid[sessionGuid];
+                        dictKeyBySessionGuid.Remove(sessionGuid);
+                        dictKeyByEqptRoomGuid.Remove(eqptRoomGuid);
+                        Logger.debug("EqptRoomHub: eqpt room guid {0} with session {1} has removed from IocpSessionMap.",
+                            eqptRoomGuid, sessionGuid);
+                    }
+                    else
+                    {
+                        Logger.debug("EqptRoomHub: try to remove session {0} but not found, it may not registered.",
+                            sessionGuid);
+                    }
+
                 }
             }
             catch (System.Exception ex)

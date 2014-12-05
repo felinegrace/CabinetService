@@ -9,6 +9,7 @@ namespace Cabinet.Framework.CommonEntity
     public class WorkInstructionProcedureVO : Jsonable
     {
         public Guid procedureGuid { get; set; }
+        public string corrCabinetPkId { get; set; }
         public string procedure { get; set; }
     }
 }

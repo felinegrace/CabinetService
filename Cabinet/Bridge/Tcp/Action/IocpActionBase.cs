@@ -11,15 +11,16 @@ namespace Cabinet.Bridge.Tcp.Action
         protected delegate bool IocpAsyncDelegate(SocketAsyncEventArgs args);
         protected IocpAsyncDelegate iocpAsyncDelegate { get; set; }
         protected SocketAsyncEventArgs iocpEventArgs { get; private set; }
-
-        protected IocpActionBase()
+        private Action<string> onErrorAction { get; set; }
+        protected IocpActionBase(Action<string> onErrorAction)
         {
+            this.onErrorAction = onErrorAction;
             iocpEventArgs = new SocketAsyncEventArgs();
             iocpEventArgs.UserToken = this;
             iocpEventArgs.Completed += new EventHandler<SocketAsyncEventArgs>(this.onIocpEventBase);
         }
 
-        protected abstract void onIocpEvent(out bool continousAsyncCall);
+        protected abstract void onIocpEvent(bool isSuccess, out bool continousAsyncCall);
 
         protected void iocpOperation()
         {
@@ -29,7 +30,7 @@ namespace Cabinet.Bridge.Tcp.Action
                 iocpAsyncDelegate(iocpEventArgs) == false)
             {
                 continousAsyncCall = false;
-                onIocpEvent(out continousAsyncCall);
+                onIocpEvent(isIocpSuccess(), out continousAsyncCall);
             }
         }
 
@@ -41,36 +42,35 @@ namespace Cabinet.Bridge.Tcp.Action
                 throw new IocpException("Iocp Event Args not match.");
             }
             bool continousAsyncCall = false;
-            onIocpEvent(out continousAsyncCall);
+            onIocpEvent(isIocpSuccess(), out continousAsyncCall);
             while (continousAsyncCall == true &&
                 //false if I/O operation completed synchronously
                 iocpAsyncDelegate(socketAsyncEventArgs) == false)
             {
                 continousAsyncCall = false;
-                onIocpEvent(out continousAsyncCall);
+                onIocpEvent(isIocpSuccess(), out continousAsyncCall);
             }
         }
 
-        protected void checkSocketError()
+        protected bool isIocpSuccess()
         {
             if (iocpEventArgs.SocketError == SocketError.OperationAborted)
             {
                 //ignored operation cancel
+                return false;
             }
             else if (iocpEventArgs.SocketError != SocketError.Success)
             {
-                throw new IocpException(iocpEventArgs.SocketError.ToString());
+                onErrorAction(iocpEventArgs.SocketError.ToString());
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
-        class IocpErrorEventArgs : EventArgs
-        {
-            public string message { get; private set; }
-            public IocpErrorEventArgs(string message)
-            {
-                this.message = message;
-            }
-        }
+
     }
 
 }

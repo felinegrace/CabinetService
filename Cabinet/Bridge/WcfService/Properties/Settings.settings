@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Cabinet_Bridge_WcfService_WebComm_WebServerService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://10.136.122.134:8089/CubService</Value>
+      <Value Profile="(Default)">http://192.168.1.109:8089/CubService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

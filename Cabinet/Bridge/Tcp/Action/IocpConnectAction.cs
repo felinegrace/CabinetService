@@ -10,31 +10,44 @@ namespace Cabinet.Bridge.Tcp.Action
     class IocpConnectAction : IocpActionBase
     {
         private Socket clientSocket { get; set; }
+        private IPEndPoint clientEndPoint { get; set; }
+        private IPEndPoint serverEndPoint { get; set; }
         private Action<Socket> onConnectedAction { get; set; }
 
-        public IocpConnectAction(Socket clientSocket, Action<Socket> onConnectedAction)
+        public IocpConnectAction(IPEndPoint clientEndPoint, IPEndPoint serverEndPoint, 
+            Action<Socket> onConnectedAction, Action<string> onErrorAction)
+            : base(onErrorAction)
         {
-            this.clientSocket = clientSocket;
+            this.clientSocket = null;
+            this.clientEndPoint = clientEndPoint;
+            this.serverEndPoint = serverEndPoint;
             this.onConnectedAction = onConnectedAction;
-            this.iocpAsyncDelegate = new IocpAsyncDelegate(clientSocket.ConnectAsync);
+            
         }
-        
-        protected override void onIocpEvent(out bool continousAsyncCall)
+
+        protected override void onIocpEvent(bool isSuccess, out bool continousAsyncCall)
         {
-            checkSocketError();
-            onConnectedAction(clientSocket);
+            if(isSuccess)
+            {
+                onConnectedAction(clientSocket);
+            }
             continousAsyncCall = false;
         }
 
-        public void connect(IPEndPoint serverEndPoint)
+        public void connect()
         {
+            clientSocket = new Socket(clientEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            iocpAsyncDelegate = new IocpAsyncDelegate(clientSocket.ConnectAsync);
             iocpEventArgs.RemoteEndPoint = serverEndPoint;
             iocpOperation();
         }
 
         public void shutdown()
         {
-            clientSocket.Disconnect(false);
+            if(clientSocket.Connected)
+            {
+                clientSocket.Disconnect(false);
+            }
         }
     }
 

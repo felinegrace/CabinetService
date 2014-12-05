@@ -16,7 +16,8 @@ namespace Cabinet.Bridge.Tcp.Action
 
         private const int defaultReceiveBufferSize = 1024 * 4;
 
-        public IocpReceiveAction(Action<Descriptor> onReceivedAction)
+        public IocpReceiveAction(Action<Descriptor> onReceivedAction, Action<string> onErrorAction)
+            : base(onErrorAction)
         {
             this.onReceivedAction = onReceivedAction;
             buffer = DescriptorBuffer.create(defaultReceiveBufferSize);
@@ -34,7 +35,6 @@ namespace Cabinet.Bridge.Tcp.Action
             this.iocpAsyncDelegate = null;
             try
             {
-                
                 socket.Shutdown(SocketShutdown.Receive);
                 this.socket = null;
             }
@@ -42,15 +42,17 @@ namespace Cabinet.Bridge.Tcp.Action
             catch (Exception) { }
         }
 
-        protected sealed override void onIocpEvent(out bool continousAsyncCall)
+        protected sealed override void onIocpEvent(bool isSuccess, out bool continousAsyncCall)
         {
-            // Check if the remote host closed the connection.
-            if (iocpEventArgs.BytesTransferred > 0)
+            continousAsyncCall = continousReceive;
+            if(isSuccess && iocpEventArgs.BytesTransferred > 0)
             {
-                checkSocketError();
+                // Check if the remote host closed the connection.
+
                 buffer.desLength = iocpEventArgs.BytesTransferred;
+                //DescriptorBuffer copiedBuffer = DescriptorBuffer.create(buffer);
                 onReceivedAction(buffer);
-                continousAsyncCall = continousReceive;
+
             }
             else
             {
@@ -58,6 +60,7 @@ namespace Cabinet.Bridge.Tcp.Action
                 onReceivedAction(null);
                 continousAsyncCall = false;
             }
+
         }
 
 

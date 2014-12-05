@@ -43,7 +43,7 @@
     <Compile Include="CommonEntity\IocpException.cs" />
     <Compile Include="EndPoint\TcpClient.cs" />
     <Compile Include="EndPoint\TcpEndPointObserver.cs" />
-    <Compile Include="Session\IIocpSessionObserver.cs" />
+    <Compile Include="Session\IocpSessionObserver.cs" />
     <Compile Include="Session\IocpConnector.cs" />
     <Compile Include="Session\IocpListener.cs" />
     <Compile Include="EndPoint\TcpServer.cs" />

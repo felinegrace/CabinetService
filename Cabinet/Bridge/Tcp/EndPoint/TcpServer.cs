@@ -12,7 +12,7 @@ using Cabinet.Bridge.Tcp.Action;
 
 namespace Cabinet.Bridge.Tcp.EndPoint
 {
-    public class TcpServer : IIocpSessionObserver
+    public class TcpServer : IocpSessionObserver
     {
         private IocpSessionPool pendingSessions { get; set; }
         private IocpSessionMap runningSessions { get; set; }
@@ -59,6 +59,10 @@ namespace Cabinet.Bridge.Tcp.EndPoint
                     (remoteSocket.RemoteEndPoint as IPEndPoint).Address.ToString(),
                     (remoteSocket.RemoteEndPoint as IPEndPoint).Port);
             newSession.attachSocket(remoteSocket);
+            if (tcpEndPointObserver != null)
+            {
+                tcpEndPointObserver.onTcpConnected(newSession.sessionId);
+            }
             newSession.recv();
         }
 
@@ -74,6 +78,18 @@ namespace Cabinet.Bridge.Tcp.EndPoint
         {
             IocpSession endSession = runningSessions.take(sessionId);
             pendingSessions.put(endSession);
+            if (tcpEndPointObserver != null)
+            {
+                tcpEndPointObserver.onTcpDisconnected(sessionId);
+            }
+        }
+
+        public void onSessionError(Guid sessionId, string errorMessage)
+        {
+            if (tcpEndPointObserver != null)
+            {
+                tcpEndPointObserver.onTcpError(sessionId, errorMessage);
+            }
         }
 
         public void sendData(Guid sessionId, byte[] data, int offset, int count)
@@ -81,6 +97,9 @@ namespace Cabinet.Bridge.Tcp.EndPoint
             IocpSession dstSession = runningSessions.search(sessionId);
             dstSession.send(data, offset, count);
         }
+
+
+
     }
 
 }
